@@ -39,8 +39,8 @@
                 <?php } ?>
                 <!-- <a href="<?= base_url('Mst_Checkpoint') ?>" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a> -->
                 <a href="<?= base_url('assets/format_upload/upload_checkpoint.xlsx')  ?>" class="ml-2 btn btn-primary btn-sm"> <i class="fas fa-download"></i> Download Format Upload</a>
-                <div class="card mt-2 card4">
-                    <div class="card-header text-white">
+                <div class="card mt-2">
+                    <div class="card-body">
                         <form method="post" action="<?= base_url('Mst_Checkpoint/form_upload') ?>" onsubmit="return cekExe()" enctype="multipart/form-data">
                             <label for="">PLANT</label>
                             <select class="form-control" name="plant_id" id="plant_id">

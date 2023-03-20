@@ -38,8 +38,8 @@
 			<!-- Left col -->
 			<div class="col-md-12">
 				<div class="row justify-content-center">
-
 					<div class="card col-6 ">
+						<!-- /.card-header -->
 						<div class="card-body p-4">
 							<div class="row justify-content-center">
 								<div class="col-lg-4">
@@ -73,6 +73,7 @@
 								</div>
 							</div>
 						</div>
+						<!-- /.card-footer -->
 					</div>
 				</div>
 

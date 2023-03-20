@@ -37,8 +37,8 @@
                         </button>
                     </div>
                 <?php } ?>
-                <div class="card card4">
-                    <div class="card-header text-white">
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="card-title">Tambah Data</h3>
 
                         <div class="card-tools">
@@ -60,17 +60,17 @@
                                 <label for="">NAMA</label>
                                 <input type="text" name="nama" autocomplete="off" id="nama" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label for="email">EMAIL</label>
-                                <input type="text" name="email" autocomplete="off" id="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="">TYPE</label>
-                                <select name="type" class="form-control" id="" required>
-                                    <option value="1">GA</option>
-                                    <option value="0">CC</option>
-                                </select>
-                            </div>
+							<div class="form-group">
+								<label for="email">EMAIL</label>
+								<input type="text" name="email" autocomplete="off" id="email" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label for="">TYPE</label>
+								<select name="type" class="form-control" id="" required>
+									<option value="1">GA</option>
+									<option value="0">CC</option>
+								</select>
+							</div>
                             <div class="form-group">
                                 <label for="">STATUS</label>
                                 <select name="status" class="form-control" id="" required>

@@ -37,20 +37,27 @@
     <script src="<?= base_url('assets') ?>/dist/js/jquery-tagsinput.min.js" defer></script>
 </head>
 
-<body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
+<body class="hold-transition sidebar-mini sidebar-collapse">
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-dark navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
+                <!-- <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li> -->
             </ul>
             <a href="<?= base_url('Menu') ?>" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
+
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto text-white">
+            <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item mr-2">
                     <span class="font-italic font-bold">Welcome <?= $this->session->userdata('name') ?></span>
@@ -117,7 +124,7 @@
                         </li>
                         <li class="nav-item ">
                             <a href="<?= base_url('Admin/Laporan_Abnormal') ?>" class="nav-link
-                            <?php if ($link == 'Laporan_Abnormal') {
+                            <?php if ($link == 'Laporan_Abnormal' || $link == '') {
                                 echo 'active';
                             } ?>">
                                 <i class="nav-icon fas fa-exclamation-circle"></i>
@@ -310,7 +317,7 @@
                             </ul>
                         </li>
                         <li class="nav-item 
-						<?php if ($link == 'Laporan_Temuan' || $link == 'Laporan_Patroli') {
+                        <?php if (($link == 'Laporan_Temuan') || ($link == 'Laporan_Patroli')) {
                             echo 'menu-is-opening menu-open';
                         } ?>">
                             <a href="#" class="nav-link">
@@ -323,18 +330,18 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="<?= base_url('Admin/Laporan_Patroli') ?>" class="nav-link 
-									<?php if ($link == 'Laporan_Patroli') {
-                                        echo 'active';
-                                    } ?>">
+                                       <?php if ($link == 'Laporan_Patroli') {
+                                            echo 'active';
+                                        } ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Laporan Patroli</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('Admin/Laporan_Temuan') ?>" class="nav-link 
-									<?php if ($link == 'Laporan_Temuan') {
-                                        echo 'active';
-                                    } ?>">
+                                    <a href="<?= base_url('Admin/Laporan_Temuan') ?>" class="nav-link
+                                     <?php if ($link == 'Laporan_Temuan') {
+                                            echo 'active';
+                                        } ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Laporan Temuan</p>
                                     </a>

@@ -43,7 +43,7 @@
                 <a href="<?= base_url('Mst_Jadwal_Produksi/form_revisi_upload_jadwal') ?>" class="btn btn-sm btn-info">
                     <i class="fa fa-file-excel"></i> Upload Koreksi Jadwal
                 </a>
-                <div class="card mt-2 card4">
+                <div class="card mt-2">
                     <div class="card-header">
                         <h3 class="card-title"></h3>
                         <div class="card-tools">
@@ -55,7 +55,7 @@
 
                     <div class="card-body">
                         <form action="<?= base_url('Mst_Jadwal_Produksi') ?>" method="post">
-                            <div class="row text-white">
+                            <div class="row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="">PLANT</label>
@@ -111,20 +111,20 @@
                 if (isset($_POST['lihat'])) {
 
                     if ($jadwal->num_rows() > 0) { ?>
-                        <div class="card card4">
+                        <div class="card">
                             <div class="card-body">
                                 <table class="small">
-                                    <tr class="text-white">
+                                    <tr>
                                         <td>TIPE</td>
                                         <td>:</td>
                                         <td><?= strtoupper('Jadwal Produksi') ?></td>
                                     </tr>
-                                    <tr class="text-white">
+                                    <tr>
                                         <td>TAHUN</td>
                                         <td>:</td>
                                         <td><?= $tahun ?></td>
                                     </tr>
-                                    <tr class="text-white">
+                                    <tr>
                                         <td>BULAN</td>
                                         <td>:</td>
                                         <td><?= $bulan ?></td>
@@ -165,7 +165,7 @@
 
                                                         if ($zone_->num_rows() > 0) {
                                                             $zonadata = $zone_->row();
-                                                            echo  $zonadata->zona_status == "OFF" ?  "<span style='color:red' class='text-danger'>" .  $zonadata->zona_status . "</span>" :  "<span>" .  $zonadata->zona_status . "</span>";
+                                                            echo  $zonadata->zona_status == "OFF" ?  "<span class='text-danger'>" .  $zonadata->zona_status . "</span>" :  "<span>" .  $zonadata->zona_status . "</span>";
                                                         } else {
                                                             echo '-';
                                                         }

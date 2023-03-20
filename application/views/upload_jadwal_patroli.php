@@ -36,8 +36,8 @@
                     </div>
                 <?php } ?>
                 <a href="<?= base_url('assets/format_upload/upload_jadwal_patroli.xlsx')  ?>" class="ml-2 btn btn-primary btn-sm"> <i class="fas fa-download"></i> Download Format Upload</a>
-                <div class="card mt-2 card4">
-                    <div class="card-header text-white">
+                <div class="card mt-2">
+                    <div class="card-body">
                         <form method="post" action="<?= base_url('Upload_Jadwal_Patroli') ?>" onsubmit="return cekExe()" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="">PLANT</label>

@@ -113,14 +113,13 @@
 			columns: [{
 					data: 'image_1',
 					"render": function(data, type, row) {
-						console.log(data);
 						if (data === null) {
-							data = "<?= base_url('assets') . '/dist/img/img-not-found.png' ?>";
+							var ln = "<?= base_url('assets') . '/dist/img/img-not-found.png' ?>";
 						} else {
-							data = "<?= base_url() ?>" + data;
+							ln = "<?= base_url() ?>" + data;
 						}
-						return '<a href="' + data + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">' +
-							'<img src="' + data + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">' +
+						return '<a href="' + ln + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">' +
+							'<img src="' + ln + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">' +
 							'</a>'
 					}
 				},

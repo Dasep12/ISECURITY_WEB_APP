@@ -39,7 +39,7 @@
                 <a href="<?= base_url('Mst_Jadwal_Patroli/form_rubah_jadwal_petugas') ?>" class="btn btn-sm btn-success">
                     <i class="fa fa-file-excel"></i> Koreksi Jadwal Patroli
                 </a>
-                <div class="card mt-2 card4">
+                <div class="card mt-2">
                     <div class="card-header">
                         <h3 class="card-title"></h3>
                         <div class="card-tools">
@@ -51,7 +51,7 @@
 
                     <div class="card-body">
                         <form action="<?= base_url('Mst_Jadwal_Patroli') ?>" method="post">
-                            <div class="row text-white">
+                            <div class="row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="">PLANT</label>
@@ -112,15 +112,15 @@
                 <?php
                 if (isset($_POST['lihat'])) {
                     if ($user->num_rows() > 0) { ?>
-                        <div class="card card4">
+                        <div class="card">
                             <div class="card-body">
                                 <table>
-                                    <tr class="text-white">
+                                    <tr>
                                         <td>Tahun</td>
                                         <td>:</td>
                                         <td><?= $tahun  ?></td>
                                     </tr>
-                                    <tr class="text-white">
+                                    <tr>
                                         <td>Bulan</td>
                                         <td>:</td>
                                         <td><?= $bulan ?></td>

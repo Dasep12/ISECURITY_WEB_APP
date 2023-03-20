@@ -46,12 +46,11 @@ date_default_timezone_set('Asia/Jakarta');
 	<!-- tags input -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets') ?>/dist/css/jquery-tagsinput.min.css" />
 	<script src="<?= base_url('assets') ?>/dist/js/jquery-tagsinput.min.js" defer></script>
-	<!-- TEMPLATE GT CUSTOM -->
-	<link rel="stylesheet" href="<?= base_url('assets') ?>/css/gt.css?<?= date('Y-m-d H:i:s') ?>">
-	<script src="<?= base_url('assets') ?>/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+	<!-- <link rel="stylesheet" type="text/css" href="<?= base_url('assets') ?>/dist/newStyle.css" /> -->
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets') ?>/css/gt.css" />
 </head>
 
-<body class="hold-transition  sidebar-mini sidebar-collapse layout-navbar-fixed">
+<body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<!-- Navbar -->
@@ -138,7 +137,7 @@ date_default_timezone_set('Asia/Jakarta');
 							} ?>">
 								<i class="nav-icon fas fa-exclamation-circle"></i>
 								<p>
-									Abnormality <span class="right badge badge-danger" id="badge_total_temuan">0</span>
+									Abnormality <span class="right badge badge-primary" id="badge_total_temuan">0</span>
 								</p>
 							</a>
 						</li>
@@ -177,7 +176,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Site') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Wilayah</p>
 									</a>
 								</li>
@@ -186,7 +185,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Plant') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Plant</p>
 									</a>
 								</li>
@@ -195,7 +194,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Zona') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Zona</p>
 									</a>
 								</li>
@@ -204,7 +203,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Checkpoint') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Check Point</p>
 									</a>
 								</li>
@@ -214,7 +213,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_objek') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Objek</p>
 									</a>
 								</li>
@@ -223,7 +222,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Kategori_Object') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Kategori Objek</p>
 									</a>
 								</li>
@@ -233,7 +232,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Event') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Event</p>
 									</a>
 								</li>
@@ -243,7 +242,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Shift') {
 										echo 'active';
 									} ?>">
-										<i class=" far fa-circle nav-icon"></i>
+										<i class=" fas fa-minus-circle nav-icon"></i>
 										<p>Master Shift</p>
 									</a>
 								</li>
@@ -252,7 +251,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Produksi') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Produksi</p>
 									</a>
 								</li>
@@ -262,7 +261,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_user') {
 										echo ' active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master User</p>
 									</a>
 								</li>
@@ -272,7 +271,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_user_ga') {
 										echo ' active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master User GA</p>
 									</a>
 								</li>
@@ -281,7 +280,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Role') {
 										echo ' active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Master Role User</p>
 									</a>
 								</li>
@@ -291,7 +290,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Settings') {
 										echo 'active';
 									} ?>">
-										<i class=" far fa-circle nav-icon"></i>
+										<i class=" fas fa-minus-circle nav-icon"></i>
 										<p>Master Settings</p>
 									</a>
 								</li>
@@ -321,7 +320,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Jadwal_Patroli') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Jadwal Patroli</p>
 									</a>
 								</li>
@@ -330,7 +329,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Mst_Jadwal_Produksi') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Jadwal Produksi</p>
 									</a>
 								</li>
@@ -339,7 +338,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Upload_Jadwal_Patroli') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Upload Jadwal Patroli</p>
 									</a>
 								</li>
@@ -348,7 +347,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <?php if ($link == 'Upload_Jadwal_Produksi') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Upload Jadwal Produksi</p>
 									</a>
 								</li>
@@ -371,7 +370,7 @@ date_default_timezone_set('Asia/Jakarta');
 									<?php if ($link == 'Laporan_Patroli') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Laporan Patroli</p>
 									</a>
 								</li>
@@ -380,7 +379,7 @@ date_default_timezone_set('Asia/Jakarta');
 									<?php if ($link == 'Laporan_Temuan') {
 										echo 'active';
 									} ?>">
-										<i class="far fa-circle nav-icon"></i>
+										<i class="fas fa-minus-circle nav-icon"></i>
 										<p>Laporan Temuan</p>
 									</a>
 								</li>

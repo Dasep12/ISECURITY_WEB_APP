@@ -5,7 +5,7 @@
 	<div class="container-fluid">
 		<div class="row mb-2">
 			<div class="col-sm-6">
-				<h1 class="text-white">Abnormality</h1>
+				<h1>Abnormality</h1>
 			</div>
 			<div class="col-sm-6">
 				<ol class="breadcrumb float-sm-right">
@@ -26,35 +26,35 @@
 			<!-- Left col -->
 			<div class="col-md-12">
 				<!-- TABLE: LATEST ORDERS -->
-				<div class="card card4">
+				<div class="card">
 					<div class="card-header border-transparent">
-						<h3 class="text-white card-title">Abnormality</h3>
+						<h3 class="card-title">Abnormality</h3>
 						<div class="card-tools">
 							<button type="button" class="btn btn-tool" data-card-widget="collapse">
 								<i class="fas fa-minus"></i>
 							</button>
-							<!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
 								<i class="fas fa-times"></i>
-							</button> -->
+							</button>
 						</div>
 					</div>
 					<!-- /.card-header -->
 					<div class="card-body p-4">
 						<div class="table-responsive ">
-							<table class="table table-sm" id="tableTemuan">
+							<table class="table table-sm m-0 table-hover" id="tableTemuan">
 								<thead>
-									<tr>
-										<th>Foto</th>
-										<th data-filter="input">Tanggal Patroli</th>
-										<th data-filter="select">Shift</th>
-										<th data-filter="select">Plant</th>
-										<th data-filter="select">Zona</th>
-										<th data-filter="input">Chekpoint</th>
-										<th data-filter="input">Nama Objek</th>
-										<th data-filter="input">Deskripsi Temuan</th>
-										<th data-filter="select">Status</th>
-										<th>Action</th>
-									</tr>
+								<tr>
+									<th>Foto</th>
+									<th data-filter="input">Tanggal Patroli</th>
+									<th data-filter="select">Shift</th>
+									<th data-filter="select">Plant</th>
+									<th data-filter="select">Zona</th>
+									<th data-filter="input">Chekpoint</th>
+									<th data-filter="input">Nama Objek</th>
+									<th data-filter="input">Deskripsi Temuan</th>
+									<th data-filter="select">Status</th>
+									<th>Action</th>
+								</tr>
 								</thead>
 								<tbody>
 								</tbody>
@@ -70,16 +70,16 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card card4">
-					<div class="text-white card-header border-transparent">
+				<div class="card">
+					<div class="card-header border-transparent">
 						<h3 class="card-title">Tindakan Cepat</h3>
 						<div class="card-tools">
 							<button type="button" class="btn btn-tool" data-card-widget="collapse">
 								<i class="fas fa-minus"></i>
 							</button>
-							<!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
 								<i class="fas fa-times"></i>
-							</button> -->
+							</button>
 						</div>
 					</div>
 					<!-- /.card-header -->
@@ -87,16 +87,16 @@
 						<div class="table-responsive ">
 							<table class="table table-sm m-0 table-hover" id="tableTemuanTindakanCepat">
 								<thead>
-									<tr>
-										<th>Foto</th>
-										<th>Tanggal Patroli</th>
-										<th data-filter="select">Shift</th>
-										<th data-filter="select">Plant</th>
-										<th data-filter="input">Zona</th>
-										<th data-filter="input">Chekpoint</th>
-										<th data-filter="input">Nama Objek</th>
-										<th data-filter="input">Deskripsi Temuan</th>
-									</tr>
+								<tr>
+									<th>Foto</th>
+									<th>Tanggal Patroli</th>
+									<th data-filter="select">Shift</th>
+									<th data-filter="select">Plant</th>
+									<th data-filter="input">Zona</th>
+									<th data-filter="input">Chekpoint</th>
+									<th data-filter="input">Nama Objek</th>
+									<th data-filter="input">Deskripsi Temuan</th>
+								</tr>
 								</thead>
 								<tbody>
 								</tbody>
@@ -122,19 +122,20 @@
 
 	.table thead th {
 		vertical-align: middle !important;
+
 	}
 </style>
 <script>
-	$(function() {
-		// $('#tableTemuan thead tr')
-		// 	.clone(true)
-		// 	.addClass('filters')
-		// 	.appendTo('#tableTemuan thead');
+	$(function () {
+		$('#tableTemuan thead tr')
+			.clone(true)
+			.addClass('filters')
+			.appendTo('#tableTemuan thead');
 
-		// $('#tableTemuanTindakanCepat thead tr')
-		// 	.clone(true)
-		// 	.addClass('filters')
-		// 	.appendTo('#tableTemuanTindakanCepat thead');
+		$('#tableTemuanTindakanCepat thead tr')
+			.clone(true)
+			.addClass('filters')
+			.appendTo('#tableTemuanTindakanCepat thead');
 
 		let table = $('#tableTemuan').DataTable({
 			paging: true,
@@ -150,48 +151,31 @@
 			serverSide: false,
 			pageLength: 25,
 			ajax: {
-				url: "<?= base_url('Laporan_Abnormal/list_temuan') ?>",
+				url: "<?=base_url('Laporan_Abnormal/list_temuan') ?>",
 				dataSrc: '',
 			},
-			columns: [{
+			columns: [
+				{
 					data: 'image_1',
-					"render": function(data, type, row) {
+					"render": function (data, type, row) {
 						if (data === null) {
-							data = "<?= base_url('assets') . '/dist/img/img-not-found.png' ?>";
+							data = "<?=base_url('assets') . '/dist/img/img-not-found.png'?>";
 						}
 						return '<a href="' + data + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">' +
 							'<img src="' + data + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">' +
 							'</a>'
-					},
-
-				},
-				{
-					data: 'date_patroli',
-					"rowCallback": function(row, data, index) {
-						$(row).addClass('card3');
 					}
 				},
-				{
-					data: 'nama_shift'
-				},
-				{
-					data: 'plant_name'
-				},
-				{
-					data: 'zone_name'
-				},
-				{
-					data: 'checkpoint_name'
-				},
-				{
-					data: 'nama_objek'
-				},
-				{
-					data: 'description'
-				},
+				{data: 'date_patroli'},
+				{data: 'nama_shift'},
+				{data: 'plant_name'},
+				{data: 'zone_name'},
+				{data: 'checkpoint_name'},
+				{data: 'nama_objek'},
+				{data: 'description'},
 				{
 					data: 'status_temuan',
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (data === 1) {
 							return '<span class="badge badge-success">CLOSE</span>'
 						} else {
@@ -201,11 +185,11 @@
 				},
 				{
 					data: null,
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (row.status_temuan === 1) {
 							return '';
 						}
-						const actionURL = "<?= base_url('Laporan_Abnormal/update_status_temuan') ?>";
+						const actionURL = "<?=base_url('Laporan_Abnormal/update_status_temuan') ?>";
 						let img = '<a href="' + row.image_1 + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">';
 
 						if (row.image_1 !== null) {
@@ -262,7 +246,7 @@
 					}
 				}
 			],
-			initComplete: function() {
+			initComplete: function () {
 				var api = this.api();
 
 				function initFilterInput(api, cell, colIdx) {
@@ -270,11 +254,11 @@
 					$(cell).html('<input type="text"  class="form-control form-control-sm" placeholder="' + title + '" />');
 					// On every keypress in this input
 					$(
-							'input',
-							$('.filters th').eq($(api.column(colIdx).header()).index())
-						)
+						'input',
+						$('.filters th').eq($(api.column(colIdx).header()).index())
+					)
 						.off('keyup change')
-						.on('change', function(e) {
+						.on('change', function (e) {
 							// Get the search value
 							$(this).attr('title', $(this).val());
 							var regexr = '({search})'; //$(this).parents('th').find('select').val();
@@ -284,15 +268,15 @@
 							api
 								.column(colIdx)
 								.search(
-									this.value !== '' ?
-									regexr.replace('{search}', '(((' + this.value + ')))') :
-									'',
+									this.value !== ''
+										? regexr.replace('{search}', '(((' + this.value + ')))')
+										: '',
 									this.value !== '',
 									this.value === ''
 								)
 								.draw();
 						})
-						.on('keyup', function(e) {
+						.on('keyup', function (e) {
 							e.stopPropagation();
 
 							$(this).trigger('change');
@@ -304,14 +288,14 @@
 
 				function initFilterSelect(api, cell, colIdx) {
 					let select = $('<select class="form-control form-control-sm"><option value=""> -- Filter -- </option></select>')
-						.on('change', function() {
+						.on('change', function () {
 							const val = $.fn.dataTable.util.escapeRegex($(this).val());
 							api.column(colIdx)
 								.search(val ? '^' + val + '$' : '', true, false)
 								.draw();
 						});
 					$(cell).html(select);
-					api.column(colIdx).data().unique().sort().each(function(d, j) {
+					api.column(colIdx).data().unique().sort().each(function (d, j) {
 						let cols = api.column(colIdx).selector.cols
 						if (cols === 8) {
 							if (d === 1) {
@@ -329,7 +313,7 @@
 				api
 					.columns()
 					.eq(0)
-					.each(function(colIdx) {
+					.each(function (colIdx) {
 						// Set the header cell to contain the input element
 						var cell = $('#tableTemuan .filters th').eq(
 							$(api.column(colIdx).header()).index()
@@ -353,7 +337,8 @@
 			}
 		});
 		new $.fn.dataTable.Buttons(table, {
-			buttons: [{
+			buttons: [
+				{
 					extend: 'excelHtml5',
 					title: 'Data export',
 					text: '<i class="fa fa-files-o"></i> XLSX',
@@ -362,11 +347,11 @@
 					exportOptions: {
 						columns: [0, 1, 2, 3, 4, 5, 6, 7]
 					},
-					filename: function() {
+					filename: function () {
 						var d = new Date();
 						return 'laporan_temuan_' + d.getTime();
 					},
-					customize: function(xlsx) {
+					customize: function (xlsx) {
 						var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
 						$('row c', sheet).attr('s', '25');
@@ -382,7 +367,7 @@
 					exportOptions: {
 						columns: [0, 1, 2, 3, 4, 5, 6, 7]
 					},
-					filename: function() {
+					filename: function () {
 						var d = new Date();
 						return 'laporan_temuan_' + d.getTime();
 					},
@@ -416,43 +401,30 @@
 			serverSide: false,
 			pageLength: 25,
 			ajax: {
-				url: "<?= base_url('Laporan_Abnormal/list_temuan_tindakan_cepat') ?>",
+				url: "<?=base_url('Laporan_Abnormal/list_temuan_tindakan_cepat') ?>",
 				dataSrc: '',
 			},
-			columns: [{
+			columns: [
+				{
 					data: 'image_1',
-					"render": function(data, type, row) {
+					"render": function (data, type, row) {
 						if (data === null) {
-							data = "<?= base_url('assets') . '/dist/img/img-not-found.png' ?>";
+							data = "<?=base_url('assets') . '/dist/img/img-not-found.png'?>";
 						}
 						return '<a href="' + data + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">' +
 							'<img src="' + data + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">' +
 							'</a>'
 					}
 				},
-				{
-					data: 'date_patroli'
-				},
-				{
-					data: 'nama_shift'
-				},
-				{
-					data: 'plant_name'
-				},
-				{
-					data: 'zone_name'
-				},
-				{
-					data: 'checkpoint_name'
-				},
-				{
-					data: 'nama_objek'
-				},
-				{
-					data: 'description'
-				}
+				{data: 'date_patroli'},
+				{data: 'nama_shift'},
+				{data: 'plant_name'},
+				{data: 'zone_name'},
+				{data: 'checkpoint_name'},
+				{data: 'nama_objek'},
+				{data: 'description'}
 			],
-			initComplete: function() {
+			initComplete: function () {
 				var api = this.api();
 				console.log(this)
 
@@ -461,11 +433,11 @@
 					$(cell).html('<input type="text"  class="form-control form-control-sm" placeholder="' + title + '" />');
 					// On every keypress in this input
 					$(
-							'input',
-							$('.filters th').eq($(api.column(colIdx).header()).index())
-						)
+						'input',
+						$('.filters th').eq($(api.column(colIdx).header()).index())
+					)
 						.off('keyup change')
-						.on('change', function(e) {
+						.on('change', function (e) {
 							// Get the search value
 							$(this).attr('title', $(this).val());
 							var regexr = '({search})'; //$(this).parents('th').find('select').val();
@@ -475,15 +447,15 @@
 							api
 								.column(colIdx)
 								.search(
-									this.value !== '' ?
-									regexr.replace('{search}', '(((' + this.value + ')))') :
-									'',
+									this.value !== ''
+										? regexr.replace('{search}', '(((' + this.value + ')))')
+										: '',
 									this.value !== '',
 									this.value === ''
 								)
 								.draw();
 						})
-						.on('keyup', function(e) {
+						.on('keyup', function (e) {
 							e.stopPropagation();
 
 							$(this).trigger('change');
@@ -495,7 +467,7 @@
 
 				function initFilterSelect(api, cell, colIdx) {
 					let select = $('<select class="form-control form-control-sm"><option value=""> -- Filter -- </option></select>')
-						.on('change', function() {
+						.on('change', function () {
 							const val = $.fn.dataTable.util.escapeRegex($(this).val());
 							api.column(colIdx)
 								.search(val ? '^' + val + '$' : '', true, false)
@@ -503,7 +475,7 @@
 						});
 					$(cell).html(select);
 					console.log(cell, select)
-					api.column(colIdx).data().unique().sort().each(function(d, j) {
+					api.column(colIdx).data().unique().sort().each(function (d, j) {
 						let cols = api.column(colIdx).selector.cols
 						select.append('<option value="' + d + '">' + d + '</option>')
 					});
@@ -513,7 +485,7 @@
 				api
 					.columns()
 					.eq(0)
-					.each(function(colIdx) {
+					.each(function (colIdx) {
 						// Set the header cell to contain the input element
 						var cell = $('#tableTemuanTindakanCepat .filters th').eq(
 							$(api.column(colIdx).header()).index()
@@ -536,7 +508,8 @@
 			}
 		});
 		new $.fn.dataTable.Buttons(tableTemuanTindakanCepat, {
-			buttons: [{
+			buttons: [
+				{
 					extend: 'excelHtml5',
 					title: 'Data export',
 					text: '<i class="fa fa-files-o"></i> XLSX',
@@ -545,11 +518,11 @@
 					exportOptions: {
 						columns: [0, 1, 2, 3, 4, 5, 6, 7]
 					},
-					filename: function() {
+					filename: function () {
 						var d = new Date();
 						return 'laporan_temuan_' + d.getTime();
 					},
-					customize: function(xlsx) {
+					customize: function (xlsx) {
 						var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
 						$('row c', sheet).attr('s', '25');
@@ -565,7 +538,7 @@
 					exportOptions: {
 						columns: [0, 1, 2, 3, 4, 5, 6, 7]
 					},
-					filename: function() {
+					filename: function () {
 						var d = new Date();
 						return 'laporan_temuan_tindakan_cepat_' + d.getTime();
 					},

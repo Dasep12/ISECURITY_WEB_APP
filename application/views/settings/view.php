@@ -36,8 +36,8 @@
 						</button>
 					</div>
 				<?php } ?>
-				<div class="card card4">
-					<div class="card-header text-white">
+				<div class="card">
+					<div class="card-header">
 						<h3 class="card-title">Data Settings</h3>
 						<div class="card-tools">
 							<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -51,41 +51,50 @@
 					<div class="card-body">
 						<table id="example2" class="table-sm  mt-1 table table-striped table-bordered">
 							<thead>
-								<tr>
-									<th>NO</th>
-									<th>NAMA SETTING</th>
-									<th>NILAI</th>
-									<th>TYPE</th>
-									<th>UNIT</th>
-									<th>STATUS</th>
-									<th>ACTION</th>
-								</tr>
+							<tr>
+								<th>NO</th>
+								<th>NAMA SETTING</th>
+								<th>NILAI</th>
+								<th>TYPE</th>
+								<th>UNIT</th>
+								<th>STATUS</th>
+								<th>ACTION</th>
+							</tr>
 							</thead>
 							<tbody>
-								<?php $no = 1;
-								foreach ($settings->result() as $zn) : ?>
-									<tr>
-										<td><?= $no++ ?></td>
-										<td><?= $zn->nama_setting ?></td>
-										<td>
-											<pre class="text-white"><?= $zn->nilai_setting ?></pre>
-										</td>
-										<td><?= $zn->type ?></td>
-										<td><?= $zn->unit ?></td>
-										<td>
-											<?php if ($zn->status == 1) { ?>
-												ACTIVE
-											<?php } else if ($zn->status == 0) { ?>
-												INACTIVE
-											<?php } ?>
-										</td>
-										<td>
-											<a href='' data-toggle="modal" data-target="#view-data" class="text-primary ml-2 " data-backdrop="static" data-keyboard="false" data-id="<?= $zn->id_setting ?>" data-status="<?= $zn->status ?>" data-nama-setting="<?= $zn->nama_setting ?>" data-nilai-setting="<?= $zn->nilai_setting ?>" data-type="<?= $zn->type ?>" data-unit="<?= $zn->unit ?>"><i class="fas fa-eye"></i></a>
+							<?php $no = 1;
+							foreach ($settings->result() as $zn) : ?>
+								<tr>
+									<td><?= $no++ ?></td>
+									<td><?= $zn->nama_setting ?></td>
+									<td><pre><?= $zn->nilai_setting ?></pre></td>
+									<td><?= $zn->type ?></td>
+									<td><?= $zn->unit ?></td>
+									<td>
+										<?php if ($zn->status == 1) { ?>
+											ACTIVE
+										<?php } else if ($zn->status == 0) { ?>
+											INACTIVE
+										<?php } ?>
+									</td>
+									<td>
+										<a href='' data-toggle="modal" data-target="#view-data"
+										   class="text-primary ml-2 "
+										   data-backdrop="static"
+										   data-keyboard="false"
+										   data-id="<?= $zn->id_setting ?>"
+										   data-status="<?= $zn->status ?>"
+										   data-nama-setting="<?= $zn->nama_setting ?>"
+										   data-nilai-setting="<?= $zn->nilai_setting ?>"
+										   data-type="<?= $zn->type ?>"
+										   data-unit="<?= $zn->unit ?>"
+										><i class="fas fa-eye"></i></a>
 
-											<a href="<?= base_url('Mst_Settings/edit?id_setting=' . $zn->id_setting) ?>" class='text-success ml-2 '><i class="fas fa-edit"></i></a>
-										</td>
-									</tr>
-								<?php endforeach ?>
+										<a href="<?= base_url('Mst_Settings/edit?id_setting=' . $zn->id_setting) ?>"
+										   class='text-success ml-2 '><i class="fas fa-edit"></i></a>
+									</td>
+								</tr>
+							<?php endforeach ?>
 							</tbody>
 						</table>
 					</div>
@@ -99,10 +108,11 @@
 
 
 <!-- modal edit data Event -->
-<div class="modal fade" id="view-data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="view-data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content card5">
-			<div class="modal-header text-white">
+		<div class="modal-content">
+			<div class="modal-header">
 				<h5 class="modal-title">Detail</h5>
 			</div>
 			<div class="modal-body">
@@ -139,7 +149,7 @@
 
 
 <script>
-	$("#view-data").on("show.bs.modal", function(event) {
+	$("#view-data").on("show.bs.modal", function (event) {
 		var div = $(event.relatedTarget); // Tombol dimana modal di tampilkan
 		var modal = $(this);
 		modal.find("#nama-setting").attr("value", div.data("nama-setting"));
@@ -147,9 +157,9 @@
 		modal.find("#type").attr("value", div.data("type"));
 		modal.find("#unit").attr("value", div.data("unit"));
 		if (div.data("status") === 1) {
-			modal.find("#status").attr("value", "ACTIVE");
+		    modal.find("#status").attr("value", "ACTIVE");
 		} else {
-			modal.find("#status").attr("value", "INACTIVE");
+		    modal.find("#status").attr("value", "INACTIVE");
 		}
 	});
 </script>

@@ -36,8 +36,8 @@
                         </button>
                     </div>
                 <?php } ?>
-                <div class="card card4">
-                    <div class="card-header text-white">
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="card-title">Daftar Objek</h3>
 
                         <div class="card-tools">
@@ -113,8 +113,8 @@
 <!-- modal edit data zona -->
 <div class="modal fade" id="edit-data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content card5">
-            <div class="modal-header text-white">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -200,6 +200,7 @@
                 document.getElementById('btn_delete_all').style.display = "block";
             } else {
                 document.getElementById('btn_delete_all').style.display = "none";
+
             }
         })
 

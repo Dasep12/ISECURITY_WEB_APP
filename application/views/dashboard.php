@@ -42,10 +42,10 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-12">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<form id="form-filter" class="form-horizontal">
-							<div class="form-row text-white">
+							<div class="form-row">
 								<div class="form-group col-2">
 									<label for="yearFilter">Year</label>
 									<select class="form-control" name="yearFilter" id="yearFilter">
@@ -78,7 +78,7 @@
 								</div>
 
 								<div class="form-group col d-flex align-items-end justify-content-end">
-									<span class="fw-bold fw-italic h1">Guard Tour Dashboard</span>
+									<span class="h1 ff-fugazone title-dashboard">Guard Tour Dashboard</span>
 								</div>
 							</div>
 						</form>
@@ -86,9 +86,8 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
-
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:none" id="chartTrendPatrolPerPlant_overlay">
 								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
@@ -111,7 +110,7 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:none" id="chartTrenPatrolAllPlant_overlay">
@@ -134,7 +133,7 @@
 
 			</div>
 			<div class="col-md-12">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:none" id="chartTrendPatrolHarian_overlay">
@@ -157,7 +156,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				<div class="card card3">
+				<div class="card">
 					<!-- /.card-header -->
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
@@ -183,7 +182,7 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:none" id="tahunPerformance_overlay">
@@ -204,7 +203,7 @@
 				</div>
 			</div>
 			<div class="col-md-12">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:block" id="chartPerformancePerPlant_overlay">
@@ -229,7 +228,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:none" id="chartTemuanADM_overlay">
@@ -245,7 +244,7 @@
 				<!-- /.chart-responsive -->
 			</div>
 			<div class="col-md-6">
-				<div class="card card3">
+				<div class="card">
 					<div class="card-body">
 						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
 							<div class="overlay" style="display:none" id="chartTemuanRegu_overlay">
@@ -415,262 +414,57 @@
 	// star trend
 
 	// tren patroli
-	// var charTrendPatroliLine;
-	// charTrendPatroliLine = new Highcharts.chart({
-	// 	chart: {
-	// 		renderTo: 'chartLinePatrolAllPerPlant',
-	// 		type: 'line',
-	// 		backgroundColor: 'transparent'
-	// 	},
-	// 	title: {
-	// 		text: 'Trend Patroli',
-	// 		style: {
-	// 			color: '#FFF',
-	// 			font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-	// 		}
-	// 	},
-	// 	legend: {
-	// 		enabled: false,
-	// 		itemStyle: {
-	// 			fontSize: '35px',
-	// 			font: '35pt Trebuchet MS, Verdana, sans-serif',
-	// 			color: '#FFF'
-	// 		},
-	// 	},
-	// 	subtitle: {
-	// 		text: 'Periode ' + <?= date('Y') ?>,
-	// 		style: {
-	// 			color: '#FFF',
-	// 			font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-	// 		}
-	// 	},
-	// 	xAxis: {
-	// 		categories: month,
-	// 		crosshair: true,
-	// 		labels: {
-	// 			style: {
-	// 				color: '#FFF',
-	// 				font: '11px Trebuchet MS, Verdana, sans-serif'
-	// 			}
-	// 		},
-	// 	},
-	// 	yAxis: {
-	// 		tickInterval: 25,
-	// 		min: 0,
-	// 		title: {
-	// 			text: 'TOTAL'
-	// 		},
-	// 		labels: {
-	// 			style: {
-	// 				color: '#FFF',
-	// 				font: '11px Trebuchet MS, Verdana, sans-serif'
-	// 			}
-	// 		},
-	// 	},
-	// 	tooltip: {
-	// 		headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	// 		pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	// 			'<td style="padding:0"><b>{point.y}</b></td></tr>',
-	// 		footerFormat: '</table>',
-	// 		shared: true,
-	// 		useHTML: true
-	// 	},
-	// 	plotOptions: {
-	// 		series: {
-	// 			fillOpacity: 0.1
-	// 		},
-	// 		area: {
-	// 			lineWidth: 1,
-	// 			marker: {
-	// 				lineWidth: 2,
-	// 				symbol: 'square',
-	// 				fillColor: 'white',
-	// 				radius: 3,
-	// 			},
-	// 			legend: {
-	// 				radius: 2,
-	// 			}
-	// 		}
-	// 	},
-	// 	exporting: {
-	// 		buttons: {
-	// 			contextButton: {
-	// 				enabled: false
-	// 			},
-	// 		}
-	// 	},
-	// 	series: [{
-	// 		name: 'TOTAL',
-	// 		data: []
-	// 	}]
-	// });
-
-
-	var commonOptionsPerformanceADM = {
-		colors: ['#f68936', '#70ba47', '#33b5e6', '#fd8f40', '#e7ca60', '#40abaf', '#f6f7f8', '#e9e9eb'],
+	var charTrendPatroliLine;
+	charTrendPatroliLine = new Highcharts.chart({
 		chart: {
-			style: {
-				// fontFamily: 'Roboto Light',
-				fontWeight: 'normal',
-				fontSize: '12px',
-				// color: '#585858',
-				color: 'red',
-			}
+			renderTo: 'chartLinePatrolAllPerPlant',
+			type: 'line'
 		},
 		title: {
-			text: null
+			text: 'Trend Patroli'
+		},
+		legend: {
+			enabled: false
 		},
 		subtitle: {
-			text: null
-		},
-		credits: {
-			enabled: false
-		},
-		exporting: {
-			enabled: false
+			text: 'Periode ' + <?= date('Y') ?>
 		},
 		xAxis: {
-			title: {
-				style: {
-					color: "#bbb",
-				}
-			},
-			labels: {
-				style: {
-					color: '#bbb'
-				},
-			},
-			lineWidth: 1,
-			tickLength: 0,
-
+			categories: month,
+			crosshair: true
 		},
 		yAxis: {
+			tickInterval: 25,
+			min: 0,
 			title: {
-				style: {
-					// fontFamily: 'Roboto',
-					color: "#bbb",
-				}
-			},
-			// offset: -6,
-			labels: {
-				style: {
-					color: '#bbb'
-				},
-				//format:'{value}K',
-			},
-			tickInterval: 100,
-			// lineWidth: 1,
-			gridLineDashStyle: 'dash',
-		},
-		series: [{
-			//backgroundColor: "rgba(0 ,0, 0, 1)",
-		}],
-
-		// Area Chart
-		plotOptions: {
-			series: {
-				fillOpacity: 0.1
-			},
-			area: {
-				lineWidth: 1,
-				marker: {
-					lineWidth: 2,
-					symbol: 'circle',
-					fillColor: 'white',
-					radius: 5,
-				},
-				legend: {
-					radius: 2,
-				}
+				text: 'TOTAL'
 			}
 		},
 		tooltip: {
-			useHTML: true,
+			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				'<td style="padding:0"><b>{point.y}</b></td></tr>',
+			footerFormat: '</table>',
 			shared: true,
-			backgroundColor: '#5f5f5f',
-			borderWidth: 0,
-			style: {
-				padding: 10,
-				color: '#fefefe',
+			useHTML: true
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
 			}
 		},
-		legend: {
-			itemStyle: {
-				fontFamily: 'Roboto Light',
-				fontWeight: 'normal',
-				fontSize: '12',
-				color: '#666666',
-			},
-			marker: {
-				symbol: 'square',
-				verticalAlign: 'middle',
-				radius: '4',
-			},
-			symbolHeight: 6,
-			symbolWidth: 6,
+		exporting: {
+			buttons: {
+				contextButton: {
+					enabled: false
+				},
+			}
 		},
-	};
-	$('#chartLinePatrolAllPerPlant').each(function() {
-		$(this).highcharts(Highcharts.merge(commonOptionsPerformanceADM, {
-			chart: {
-				type: 'area',
-				backgroundColor: 'transparent'
-			},
-			title: {
-				text: 'Trend Patroli',
-				style: {
-					color: '#FFF',
-					font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-				}
-			},
-			legend: {
-				enabled: false,
-				itemStyle: {
-					fontSize: '35px',
-					font: '35pt Trebuchet MS, Verdana, sans-serif',
-					color: '#FFF'
-				},
-			},
-			subtitle: {
-				text: 'Periode ' + <?= date('Y') ?>,
-				style: {
-					color: '#FFF',
-					font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-				}
-			},
-			xAxis: {
-				categories: month,
-			},
-			yAxis: {
-				title: {
-					style: {
-						// fontFamily: 'Roboto',
-						color: "#bbb",
-					}
-				},
-				tickInterval: 25,
-				min: 0,
-				title: {
-					text: 'TOTAL'
-				},
-				labels: {
-					style: {
-						color: '#FFF',
-						font: '11px Trebuchet MS, Verdana, sans-serif'
-					}
-				},
-			},
-			series: [{
-				name: 'Forwards',
-				color: '#f68936',
-				marker: {
-					lineColor: '#f68936',
-					fillColor: 'white',
-				},
-				data: [],
-			}]
-		}))
-
+		series: [{
+			name: 'TOTAL',
+			data: []
+		}]
 	});
 
 
@@ -695,8 +489,7 @@
 				var data = JSON.parse(e);
 				chartPatrolAll.series[0].update({
 					name: data[0].name,
-					data: data[0].data,
-					// color: "#" + Math.floor(Math.random() * 16777215).toString(16)
+					data: data[0].data
 				});
 				chartPatrolAll.setTitle(null, {
 					text: 'Periode ' + tahun
@@ -711,45 +504,17 @@
 	charTotalPatrolAllBar = new Highcharts.chart({
 		chart: {
 			renderTo: 'chartTrenPatrolAllPlant',
-			type: 'column',
-			backgroundColor: 'transparent'
-		},
-		legend: {
-			itemStyle: {
-				fontSize: '10px',
-				font: '10pt Trebuchet MS, Verdana, sans-serif',
-				color: '#FFF'
-			},
-			symbolHeight: 10,
-			symbolWidth: 10,
+			type: 'column'
 		},
 		title: {
-			text: 'Trend Patroli',
-			style: {
-				color: '#FFF',
-				fontWeight: 'bold',
-				fontSize: '18px',
-				fontFamily: 'Trebuchet MS, Verdana, sans-serif'
-			}
+			text: 'Trend Patroli'
 		},
 		subtitle: {
-			text: 'Periode' + <?= date('Y') ?>,
-			style: {
-				color: '#FFF',
-				fontWeight: 'bold',
-				fontSize: '14px',
-				fontFamily: 'Trebuchet MS, Verdana, sans-serif'
-			}
+			text: 'Periode' + <?= date('Y') ?>
 		},
 		xAxis: {
 			categories: month,
-			crosshair: true,
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			}
+			crosshair: true
 		},
 		yAxis: {
 			tickInterval: 25,
@@ -757,22 +522,9 @@
 			max: 10,
 			title: {
 				text: 'TOTAL'
-			},
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
-			gridLineDashStyle: 'dash',
+			}
 		},
 		tooltip: {
-			backgroundColor: '#5f5f5f',
-			borderWidth: 0,
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			},
 			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
 			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
 				'<td style="padding:0"><b>{point.y}</b></td></tr>',
@@ -838,8 +590,7 @@
 				for (let i = 0; i < data.length; i++) {
 					chartPatrolAll.series[i].update({
 						name: data[i].plant,
-						data: data[i].data,
-						// color: "#" + Math.floor(Math.random() * 16777215).toString(16)
+						data: data[i].data
 					});
 
 					maxValue.push(Math.max.apply(null, data[i].data));
@@ -863,63 +614,21 @@
 	Highcharts.chart({
 		chart: {
 			renderTo: 'patroliHarian',
-			type: 'area',
-			backgroundColor: 'transparent'
-		},
-		legend: {
-			itemStyle: {
-				fontSize: '10px',
-				font: '8pt Trebuchet MS, Verdana, sans-serif',
-				color: '#FFF'
-			},
-			marker: {
-				symbol: 'square',
-				verticalAlign: 'middle',
-				radius: '4',
-			},
-			symbolHeight: 10,
-			symbolWidth: 10,
+			type: 'line'
 		},
 		title: {
-			text: 'Patroli Harian',
-			style: {
-				color: '#FFF',
-				font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: 'Patroli Harian'
 		},
 		subtitle: {
-			text: 'Periode ',
-			style: {
-				color: '#FFF',
-				font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: 'Periode '
 		},
 		xAxis: {
-			categories: tanggal(<?= 28 ?>),
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
+			categories: tanggal(<?= 28 ?>)
 		},
 		yAxis: {
 			title: {
-				text: 'Total',
-				labels: {
-					style: {
-						color: '#FFF',
-						font: '11px Trebuchet MS, Verdana, sans-serif'
-					}
-				},
-			},
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
-			gridLineDashStyle: 'dash',
+				text: 'Total'
+			}
 		},
 		tooltip: {
 			headerFormat: '<span style="font-size:10px">Tanggal {point.key}</span><table>',
@@ -927,13 +636,7 @@
 				'<td style="padding:0"><b>{point.y}</b></td></tr>',
 			footerFormat: '</table>',
 			shared: true,
-			useHTML: true,
-			backgroundColor: '#5f5f5f',
-			borderWidth: 0,
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			}
+			useHTML: true
 		},
 		plotOptions: {
 			column: {
@@ -941,25 +644,13 @@
 				borderWidth: 0,
 			},
 			series: {
-				fillOpacity: 0.1,
 				events: {
 					legendItemClick: function() {
 						return false; // <== returning false will cancel the default action
 					}
 				},
-			},
-			area: {
-				lineWidth: 1,
-				marker: {
-					lineWidth: 2,
-					symbol: 'circle',
-					// fillColor: 'red',
-					radius: 6,
-				},
-				legend: {
-					radius: 2,
-				}
 			}
+
 		},
 		exporting: {
 			buttons: {
@@ -1011,11 +702,7 @@
 				for (var i = 0; i < data.length; i++) {
 					chartTrendPatrolHarian.series[i].update({
 						name: data[i].name,
-						data: data[i].data,
-						marker: {
-							lineColor: 'white',
-							// fillColor: 'gray',
-						},
+						data: data[i].data
 					});
 				}
 				chartTrendPatrolHarian.xAxis[0].update({
@@ -1039,35 +726,20 @@
 	charPerformancePatroliLine = new Highcharts.chart({
 		chart: {
 			renderTo: 'chartPerformanceAllLine',
-			type: 'area',
-			backgroundColor: 'transparent'
+			type: 'line'
 		},
 		legend: {
-			enabled: false,
+			enabled: false
 		},
 		title: {
-			text: 'Performance Patroli',
-			style: {
-				color: '#FFF',
-				font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: 'Performance Patroli'
 		},
 		subtitle: {
-			text: 'Periode ' + <?= date('Y') ?>,
-			style: {
-				color: '#FFF',
-				font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: 'Periode ' + <?= date('Y') ?>
 		},
 		xAxis: {
 			categories: month,
-			crosshair: true,
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
+			crosshair: true
 		},
 		yAxis: {
 			min: 0,
@@ -1076,16 +748,11 @@
 			labels: {
 				formatter: function() {
 					return this.value + '%'
-				},
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
 				}
 			},
 			title: {
 				text: 'TOTAL'
-			},
-			gridLineDashStyle: 'dash',
+			}
 		},
 		tooltip: {
 			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -1094,31 +761,14 @@
 			footerFormat: '</table>',
 			shared: true,
 			useHTML: true,
-			valueSuffix: '%',
-			backgroundColor: '#5f5f5f',
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			}
+			valueSuffix: '%'
 		},
 		plotOptions: {
-			// column: {
-			// 	pointPadding: 0.2,
-			// 	borderWidth: 0,
-			// 	// stacking: 'percent'
-			// },
-			area: {
-				lineWidth: 1,
-				marker: {
-					lineWidth: 2,
-					symbol: 'circle',
-					fillColor: 'white',
-					radius: 6,
-				},
-				legend: {
-					radius: 2,
-				}
-			}
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0,
+				// stacking: 'percent'
+			},
 
 		},
 		exporting: {
@@ -1156,11 +806,7 @@
 				var data = JSON.parse(e);
 				chartPatrolAll.series[0].update({
 					name: data[0].name,
-					data: data[0].data,
-					marker: {
-						lineColor: 'white',
-						fillColor: '#70ba47',
-					},
+					data: data[0].data
 				});
 				chartPatrolAll.setTitle(null, {
 					text: 'Periode ' + tahun
@@ -1175,40 +821,17 @@
 	charPerformancePatrolAllBar = new Highcharts.chart({
 		chart: {
 			renderTo: 'chartPerformanceAllBar',
-			type: 'line',
-			backgroundColor: 'transparent'
+			type: 'line'
 		},
 		title: {
-			text: 'Performance Patroli',
-			style: {
-				color: '#FFF',
-				font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-			}
-		},
-		legend: {
-			// enabled: false,
-			itemStyle: {
-				fontSize: '11px',
-				font: '11pt Trebuchet MS, Verdana, sans-serif',
-				color: '#FFF'
-			},
+			text: 'Performance Patroli'
 		},
 		subtitle: {
-			text: 'Periode ' + <?= date('Y') ?>,
-			style: {
-				color: '#FFF',
-				font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: 'Periode ' + <?= date('Y') ?>
 		},
 		xAxis: {
 			categories: month,
-			crosshair: true,
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
+			crosshair: true
 		},
 		yAxis: {
 			min: 0,
@@ -1217,16 +840,11 @@
 			labels: {
 				formatter: function() {
 					return this.value + '%'
-				},
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
 				}
 			},
 			title: {
 				text: 'TOTAL'
-			},
-			gridLineDashStyle: 'dash',
+			}
 		},
 		tooltip: {
 			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -1235,12 +853,7 @@
 			footerFormat: '</table>',
 			shared: true,
 			useHTML: true,
-			valueSuffix: '%',
-			backgroundColor: '#5f5f5f',
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			}
+			valueSuffix: '%'
 		},
 		plotOptions: {
 			series: {
@@ -1378,29 +991,12 @@
 		chart: {
 			type: 'line',
 			renderTo: 'PerformancePatrolHarian',
-			backgroundColor: 'transparent'
 		},
 		title: {
-			text: 'Performance Patroli Harian',
-			style: {
-				color: '#FFF',
-				font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-			}
-		},
-		legend: {
-			enabled: false,
-			itemStyle: {
-				fontSize: '35px',
-				font: '35pt Trebuchet MS, Verdana, sans-serif',
-				color: '#FFF'
-			},
+			text: 'Performance Patroli Harian'
 		},
 		subtitle: {
-			text: 'Periode ' + <?= date('Y') ?>,
-			style: {
-				color: '#FFF',
-				font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: 'Periode ' + <?= date('Y') ?>
 		},
 		xAxis: {
 			// categories: tanggal(28)
@@ -1412,16 +1008,11 @@
 			labels: {
 				formatter: function() {
 					return this.value + '%'
-				},
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
 				}
 			},
 			title: {
 				text: 'TOTAL'
-			},
-			gridLineDashStyle: 'dash',
+			}
 		},
 		tooltip: {
 			formatter: function() {
@@ -1434,12 +1025,7 @@
 			},
 			shared: true,
 			useHTML: true,
-			valueSuffix: '%',
-			backgroundColor: '#5f5f5f',
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			}
+			valueSuffix: '%'
 		},
 		plotOptions: {
 			series: {
@@ -1502,52 +1088,22 @@
 
 	Highcharts.chart('chartTemuanADM', {
 		chart: {
-			type: 'line',
-			backgroundColor: 'transparent'
+			type: 'line'
 		},
 		title: {
 			text: 'Temuan Patroli',
-			align: 'center',
-			style: {
-				color: '#FFF',
-				font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-			}
-		},
-		legend: {
-			enabled: false,
-			itemStyle: {
-				fontSize: '35px',
-				font: '35pt Trebuchet MS, Verdana, sans-serif',
-				color: '#FFF'
-			},
+			align: 'center'
 		},
 		subtitle: {
-			text: "Periode 2023",
-			style: {
-				color: '#FFF',
-				font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: "Periode 2023"
 		},
 		xAxis: {
-			categories: month,
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
+			categories: month
 		},
 		yAxis: {
-			tickInterval: 1,
 			min: 0,
 			title: {
 				text: 'Total'
-			},
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
 			},
 			stackLabels: {
 				enabled: true,
@@ -1559,18 +1115,12 @@
 					) || 'gray',
 					textOutline: 'none'
 				}
-			},
-			gridLineDashStyle: 'dash',
+			}
 		},
 
 		tooltip: {
 			headerFormat: '<b>{point.x}</b><br/>',
-			pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
-			backgroundColor: '#5f5f5f',
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			}
+			pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
 		},
 		plotOptions: {
 			column: {
@@ -1632,51 +1182,21 @@
 	Highcharts.chart('chartTemuanRegu', {
 		chart: {
 			type: 'column',
-			backgroundColor: 'transparent'
-		},
-		legend: {
-			enabled: false,
-			itemStyle: {
-				fontSize: '35px',
-				font: '35pt Trebuchet MS, Verdana, sans-serif',
-				color: '#FFF'
-			},
 		},
 		title: {
 			text: 'Temuan Patroli Per Regu',
-			align: 'center',
-			style: {
-				color: '#FFF',
-				font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-			}
+			align: 'center'
 		},
 		subtitle: {
-			text: "Periode " + <?= date('Y') ?>,
-			style: {
-				color: '#FFF',
-				font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-			}
+			text: "Periode " + <?= date('Y') ?>
 		},
 		xAxis: {
-			categories: <?= $plants ?>,
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
-			},
+			categories: <?= $plants ?>
 		},
 		yAxis: {
-			tickInterval: 1,
 			min: 0,
 			title: {
 				text: 'Total'
-			},
-			labels: {
-				style: {
-					color: '#FFF',
-					font: '11px Trebuchet MS, Verdana, sans-serif'
-				}
 			},
 			stackLabels: {
 				enabled: true,
@@ -1688,18 +1208,12 @@
 					) || 'gray',
 					textOutline: 'none'
 				}
-			},
-			gridLineDashStyle: 'dash',
+			}
 		},
 
 		tooltip: {
 			headerFormat: '<b>{point.x}</b><br/>',
-			pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
-			backgroundColor: '#5f5f5f',
-			style: {
-				padding: 10,
-				color: '#fefefe',
-			}
+			pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
 		},
 		plotOptions: {
 			column: {

@@ -37,8 +37,8 @@
                         </button>
                     </div>
                 <?php } ?>
-                <div class="card card4">
-                    <div class="card-header text-white">
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="card-title">Tambah Data</h3>
 
                         <div class="card-tools">

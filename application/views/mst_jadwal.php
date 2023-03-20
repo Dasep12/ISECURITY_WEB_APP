@@ -39,8 +39,8 @@
                 <a href="<?= base_url('Mst_Jadwal/form_rubah_jadwal_petugas') ?>" class="btn btn-sm btn-success">
                     <i class="fa fa-file-excel"></i> Koreksi Jadwal Patroli
                 </a>
-                <div class="card card4 mt-2">
-                    <div class="card-header text-white">
+                <div class="card mt-2">
+                    <div class="card-header">
                         <h3 class="card-title"></h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">

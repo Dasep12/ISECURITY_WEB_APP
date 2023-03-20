@@ -36,8 +36,8 @@
                         </button>
                     </div>
                 <?php } ?>
-                <div class="card card4">
-                    <div class="card-header text-white">
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="card-title">Data Wilayah</h3>
 
                         <div class="card-tools">
@@ -53,7 +53,7 @@
                         <a href="<?= base_url('Mst_Site/form_add') ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>
                             Tambah Wilayah</a>
 
-                        <table id="example2" class="table-sm mt-1 table">
+                        <table id="example2" class="table-sm mt-1 table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -99,8 +99,8 @@
 <!-- modal edit data wilayah -->
 <div class="modal fade" id="edit-data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content card5">
-            <div class="modal-header text-white">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Detail Data</h5>
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

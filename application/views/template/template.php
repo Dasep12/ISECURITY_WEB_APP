@@ -30,7 +30,7 @@
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets') ?>/dist/newStyle.css" />
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">

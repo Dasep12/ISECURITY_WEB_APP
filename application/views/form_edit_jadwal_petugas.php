@@ -37,8 +37,8 @@
                         </button>
                     </div>
                 <?php } ?>
-                <div class="card card4">
-                    <div class="card-header text-white">
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="card-title">Edit Data</h3>
 
                         <div class="card-tools">
@@ -88,10 +88,10 @@
                 if (isset($_POST['lihat'])) {
 
                     if ($petugas->num_rows() > 0) { ?>
-                        <div class="card card4">
-                            <div class="card-header text-white">
+                        <div class="card">
+                            <div class="card-body">
                                 <table class="table table-bordered table-sm" id="petugasTable">
-                                    <thead style="color:#000">
+                                    <thead>
                                         <tr>
                                             <th>NO</th>
                                             <th>PLANT</th>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     <?php } else { ?>
-                        <h3 class="text-white">Tidak ada data</h3>
+                        <h3>Tidak ada data</h3>
                     <?php }
 
                     ?>
@@ -149,8 +149,8 @@
 <!-- modal edit data Event -->
 <div class="modal fade" id="modal_userDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content card4">
-            <div class="modal-header text-white">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Petugas Patroli</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

@@ -37,7 +37,7 @@
                     </div>
                 <?php } ?>
                 <a href="<?= base_url('assets/format_upload/upload_jadwal_produksi.xlsx')  ?>" class="ml-2 btn btn-primary btn-sm"> <i class="fas fa-download"></i> Download Format Upload</a>
-                <div class="card mt-2 card4">
+                <div class="card mt-2">
                     <div class="card-body">
                         <form method="post" action="<?= base_url('Mst_Jadwal_Produksi/form_revisi_upload_jadwal') ?>" onsubmit="return cekExe()" enctype="multipart/form-data">
                             <div class="form-group">
@@ -94,7 +94,7 @@
 
                             <div class="form-inline mt-2">
                                 <a href="<?= base_url('Mst_Jadwal_Produksi') ?>" class="mr-2 btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
-                                <input type="submit" value="Upload Koreksi Jadwal" name="view" class="btn btn-primary btn-sm"></input>
+                                <input type="submit" value="Upload Koreksi Jadwal" name="view" class="btn btn-info btn-sm"></input>
                             </div>
                         </form>
                         <hr>
