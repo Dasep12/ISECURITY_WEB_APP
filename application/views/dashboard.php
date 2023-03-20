@@ -869,7 +869,7 @@
 		legend: {
 			itemStyle: {
 				fontSize: '10px',
-				font: '8pt Trebuchet MS, Verdana, sans-serif',
+				font: '10pt Trebuchet MS, Verdana, sans-serif',
 				color: '#FFF'
 			},
 			marker: {
@@ -1516,8 +1516,8 @@
 		legend: {
 			enabled: false,
 			itemStyle: {
-				fontSize: '35px',
-				font: '35pt Trebuchet MS, Verdana, sans-serif',
+				fontSize: '10px',
+				font: '10pt Trebuchet MS, Verdana, sans-serif',
 				color: '#FFF'
 			},
 		},
@@ -1637,8 +1637,8 @@
 		legend: {
 			enabled: false,
 			itemStyle: {
-				fontSize: '35px',
-				font: '35pt Trebuchet MS, Verdana, sans-serif',
+				fontSize: '10px',
+				font: '10pt Trebuchet MS, Verdana, sans-serif',
 				color: '#FFF'
 			},
 		},
