@@ -1188,8 +1188,8 @@
 		legend: {
 			// enabled: false,
 			itemStyle: {
-				fontSize: '11px',
-				font: '11pt Trebuchet MS, Verdana, sans-serif',
+				fontSize: '10px',
+				font: '10pt Trebuchet MS, Verdana, sans-serif',
 				color: '#FFF'
 			},
 		},
@@ -1388,10 +1388,10 @@
 			}
 		},
 		legend: {
-			enabled: false,
+			// enabled: false,
 			itemStyle: {
-				fontSize: '35px',
-				font: '35pt Trebuchet MS, Verdana, sans-serif',
+				fontSize: '10px',
+				font: '10pt Trebuchet MS, Verdana, sans-serif',
 				color: '#FFF'
 			},
 		},
