@@ -1,0 +1,1 @@
+<script src="<?= base_url('assets/javascript/')?>Home.js"></script>

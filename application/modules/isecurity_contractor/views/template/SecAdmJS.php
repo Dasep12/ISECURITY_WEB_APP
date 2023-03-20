@@ -1,0 +1,1 @@
+<script src="<?= base_url('assets/javascript/')?>SecAdm.js"></script>
