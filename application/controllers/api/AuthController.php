@@ -34,9 +34,10 @@ class AuthController extends RestController
 				'status' => 1
 			);
 			$user = $this->M_restAuth->getRows($con);
+
 			if ($user) {
 				// Set the response and exit
-				//				var_dump($user['npk']);
+				//	var_dump($user['npk']);
 				$key = $this->_regenerate_key($user['npk']);
 				if ($key) {
 					$this->response([

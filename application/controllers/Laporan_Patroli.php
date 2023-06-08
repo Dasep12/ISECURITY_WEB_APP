@@ -53,6 +53,7 @@ class Laporan_Patroli extends CI_Controller
 			'detail' => $this->M_LaporanPatroli->getDataDetailPatroli($idJadawal, $npk, $type),
 			'timeline' => $this->M_LaporanPatroli->timelineDetail($idJadawal, $npk, $type),
 		];
+
 		$this->load->view("template/sidebar", $sidebarData);
 		$this->load->view("laporan/laporan_detail_patroli", $data);
 		$this->load->view("template/footer");

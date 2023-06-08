@@ -36,6 +36,8 @@ class JadwalController extends RestController
 		$zero_clock = new DateTime('00:00:00', new DateTimeZone('Asia/Jakarta'));
 		$six_clock = new DateTime('06:30:00', new DateTimeZone('Asia/Jakarta'));
 
+		// $this->response($six_clock, 200);
+
 		$accessTime = $this->dateNow;
 		// uncomment to test
 		// $accessTime = new DateTime('06:00:01', new DateTimeZone('Asia/Jakarta'));

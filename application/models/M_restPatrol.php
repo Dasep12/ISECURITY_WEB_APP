@@ -230,7 +230,7 @@ class M_restPatrol extends CI_Model
 							 left join admisecsgp_mstshift sh on sh.shift_id = ath.admisecsgp_mstshift_shift_id
 							 left join admisecsgp_mstobj am on admisecsgp_trans_details.admisecsgp_mstobj_objek_id = am.objek_id
 					where status_temuan = 0";
-		$dataDetail = $this->db->query($sqlDetail)->result();;
+		$dataDetail = $this->db->query($sqlDetail)->result();
 		return $dataDetail;
 	}
 

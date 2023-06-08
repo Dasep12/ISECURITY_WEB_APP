@@ -18,6 +18,7 @@ class M_restAuth extends CI_Model
 	/*
 	 * Get rows from the users table
 	 */
+
 	function getRows($params = array())
 	{
 		$this->db->select('*');
@@ -55,6 +56,44 @@ class M_restAuth extends CI_Model
 		//return fetched data
 		return $result;
 	}
+
+	// function getRows($params = array())
+	// {
+	// 	$this->db->select('*');
+	// 	$this->db->from($this->userTbl);
+
+	// 	//fetch data by conditions
+	// 	if (array_key_exists("conditions", $params)) {
+	// 		foreach ($params['conditions'] as $key => $value) {
+	// 			$this->db->where($key, $value);
+	// 		}
+	// 	}
+	// 	if (array_key_exists("npk", $params)) {
+	// 		$this->db->where('npk', $params['npk']);
+	// 		$query = $this->db->get();
+	// 		$result = $query->row_array();
+	// 	} else {
+	// 		//set start and limit
+	// 		if (array_key_exists("start", $params) && array_key_exists("limit", $params)) {
+	// 			$this->db->limit($params['limit'], $params['start']);
+	// 		} elseif (!array_key_exists("start", $params) && array_key_exists("limit", $params)) {
+	// 			$this->db->limit($params['limit']);
+	// 		}
+
+	// 		if (array_key_exists("returnType", $params) && $params['returnType'] == 'count') {
+	// 			$result = $this->db->count_all_results();
+	// 		} elseif (array_key_exists("returnType", $params) && $params['returnType'] == 'single') {
+	// 			$query = $this->db->get();
+	// 			$result = ($query->num_rows() > 0) ? $query->row_array() : false;
+	// 		} else {
+	// 			$query = $this->db->get();
+	// 			$result = ($query->num_rows() > 0) ? $query->result_array() : false;
+	// 		}
+	// 	}
+
+	// 	//return fetched data
+	// 	return $result;
+	// }
 
 	/*
 	 * Insert user data
@@ -100,12 +139,12 @@ class M_restAuth extends CI_Model
 		return $this->db->delete($this->userTbl, array('npk' => $id));
 	}
 
-	public function generateApiKey($userId){
+	public function generateApiKey($userId)
+	{
 		$data = [
-			'user_id'=>$userId,
-//			'key'=>
-			'date_created'=>date("Y-m-d H:i:s")
+			'user_id' => $userId,
+			//			'key'=>
+			'date_created' => date("Y-m-d H:i:s")
 		];
 	}
-
 }

@@ -69,7 +69,6 @@ class PatroliController extends RestController
 			$this->response($data, 200);
 		}
 		$this->response([], 200);
-
 	}
 
 	public function getdataTemuan_get()
@@ -176,13 +175,13 @@ class PatroliController extends RestController
 					$dataDetail['image_3'] = $upload_result['image_3'];
 				} else {
 					if (array_key_exists('image_1', $detail)) {
-						$dataDetail['image_1'] = str_replace(base_url(),"", $detail['image_1']);
+						$dataDetail['image_1'] = str_replace(base_url(), "", $detail['image_1']);
 					}
 					if (array_key_exists('image_2', $detail)) {
-						$dataDetail['image_2'] = str_replace(base_url(),"", $detail['image_2']);
+						$dataDetail['image_2'] = str_replace(base_url(), "", $detail['image_2']);
 					}
 					if (array_key_exists('image_3', $detail)) {
-						$dataDetail['image_3'] = str_replace(base_url(),"", $detail['image_3']);
+						$dataDetail['image_3'] = str_replace(base_url(), "", $detail['image_3']);
 					}
 				}
 
@@ -196,9 +195,7 @@ class PatroliController extends RestController
 					$this->M_restPatrol->updateData('admisecsgp_trans_details', $dataDetail, 'trans_detail_id', $idDetail);
 				} else {
 					$this->M_restPatrol->saveData('admisecsgp_trans_details', $dataDetail);
-
 				}
-
 			}
 		}
 
@@ -238,7 +235,6 @@ class PatroliController extends RestController
 		), 1, 0);
 		$existingData = $activity->row();
 		$this->response($existingData, 200);
-
 	}
 
 
@@ -253,9 +249,7 @@ class PatroliController extends RestController
 			$data = $activity->row();
 		} else {
 			$data = new stdClass();
-
 		}
 		$this->response($data, 200);
-
 	}
 }

@@ -76,6 +76,8 @@ $route['api/patroli/checkpoint'] = 'api/Patroli/showCheckpoint';
 $route['api/patroli/objek'] = 'api/Patroli/showObjek';
 $route['api/patroli/event_objek'] = 'api/Patroli/showEvent';
 
+
+
 // API VERSI B //
 $route['api_adm_b/patroli/checkpoint_']   = 'api_adm_b/PatroliB/checkpoint';
 $route['api_adm_b/patroli/objek_']   = 'api_adm_b/PatroliB/objek';
