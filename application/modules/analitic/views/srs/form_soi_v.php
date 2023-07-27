@@ -442,18 +442,18 @@
                         // jika plant 4
                         if(area === '4')
                         {
-                            var pefGt = (json.performance_gt / 2)
+                            var pefGt = Math.round(json.performance_gt / 2)
                         }
                         else
                         {
-                            var pefGt = json.performance_gt
+                            var pefGt = Math.round(json.performance_gt / 20)
                         }
 
-                        var arrAvg = [pefGt]
+                        var arrAvg = [(pefGt / 20)]
 
                         if(asm.length != 0)
                         {
-                            arrAvg.push(ski);
+                            arrAvg.push((asm / 20));
                         }
 
                         var total=arrAvg.map(function(n){

@@ -12,15 +12,6 @@ class Crime extends CI_Controller
         parent::__construct();
         date_default_timezone_set('Asia/Jakarta');
         $this->load->model('crime/M_dashboard', 'model');
-        $this->load->helper(['auth_apps']);
-        checksession();
-        $role = user_role();
-        $npk = user_npk();
-        // $access_app = $this->Roles_m->access_app($npk, 'SRS')->row();
-
-        if (!is_app('CRI')) {
-            redirect('menu');
-        }
     }
 
     private function crimeSetahun($year, $kota, $kat)
@@ -433,21 +424,22 @@ class Crime extends CI_Controller
             $params = array();
             foreach ($crime as $crm) {
                 $data = array(
-                    'tanggal'       => $crm[1],
-                    'area_tkp'      => $crm[2],
-                    'jenis_kasus'   => $crm[3],
-                    'kategori'      => $crm[4],
-                    'pelapor'       => $crm[5],
-                    'tersangka'     => $crm[6],
-                    'korban'        => $crm[7],
-                    'barang_bukti'  => $crm[8],
-                    'jenis'         => $crm[9],
-                    'kerugian'      => $crm[10],
-                    'modus'         => $crm[10],
-                    'kronologi'     => $crm[12],
-                    'kota'          => $crm[15],
-                    'kelurahan'     => $crm[13],
-                    'kec'           => $crm[14],
+                    'tanggal'       => strval($crm[1]),
+                    'area_tkp'      => strval($crm[2]),
+                    'jenis_kasus'   => strval($crm[3]),
+                    'kategori'      => strval($crm[4]),
+                    'pelapor'       => strval($crm[5]),
+                    'tersangka'     => strval($crm[6]),
+                    'korban'        => strval($crm[7]),
+                    'barang_bukti'  => strval($crm[8]),
+                    'jenis'         => strval($crm[9]),
+                    'kerugian'      => strval($crm[10]),
+                    'modus'         => strval($crm[10]),
+                    'kronologi'     => strval($crm[12]),
+                    'kota'          => strval($crm[15]),
+                    'kelurahan'     => strval($crm[13]),
+                    'kec'           => strval($crm[14]),
+                    'created_at'    => strval(date('Y-m-d H:i:s'))
                 );
                 array_push($params, $data);
             }

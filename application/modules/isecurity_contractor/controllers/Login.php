@@ -41,7 +41,8 @@ class Login extends CI_Controller
                 }else
                 {
                     $this->session->set_userdata('id_akun', $msrole->id_karyawan);
-                    redirect('homecoy');
+                    
+                    redirect('Home');
                 }
             }
         } else if ($auth == 0) {

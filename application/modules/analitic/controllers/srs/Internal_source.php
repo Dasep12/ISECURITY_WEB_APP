@@ -71,7 +71,7 @@ class Internal_source extends CI_Controller
             $opt_rso[$rso->id] = $rso->title;
         }
 
-        $opt_ris = array();
+        $opt_ris = array('' => '-- Choose --');
         foreach ($data_ris as $key => $ris) {
             $opt_ris[$ris->id.':'.$ris->level] = $ris->title;
         }
@@ -107,8 +107,8 @@ class Internal_source extends CI_Controller
         }
 
         $data = [
-            'link' => $this->uri->segment(3),
-            'sub_link' => $this->uri->segment(4),
+            'link' => $this->uri->segment(2),
+            'sub_link' => $this->uri->segment(3),
             'no_ref' => $no[0]->no_urut.'/LK/EA/'.conv_romawi(date('m')).'/'.date('Y'),
             'no_urut' => $no[0]->no_urut,
             'select_area' => form_dropdown('area[]', $opt_are,'','id="area" class="form-control area js-select2" multiple required'),
@@ -297,7 +297,7 @@ class Internal_source extends CI_Controller
                 $opt = '<div class="form-group col-3">
                             <label for="subRiskSource">'.$res_sub[0]->title_cat.'</label>
                             <select id="subRiskSource" class="form-control" name="sub_risksource1" required>';
-                $opt .= '<option value="">-- Pilih --</option>';
+                $opt .= '<option value="">-- Choose --</option>';
                 foreach ($res_sub as $key => $sub) {
                     $opt .=  '<option value="'.$sub->id.'">'.$sub->title.'</option>';
                 }
@@ -362,7 +362,7 @@ class Internal_source extends CI_Controller
                 $opt = '<div class="form-group col-3">
                             <label for="subRisk">'.$res_sub[0]->title_cat.'</label>
                             <select id="subRisk" class="form-control" name="sub_risk1" required>';
-                $opt .= '<option value="">-- Pilih --</option>';
+                $opt .= '<option value="">-- Choose --</option>';
                 foreach ($res_sub as $key => $sub) {
                     $opt .=  '<option value="'.$sub->id.'">'.$sub->title.'</option>';
                 }
@@ -396,7 +396,7 @@ class Internal_source extends CI_Controller
                 $opt = '<div class="form-group col-3">
                             <label for="subRisk2"> - </label>
                             <select id="subRisk2" class="form-control" name="sub_risk2" required>';
-                $opt .= '<option value="">-- Pilih --</option>';
+                $opt .= '<option value="">-- Choose --</option>';
                 foreach ($res_sub as $key => $sub) {
                     $opt .=  '<option value="'.$sub->id.'">'.$sub->title.'</option>';
                 }
@@ -520,7 +520,7 @@ class Internal_source extends CI_Controller
                                 </tr>
                                 <tr>
                                     <th>Risk Level</th>
-                                    <td colspan="4" class="font-weight-bold">'.$res_sub[0]->impact_level.'</td>
+                                    <td colspan="4" class="font-weight-bold">'.$res_sub[0]->risk_level.'</td>
                                 </tr>
                                 <tr>
                                     <th>Vulnerability Lost</th>
@@ -573,6 +573,123 @@ class Internal_source extends CI_Controller
                                             </tbody>
                                         </table>
                                     </td>
+                                </tr>
+                            </tbody>
+                        </table>';
+
+                echo $opt;
+            }
+            else
+            {
+                echo null;
+            }
+        }
+    }
+
+    public function detail_search()
+    {
+        $this->form_validation->set_rules('id', 'ID', 'trim|required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            echo null;
+        }
+        else
+        {
+            $res_sub = $this->M_internal_source->detail()->result();
+
+            if($res_sub)
+            {
+                $opt = '
+                        <table class="table table-borderless mb-3">
+                            <tr>
+                                <th width="10">Author:</th>
+                                <td>'.$res_sub[0]->author.'</td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Title</th>
+                                    <td colspan="4">'.$res_sub[0]->event_name.'</td>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <td colspan="4">'.date('d F Y h:i', strtotime($res_sub[0]->event_date)).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Area</th>
+                                    <td>'.$res_sub[0]->area.'</td>
+                                    <td>'.$res_sub[0]->area_sub1.'</td>
+                                    <td>'.$res_sub[0]->area_sub2.'</td>
+                                    <td>'.$res_sub[0]->area_sub3.'</td>
+                                </tr>
+                                <tr>
+                                    <th>Target Assets</th>
+                                    <td>'.$res_sub[0]->assets.'</td>
+                                    <td>'.$res_sub[0]->assets_sub1.'</td>
+                                    <td>'.$res_sub[0]->assets_sub2.'</td>
+                                </tr>
+                                <tr>
+                                    <th>Risk Source</th>
+                                    <td>'.$res_sub[0]->risksource.'</td>
+                                    <td>'.$res_sub[0]->risksource1.'</td>
+                                    <td colspan="4">'.$res_sub[0]->risksource2.'</td>
+                                </tr>
+                                <tr>
+                                    <th>Risk</th>
+                                    <td>'.$res_sub[0]->risk.'</td>
+                                    <td>'.$res_sub[0]->risk1.'</td>
+                                    <td colspan="4">'.$res_sub[0]->risk2.'</td>
+                                </tr>
+                                <tr>
+                                    <th>Risk Level</th>
+                                    <td colspan="4" class="font-weight-bold">'.$res_sub[0]->impact_level.'</td>
+                                </tr>
+                                <tr>
+                                    <th>Vulnerability Lost</th>
+                                    <td colspan="4">
+                                        <table class="table table-bordered text-center">
+                                            <tr>
+                                                <th>Financial</th>
+                                                <th>SDM</th>
+                                                <th>Operational</th>
+                                                <th>Reputation</th>
+                                                <!--<th>Impact Level</th>-->
+                                            </tr>
+                                            <tr>
+                                                <td>'.$res_sub[0]->financial_level.'</td>
+                                                <td>'.$res_sub[0]->sdm_level.'</td>
+                                                <td>'.$res_sub[0]->operational_level.'</td>
+                                                <td>'.$res_sub[0]->reputation_level.'</td>
+                                                <!-- <td class="font-weight-bold">'.$res_sub[0]->impact_level.'</td> -->
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Attachment</th>
+                                    <td colspan="4">
+                                        <table class="table table-bordered text-center">
+                                            <tbody>';
+
+                                                foreach ($res_sub as $key => $fla) {
+                                                    if(!empty($fla->file_name))
+                                                    {
+                                                        $opt .= '<tr><th>'.$fla->file_name.'</th>
+                                                        <td><a href="'.site_url('uploads/srs_bi/internal_source/'.$fla->file_name).'" target="_blank">View</a></td></tr>';
+                                                    }
+                                                }
+
+                                            $opt .= '
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Chronology</th>
+                                    <td colspan="4" class="font-weight-bold">'.html_entity_decode($res_sub[0]->chronology).'</td>
                                 </tr>
                             </tbody>
                         </table>';
@@ -683,13 +800,17 @@ class Internal_source extends CI_Controller
                 // echo '<pre>';
                 // print_r($data_edit);die();
                 $data_area = $this->M_internal_source->area()->result();
+                // AREA
                 $data_subarea = $this->M_internal_source->sub_area()->result();
                 $data_subarea2 = $this->M_internal_source->sub_area2($data_edit->area_sub1_id)->result();
                 $data_subarea3 = $this->M_internal_source->sub_area2($data_edit->area_sub2_id)->result();
+
+                // RISK SOURCE
                 $data_rso = $this->M_internal_source->risk_source()->result();
                 $data_rso1 = $this->M_internal_source->sub_risksource($data_edit->risk_source_id)->result();
                 $data_rso2 = $this->M_internal_source->sub_risksource($data_edit->risksource_sub1_id)->result();
 
+                // RISK
                 $data_ris = $this->M_internal_source->risk()->result();
                 $data_ris1 = $this->M_internal_source->sub_risk($data_edit->risk_id)->result();
                 $data_ris2 = $this->M_internal_source->sub_risk($data_edit->risk_sub1_id)->result();
@@ -953,6 +1074,23 @@ class Internal_source extends CI_Controller
         {
             redirect('analitic/srs/internal_source');   
         }
+    }
+
+    public function search()
+    {
+        $res = $this->M_internal_source->search()->result();
+
+        $data = '<div id="searchResult" class="col-12 mt-5"><div class="row">';
+        foreach ($res as $key => $val) {
+            $data .= '<a href="#" target="_blank" data-id="'.$val->id.'" data-toggle="modal" data-target="#detailSearchModal"><div class="col-12 p-3 text-white">
+                        <h5>'.$val->event_name.'</h5>
+                        <small>'.date('Y-m-d H:i',strtotime($val->event_date)).'</small>
+                        <p>'.html_entity_decode($val->chronology).'...</p>
+                    </div></a>';
+        }
+        $data .= '</div><div>';
+
+        echo $data;
     }
 
     private function export_pdf($data)

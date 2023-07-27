@@ -181,8 +181,8 @@
 
                                     <div class="form-group col-3">
                                         <label for="riskLevel">Risk Level</label>
-                                        <?= $select_rle; ?>
-                                        <!-- <input id="riskLevel" class="form-control" type="text" name="risk_level" readonly required> -->
+                                        <!-- <?= $select_rle; ?> -->
+                                        <input id="riskLevel" class="form-control" type="text" name="risk_level" value="<?=$data_edit->risk_level_id;?>" readonly required>
                                     </div>
                                 </div>
 
@@ -309,8 +309,9 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" src="<?= base_url('vendor/tinymce/tinymce.min.js'); ?>"></script>
 
+<script type="text/javascript">
     $( document ).ready(function() {
         const subArea1 = $('#subArea1');
         const subArea2 = $('#subArea2')
@@ -421,46 +422,6 @@
             x--;
         });
         // REMOVE INPUT FILE MULTIPLE //
-
-        // DATATABLES //
-        table = $('#tableIso').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ordering": true,
-            "order": [],
-            "autoWidth": false,
-              
-            "ajax": {
-              "url": "<?=site_url('analitic/srs/internal_source/list_table');?>",
-              "type": "POST",
-              "data": function ( data ) {
-                data.areafilter = $('#areaFilter').val();
-                data.datefilter = $('#datePickerFilter').val();
-              }
-            },
-            "columnDefs": [
-              {
-                "targets": [ 0 ],
-                "orderable": false
-              }
-            ],
-            createdRow: function(row, data, index) {
-                // console.log(data)
-                if (data[7] == 1) {
-                  $('td:eq(7)', row).attr('style', 'background-color: #06a506; color: #000;');
-                } else if (data[7] == 2) {
-                  $('td:eq(7)', row).attr('style', 'background-color: #f3ec03; color: #000;');
-                } else if (data[7] == 3) {
-                  $('td:eq(7)', row).attr('style', 'background-color: #f7a91a; color: #000;');
-                } else if (data[7] == 4) {
-                  $('td:eq(7)', row).attr('style', 'background-color: #ff1818; color: #000;');
-                } else if (data[7] == 5) {
-                  $('td:eq(7)', row).attr('style', 'background-color: #c30505; color: #000;');
-                } else {
-                  $('td:eq(4)', row).css('background-color', 'White'); 
-                }
-            },
-        });
 
         $(function () {
             moment.locale('id');
@@ -764,9 +725,9 @@
             const subRisk = $('#subRisk')
             const subRisk2 = $('#subRisk2')
 
-            $('#riskLevel').find(":selected").text(val.split(":")[1])
+            $('#riskLevel').val(val.split(":")[1])
             // $('#riskLevel').val(val.split(":")[1])
-            // console.log(val.split(':'))
+            console.log(val.split(":")[1])
 
             subRisk.parents('.form-group').remove()
             subRisk2.parents('.form-group').remove()
@@ -826,5 +787,20 @@
             $('#impactLevel').val(Math.max.apply(Math,arr));
         })
 
+    });
+    
+    // TinyMCE //
+    tinymce.init({ 
+        selector: '#chronology',
+        height: 300,
+        extended_valid_elements : "script[src|async|defer|type|charset]",
+        plugins: [
+            "advlist code autolink link image lists charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking spellchecker",
+            "table contextmenu directionality emoticons paste textcolor fullscreen"
+        ],
+        fullscreen_native: true,
+        toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect ",
+        toolbar2: "| print preview "
     });
 </script>

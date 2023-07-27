@@ -32,7 +32,7 @@ class M_internal_source extends CI_Model
     {
         $wil = user_wilayah();
         $npk = user_npk();
-        $q = "SELECT id, title FROM admiseciso_area_sub WHERE area_categ_id='1' AND status=1";
+        $q = "SELECT id, title FROM admiseciso_area_sub WHERE area_categ_id='1' AND status=1 AND  is_humint=1";
         if(is_author('ALLAREA'))
         {
             $q .= " AND wil_id='$wil'";
@@ -144,7 +144,7 @@ class M_internal_source extends CI_Model
         return $q;
     }
 
-    public function sub_risksource($categ_id='')
+    public function sub_risksource($categ_id=null)
     {
         if($_POST) 
         {
@@ -316,7 +316,7 @@ class M_internal_source extends CI_Model
 
         // , rss.title risk_source, ris.title risk, a.impact_level
         $q = $this->srsdb->query("
-                SELECT a.id, a.event_name, a.event_date, a.no_urut, a.no_reference, a.reporter, a.chronology, vfi.level financial_level, vop.level operational_level, vre.level reputation_level, sdm.level sdm_level, a.impact_level, a.attach_file_1, a.attach_file_2, a.attach_file_3, a.attach_file_4, a.attach_file_5, asu.title area, asu1.title area_sub1, asu2.title area_sub2, asu3.title area_sub3, ass.title assets, ass1.title assets_sub1, ass2.title assets_sub2, rss.title risksource, rss1.title risksource1, rss2.title risksource2, ris.title risk, ris1.title risk1, ris2.title risk2, tat.file_name
+                SELECT a.id, a.event_name, a.event_date, a.no_urut, a.no_reference, a.reporter, a.chronology, vfi.level financial_level, vop.level operational_level, vre.level reputation_level, sdm.level sdm_level, a.impact_level, a.attach_file_1, a.attach_file_2, a.attach_file_3, a.attach_file_4, a.attach_file_5, asu.title area, asu1.title area_sub1, asu2.title area_sub2, asu3.title area_sub3, ass.title assets, ass1.title assets_sub1, ass2.title assets_sub2, rss.title risksource, rss1.title risksource1, rss2.title risksource2, ris.title risk, ris1.title risk1, ris2.title risk2, rle.level risk_level, tat.file_name
                     , musr.name author, a.created_by author_npk, husr.name section_head, husr.npk section_head_npk
                     FROM $this->t_trans_iso a
                     INNER JOIN admiseciso_area_sub asu ON asu.id=a.area_id
@@ -580,6 +580,8 @@ class M_internal_source extends CI_Model
         $sess_npk = $this->session->userdata('npk');
         $attached = $this->input->post('attached');
         $curr_date = date('Y-m-d H:i:s');
+
+        // var_dump($risk_level);die;
         
         if(isset($_FILES['attach']) && $_FILES['attach']['name'][0] !== '')
         {
@@ -649,6 +651,7 @@ class M_internal_source extends CI_Model
         }
 
         $q = array();
+        // (select id from admiseciso_risk_level where level=$risk_level)
         foreach ($area as $key => $are) {
             $q[$are] = "no_reference='$no_ref',no_urut='$no_urut',event_name='$event_name', event_date='$tanggal', area_id='$are', area_sub1_id=NULLIF('$sub_area1', ''), area_sub2_id=NULLIF('$sub_area2', ''), area_sub3_id=NULLIF('$sub_area3', ''), assets_id='$assets', assets_sub1_id=NULLIF('$sub_assets1', ''), assets_sub2_id=NULLIF('$sub_assets2', ''), risk_source_id='$risk_source', risksource_sub1_id=NULLIF('$sub_risksource1', ''), risksource_sub2_id=NULLIF('$sub_risksource2', ''), risk_id='$risk', risk_sub1_id=NULLIF('$sub_risk1', ''), risk_sub2_id=NULLIF('$sub_risk2', ''), risk_level_id='$risk_level', financial_level='".explode(':', $financial)[1]."', sdm_level='".explode(':', $sdm)[1]."', operational_level='".explode(':', $operational)[1]."', reputation_level='".explode(':', $reputation)[1]."', impact_level='$impact', chronology='$chronology', updated_by='$sess_npk', reporter='$reporter', updated_on='".date('Y-m-d H:i:s')."'";
             // if(isset($field_file_arr) && !empty($field_file_arr)) $q[$are] .= ",".$field_file_implode;
@@ -821,6 +824,28 @@ class M_internal_source extends CI_Model
         }
         
         return $res;
+    }
+
+    public function search()
+    {
+        $keyword = $this->input->post('keyword',true);
+        $key_array = explode(" ", $keyword);
+
+        // SUBSTRING(chronology, 1, 200) 
+        $q = "SELECT top 10 id, event_name ,event_date ,SUBSTRING(chronology, 1, 300) chronology
+                from admiseciso_transaction at2 
+            where 
+            ";
+        foreach ($key_array as $key => $val) {
+            if($key > 0) $q .= ' or ';
+            $q .= "event_name like '%$val%' ";
+            $q .= ' or ';
+            $q .= " chronology like '%$val%'";
+        }
+
+        $get = $this->srsdb->query($q);
+
+        return $get;
     }
 
     private function upload_multiple($files, $date)

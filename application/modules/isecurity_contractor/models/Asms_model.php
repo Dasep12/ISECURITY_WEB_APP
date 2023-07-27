@@ -1,12 +1,11 @@
 <?php
 
 class Asms_model extends CI_Model{
-  
     public function __construct()
-    {
-        parent::__construct();
-        $this->iremake = $this->load->database('iremake', TRUE);
-    }
+	{
+		parent::__construct();
+		$this->load->database();
+	}
 
     function getData($tabel){
         $query = $this->db->get($tabel);

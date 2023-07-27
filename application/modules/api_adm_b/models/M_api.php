@@ -50,7 +50,7 @@ class M_api extends CI_Model
         WHERE spt.admisecsgp_mstzone_zone_id = zn.zone_id AND spt.admisecsgp_mstplant_plant_id = pl.plant_id  AND sh.shift_id = spt.admisecsgp_mstshift_shift_id 
         AND spt.date_patroli = '" . $tanggal . "'  AND spt.admisecsgp_mstplant_plant_id = '" . $idplant . "'
         AND prd.produksi_id = spt.admisecsgp_mstproduction_produksi_id  AND  spt.status_zona = 1  AND 
-        spt.admisecsgp_mstshift_shift_id = '" . $shift_id . "' AND spt.status = 1  ");
+        spt.admisecsgp_mstshift_shift_id = '" . $shift_id . "' AND zn.status=1 AND spt.status = 1  ");
         return $query;
     }
 
@@ -79,7 +79,7 @@ class M_api extends CI_Model
     {
         $query =  $this->db->query("SELECT ckp.checkpoint_id ,  ckp.check_no , ckp.check_name , ckp.check_no AS no_nfc , ckp.admisecsgp_mstzone_zone_id AS id_zona
         FROM admisecsgp_trans_zona_patroli znp
-        LEFT JOIN admisecsgp_mstzone zn ON znp.admisecsgp_mstzone_zone_id = zn.zone_id 
+        LEFT JOIN admisecsgp_mstzone zn ON znp.admisecsgp_mstzone_zone_id = zn.zone_id AND zn.status=1
         LEFT JOIN admisecsgp_mstckp  ckp ON ckp.admisecsgp_mstzone_zone_id = zn.zone_id 
         AND ckp.admisecsgp_mstzone_zone_id = znp.admisecsgp_mstzone_zone_id
         WHERE 

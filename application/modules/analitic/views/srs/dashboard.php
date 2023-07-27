@@ -17,7 +17,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 filter sticky-top-OFF">
                 <div class="card cardIn2">
                     <div class="card-body">
                         <form id="form-filter" class="form-horizontal">
@@ -65,9 +65,7 @@
                     <div class="col-lg-4">
                         <div class="card" style="height: 280px;">
                             <div class="card-body">
-                                <div class="row">
-                                    <canvas id="barDonatPlant" style="margin-top:-40px"></canvas>
-                                </div>
+                                <canvas id="barDonatPlant" style="margin-top:-40px"></canvas>
                             </div>
                         </div>
                     </div>
@@ -77,16 +75,16 @@
                     <div class="col-lg-4">
                         <div class="card" style="height: 390px;">
                             <div class="card-body text-center">
-                                <h5>Target Assets</h5>
-                                <canvas id="assetChart"></canvas>
+                                <h5>Risk Source</h5>
+                                <canvas id="rsoChart"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="card" style="height: 390px;">
                             <div class="card-body text-center">
-                                <h5>Risk Source</h5>
-                                <canvas id="rsoChart"></canvas>
+                                <h5>Target Assets</h5>
+                                <canvas id="assetChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -248,6 +246,24 @@
                                     <div class="col-lg-5 pt-4 px-5 text-center">
                                         <h5>Index Resiko ADM</h5>
                                         <input id="indexSoi" class="form-control form-control-lg" type="text" placeholder="" disabled>
+
+                                        <div id="isoDesc" class="card mt-3" style="display: none;">
+                                            <div class="card-body">
+                                                <dl class="row text-white text-left">
+                                                    <dt class="col-sm-1">-</dt>
+                                                    <dd class="col-sm-11">Masyarakat Sunter tidak kondusif (pandemic ke endemic) dan program CSR - External</dd>
+
+                                                    <dt class="col-sm-1">-</dt>
+                                                    <dd class="col-sm-11">Narkoba (Pembubaran kampung Bahari) - External</dd>
+                                                    
+                                                    <dt class="col-sm-1">-</dt>
+                                                    <dd class="col-sm-11">Pembangunan KAP 2 - Internal</dd>
+                                                    
+                                                    <dt class="col-sm-1">-</dt>
+                                                    <dd class="col-sm-11">Serangan Ransomware - Internal</dd>
+                                                </dl>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -258,46 +274,95 @@
             </div>
         </div>
     </div>
+</section>
 
-    <div class="modal fade" id="detailGrap" tabindex="-1" role="dialog" aria-labelledby="detailGrapLabel" aria-hidden="true">
-        <div class="modal-dialog" style="width:70%;max-width:none;" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailGrapLabel">Graphic Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+<div class="modal fade" id="detailGrap" tabindex="-1" role="dialog" aria-labelledby="detailGrapLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;max-width:none;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailGrapLabel">Graphic Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-                <div class="modal-body">
-                    <h3 id="labels"></h3>
-                </div>
+            <div class="modal-body">
+                <h3 id="labels"></h3>
             </div>
         </div>
     </div>
+</div>
 
-</section>
+<div class="modal fade" id="detailGrapSmall" tabindex="-1" role="dialog" aria-labelledby="detailGrapSmallLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:50%;max-width:none;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailGrapSmallLabel">Graphic Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <h3 id="labels"></h3>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 <script src="<?= base_url('vendor/chartjs/dist/chart.umd.js'); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.1.0/chartjs-plugin-annotation.min.js" integrity="sha512-1uGDhRiDlpOPrTi54rJHu3oBLizqaadZDDft+j4fVeFih6eQBeRPJuuP3JcxIqJxIjzOmRq57XwwO4FT+/owIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="<?=base_url('vendor/chartjs/dist/chartjs-plugin-labels.min.js');?>"></script>
 
 <script type="text/javascript">
+    var sticky = $('.filter')
+    $(window).on('scroll', function() {
+        var scroll = $(window).scrollTop(),
+        stickyTop = sticky.offset().top,
+        stickyBottom = sticky.offset().top + sticky.outerHeight();
+
+        if(stickyTop >= 95)
+        {
+            sticky.find('.card-body').attr('style', 'padding: 0.5rem 1.25rem !important')
+            // sticky.find('.card').attr('style', "background-color: #ffffff !important")
+        }
+        if(stickyTop <= 95)
+        {
+            sticky.find('.card-body').removeAttr('style')
+        }
+    })
+    function getColorRand(length) {
+        let randomColors = [];
+        for (let i = 0; i < length; i++) {
+            var num = Math.round(0xffffff * Math.random());
+            var r = num >> 16;
+            var g = num >> 8 & 255;
+            var b = num & 255;
+            // randomColors.push('rgb(' + Math.floor(Math.random() * 255) + ', ' + Math.floor(Math.random() * 255) + ', ' + Math.floor(Math.random() * 255) + ',' +  '0.5)');
+            randomColors.push('rgb(' + (r + i) + ', ' + g + ', ' + b + ',' +  '0.5)');
+        }
+        return randomColors;
+    }
+
     // INDEX BG SOI //
-    const dataX = '<?= $data_soi; ?>';
-    const dataY = '<?= $data_index; ?>';
+    const dataX = '<?=$data_soi;?>';
+    const dataY = '<?=$data_index;?>';
 
-    if ((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2)) {
-        $('#indexSoi').attr('style', 'background-color: rgb(233 233 9 / 69%)') // yellow
+    if((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2))
+    {
+        $('#indexSoi').attr('style','background-color: rgb(233 233 9 / 69%)') // yellow
     }
-
-    if (dataX >= 4 && dataY <= 2) {
-        $('#indexSoi').attr('style', 'background-color: rgb(0 128 9 / 69%)') // green
+    
+    if(dataX >= 4 && dataY <= 2)
+    {
+        $('#indexSoi').attr('style','background-color: rgb(0 128 9 / 69%)') // green
     }
-
-    if (dataX <= 4 && dataY >= 2) {
-        $('#indexSoi').attr('style', 'background-color: rgb(255 0 9 / 69%)') // red
+    
+    if(dataX <= 4 && dataY >= 2)
+    {
+        $('#indexSoi').attr('style','background-color: rgb(255 0 9 / 69%)') // red
     }
     // INDEX BG SOI //
 
@@ -371,12 +436,12 @@
             },
             plugins: {
                 tooltip: {
-                    callbacks: {
-                        label: function(item) {
-                            return ` SOI: ${item.raw.x}, THREAT: ${item.raw.y}`
-                        }
-                    }
-                },
+            callbacks: {
+                label: function(item) {
+                    return ` SOI: ${item.raw.x}, THREAT: ${item.raw.y}`
+                }
+            }
+        },
                 autocolors: false,
                 annotation: {
                     annotations: {
@@ -429,6 +494,11 @@
     });
 
     // RISK SOURCE //
+    var dataRiskSource = <?= $grap_risk_source ?>;
+    var setsRiskSource = [{
+        label: dataRiskSource.map(function(v){return v.label}),
+        data: dataRiskSource.map(function(v){return v.data})
+    }];
     var ctxRso = document.getElementById("rsoChart");
     ctxRso.height = 250;
     var ict_unit = [];
@@ -440,7 +510,7 @@
         var b = Math.floor(Math.random() * 255);
         return "rgb(" + r + "," + g + "," + b + ")";
     };
-    var data = <?= $data_risk_source; ?>;
+    var data = setsRiskSource[0].label
     for (var i in data) {
         ict_unit.push("ICT Unit " + data[i].ict_unit);
         efficiency.push(data[i].efficiency);
@@ -449,26 +519,16 @@
     var rsoChart = new Chart(ctxRso, {
         type: 'bar',
         data: {
-            labels: <?= $data_risk_source; ?>,
+            labels: setsRiskSource[0].label,
             datasets: [{
                 axis: 'y',
                 label: '',
-                data: <?= $grap_risk_source ?>,
+                data: setsRiskSource[0].data,
                 fill: false,
                 minBarLength: 2,
                 barThickness: 20,
                 maxBarThickness: 20,
                 backgroundColor: coloR,
-                // backgroundColor: [
-                //   'rgba(255, 99, 132, 1)',
-                //   'rgba(255, 159, 64, 1)',
-                //   'rgba(255, 205, 86, 1)',
-                //   'rgba(75, 192, 192, 1)',
-                //   'rgba(54, 162, 235, 1)',
-                //   'rgba(153, 102, 255, 1)',
-                //   'rgba(153, 102, 255, 1)',
-                //   'rgba(201, 203, 207, 1)'
-                // ],
                 borderWidth: 1
             }]
         },
@@ -499,33 +559,6 @@
         },
         plugins: [ChartDataLabels],
     });
-
-    function datarsoChart() {
-        var labelRso = <?= $data_risk_source ?>;
-        var dataRso = <?= $grap_risk_source ?>;
-        arrayOfObj = labelRso.map(function(d, i) {
-            return {
-                label: d,
-                data: dataRso[i] || 0
-            };
-        });
-        sortedArrayOfObj = arrayOfObj.sort(function(a, b) {
-            return b.data - a.data;
-        });
-
-        newArrayLabelRso = [];
-        newArrayDataRso = [];
-        sortedArrayOfObj.forEach(function(d) {
-            newArrayLabelRso.push(d.label);
-            newArrayDataRso.push(d.data);
-        });
-
-        rsoChart.data.datasets[0].data = newArrayDataRso;
-        rsoChart.data.labels = newArrayLabelRso
-        rsoChart.update();
-        // 
-    }
-    datarsoChart()
     // RISK SOURCE //
 
     // DETAIL RISK SOURCE //
@@ -533,6 +566,7 @@
         var activePoints = rsoChart.getElementsAtEventForMode(evt, 'point', rsoChart.options);
         var firstPoint = activePoints[0];
         var label = rsoChart.data.labels[firstPoint.index];
+        var id = dataRiskSource[firstPoint.index].id;
 
         var area = $("#areaFilter").val()
         var year = $("#yearFilter").val()
@@ -549,7 +583,8 @@
                 area_fil: area,
                 year_fil: year,
                 month_fil: month,
-                label_fil: label,
+                // label_fil: label,
+                id_fil: id,
             },
             cache: false,
             beforeSend: function() {
@@ -562,38 +597,49 @@
                 document.getElementById("loader").style.display = "none";
 
                 var dataJson = JSON.parse(res)
-                // console.log(dataJson.data_detail_rSosub)
 
                 $("#detailGrap .modal-body").html("");
-
                 $("#detailGrap").modal();
 
                 $("#detailGrap .modal-body").append(`
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-12 pr-5">
-                                    <canvas id="detailRiSoSub1"></canvas>
-                                </div>
-                                <div class="col-md-12">
-                                    <canvas id="detailRiSoSub2"></canvas>
-                                </div>
-                            </div>
+                    <div class="row py-3 mb-5">
+                        <div class="col-md-5 pr-5">
+                            <canvas id="detailRiSoSub1"></canvas>
                         </div>
                         <div class="col-md-7" style="height:300px;">
-                            <canvas id="dtlRiSo"></canvas>
+                            <canvas id="riskSourceSub1Month"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 border-top py-3">
+                            <div class="col-md-12 mb-3">
+                                <span id="riskSourceSub2Title" class="h5 mb-5"></span>
+                            </div>
+                            <div class="row">
+                                <div style="height:300px;" class="col-md-5 pr-5">
+                                    <canvas id="riskSourceSub2"></canvas>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div style="height:300px;" class="col-md-12">
+                                            <canvas id="riSoSub2Month"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `);
 
-                // GRAP DETAIL RISK SOURCE //
-                var detailRisk = document.getElementById("dtlRiSo").getContext('2d');
-                const bgGradient = detailRisk.createLinearGradient(0, 0, 0, 400);
+                // RISK SOURCE SUB 1 MONTH //
+                var riskSoSub1Month = document.getElementById("riskSourceSub1Month").getContext('2d');
+                const bgGradient = riskSoSub1Month.createLinearGradient(0, 0, 0, 400);
                 bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
                 bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
                 bgGradient.addColorStop(0.1, 'blue');
-
-                var riSoMthChart = new Chart(detailRisk, {
+                
+                var riSoMthChart = new Chart(riskSoSub1Month, {
                     type: 'line',
                     data: {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
@@ -601,7 +647,7 @@
                             pointStyle: 'circle',
                             pointRadius: 8,
                             label: '',
-                            data: dataJson.data_detail_riSo,
+                            data: dataJson.data_riso,
                             fill: true,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 1)',
@@ -654,11 +700,16 @@
                         },
                     }
                 });
-                // GRAP DETAIL RISK SOURCE //
+                // RISK SOURCE SUB 1 MONTH //
 
-                // DETAIL RISK SOURCE SUB 1 //
-                var ctxRiSoSub = document.getElementById("detailRiSoSub1");
-                ctxRiSoSub.height = 300;
+                // RISK SOURCE SUB 1 //
+                var dataRiSoSub1 = dataJson.data_riso_sub1
+                var setRiSoSub1 = [{
+                    label: dataRiSoSub1.map(function(v){return v.label}),
+                    data: dataRiSoSub1.map(function(v){return v.data})
+                }];
+                var riSoSub1 = document.getElementById("detailRiSoSub1");
+                riSoSub1.height = 300;
                 var ict_unit = [];
                 var efficiency = [];
                 var coloR = [];
@@ -668,20 +719,21 @@
                     var b = Math.floor(Math.random() * 255);
                     return "rgb(" + r + "," + g + "," + b + ")";
                 };
-                var data = dataJson.data_detail_rSosub;
+                var data = setRiSoSub1[0].data;
                 for (var i in data) {
                     ict_unit.push("ICT Unit " + data[i].ict_unit);
                     efficiency.push(data[i].efficiency);
                     coloR.push(dynamicColors());
                 }
-                var riSoMntChart = new Chart(ctxRiSoSub, {
+                var riSoMntChart = new Chart(riSoSub1, {
                     type: 'bar',
                     data: {
-                        labels: dataJson.data_detail_rSosub_label,
-                        datasets: [{
+                        labels: setRiSoSub1[0].label,
+                        datasets: [
+                            {
                                 axis: 'y',
                                 label: '',
-                                data: dataJson.data_detail_rSosub,
+                                data: setRiSoSub1[0].data,
                                 fill: false,
                                 minBarLength: 2,
                                 barThickness: 20,
@@ -699,10 +751,6 @@
                                 ],
                                 borderWidth: 1
                             },
-                            // {
-                            //     axis: 'id',
-                            //     data: dataJson.data_detail_rSosub.id,
-                            // },
                         ]
                     },
                     options: {
@@ -735,13 +783,14 @@
                     },
                     plugins: [ChartDataLabels],
                 });
-                // DETAIL RISK SOURCE SUB 1 //
+                // RISK SOURCE SUB 1 //
 
-                // GRAP RISK SOURCE MONTH SUB 1 //
+                // RISK SOURCE SUB 1 MONTH //
                 document.getElementById("detailRiSoSub1").onclick = function(evt) {
                     var activePoints = riSoMntChart.getElementsAtEventForMode(evt, 'point', riSoMntChart.options);
                     var firstPoint = activePoints[0];
                     var label = riSoMntChart.data.labels[firstPoint.index];
+                    var id = dataRiSoSub1[firstPoint.index].id;
 
                     var area = $("#areaFilter").val()
                     var year = $("#yearFilter").val()
@@ -758,7 +807,8 @@
                             area_fil: area,
                             year_fil: year,
                             month_fil: month,
-                            label_fil: label,
+                            // label_fil: label,
+                            id_fil: id,
                         },
                         cache: false,
                         beforeSend: function() {
@@ -769,31 +819,219 @@
                         },
                         success: function(res) {
                             var dataJson = JSON.parse(res)
-                            // console.log(dataJson.data_riSo_month)
 
                             // GRAFIS LINE ALL MONTH //
-                            riSoMthChart.data.datasets[0].data = dataJson.data_riSo_month;
+                            riSoMthChart.data.datasets[0].data = dataJson.data_riso_sub1_month;
                             riSoMthChart.update();
                             // GRAFIS LINE ALL MONTH //
+
+                            // RISK SOURCE PIE SUB 2 //
+                            dataRiSoSub2 = dataJson.data_riso_sub2
+                            setRiSoSub2 = [{
+                                label: dataRiSoSub2.map(function(v){return v.label}),
+                                data: dataRiSoSub2.map(function(v){return v.data})
+                            }];
+                            riSoSub2Chart.data.labels = setRiSoSub2[0].label;
+                            riSoSub2Chart.data.datasets[0].data = setRiSoSub2[0].data;
+                            riSoSub2Chart.update();
+                            // RISK SOURCE PIE SUB 2 //
+
+                            // RISK SOURCE MONTH SUB 2 //
+                            $('#riskSourceSub2Title').text('') // remove current title
+                            riSoSub2MonthChart.data.datasets[0].data = [];
+                            riSoSub2MonthChart.update(); // clear data
+
+                            document.getElementById("riskSourceSub2").onclick = function(evt) {
+                                var activePoints = riSoSub2Chart.getElementsAtEventForMode(evt, 'point', riSoSub2Chart.options);
+                                var firstPoint = activePoints[0];
+                                var label = riSoSub2Chart.data.labels[firstPoint.index];
+                                var value = riSoSub2Chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+
+                                var area = $("#areaFilter").val()
+                                var year = $("#yearFilter").val()
+                                var month = $("#monthFilter").val()
+                                var id = dataRiSoSub2[firstPoint.index].id;
+                                var labelTitle = label;
+
+                                $('#riskSourceSub2Title').text(labelTitle)
+
+                                $.ajax({
+                                    url: '<?= site_url('analitic/srs/dashboard/grap_detail_risk_source'); ?>',
+                                    type: 'POST',
+                                    data: {
+                                        area_fil: area,
+                                        year_fil: year,
+                                        month_fil: month,
+                                        id_fil: id,
+                                    },
+                                    cache: false,
+                                    beforeSend: function() {
+                                        document.getElementById("loader").style.display = "block";
+                                    },
+                                    complete: function() {
+                                        document.getElementById("loader").style.display = "none";
+                                    },
+                                    success: function(res) {
+                                        var dataJson = JSON.parse(res)
+
+                                        // GRAFIS LINE ALL MONTH //
+                                        riSoSub2MonthChart.data.datasets[0].data = dataJson.data_riso_sub2_month;
+                                        riSoSub2MonthChart.update();
+                                        // GRAFIS LINE ALL MONTH //
+                                    }
+                                })
+                            }
+                            // RISK SOURCE MONTH SUB 2 //
                         }
                     })
                 }
-                // GRAP RISK SOURCE MONTH SUB 1 //
+                // RISK SOURCE SUB 1 MONTH //
+
+                // RISK SOURCE PIE SUB 2 //
+                dataRiSoSub2 = dataJson.data_riso_sub2
+                setRiSoSub2 = [{
+                    label: dataRiSoSub2.map(function(v){return v.label}),
+                    data: dataRiSoSub2.map(function(v){return v.data})
+                }];
+                var colorRand = getColorRand(setRiSoSub2[0].label.length);
+                var riSoSub2 = document.getElementById("riskSourceSub2").getContext('2d');
+                var riSoSub2Chart = new Chart(riSoSub2, {
+                    type: 'pie',
+                    data: {
+                        labels: [],
+                        datasets: [
+                            {
+                                data: [],
+                                hoverOffset: 10,
+                                backgroundColor: colorRand,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: 10,
+                                bottom: 5,
+                                left: 5,
+                                // right: 5,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 10
+                                }
+                            },
+                            title: {
+                                display: false,
+                                text: 'Chart.js Pie Chart'
+                            },
+                            labels: [
+                                {
+                                    render: (args) => {
+                                        return `${args.value}`
+                                    },
+                                    fontColor: '#fff',
+                                },
+                            ],
+                        },
+                    },
+                })
+                // RISK SOURCE PIE SUB 2 //
+
+                // RISK SOURCE SUB 2 MONTH //
+                var riSoSub2Month = document.getElementById("riSoSub2Month").getContext('2d');
+                const bgMSub2 = riSoSub2Month.createLinearGradient(0, 0, 0, 400);
+                bgMSub2.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
+                bgMSub2.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
+                bgMSub2.addColorStop(0.1, 'blue');
+                var riSoSub2MonthChart = new Chart(riSoSub2Month, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                        datasets: [{
+                            pointStyle: 'circle',
+                            pointRadius: 8,
+                            label: '',
+                            data: [],
+                            fill: true,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 205, 86, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(201, 203, 207, 1)'
+                            ],
+                            tension: 0.1,
+                            segment: {
+                                borderColor: 'red',
+                                backgroundColor: 'rgba(201, 90, 80, 0.3)',
+                            },
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 13,
+                                    },
+                                    color: '#FFF'
+                                },
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    precision: 0,
+                                    color: '#FFF'
+                                },
+                                min: 0,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                color: '#FFF'
+                            }
+                        },
+                    }
+                });
+                // RISK SOURCE SUB 2 MONTH //
             }
         });
     }
 
     // TARGET ASSETS //
     var ctxAsset = document.getElementById("assetChart");
+    var dataAssets = <?= $grap_target_assets ?>;
+    var datasetsAssets = [{
+        label: dataAssets.map(function(v){return v.label}),
+        data: dataAssets.map(function(v){return v.data})
+    }];
     ctxAsset.height = 250;
     var assetChart = new Chart(ctxAsset, {
         type: 'bar',
         data: {
-            labels: <?= $target_assets; ?>,
+            labels: datasetsAssets[0].label,
             datasets: [{
                 axis: 'y',
                 label: '',
-                data: <?= $grap_target_assets ?>,
+                // data: <?= $grap_target_assets ?>,
+                data: datasetsAssets[0].data,
                 fill: false,
                 minBarLength: 2,
                 barThickness: 20,
@@ -843,32 +1081,6 @@
         },
         plugins: [ChartDataLabels],
     });
-
-    function dataAssetChart() {
-        // assets
-        var labelAssets = <?= $target_assets ?>;
-        var dataAssets = <?= $grap_target_assets ?>;
-        arrayOfObjAssets = labelAssets.map(function(d, i) {
-            return {
-                label: d,
-                data: dataAssets[i] || 0
-            };
-        });
-        sortedArrayOfObjAssets = arrayOfObjAssets.sort(function(a, b) {
-            return b.data - a.data;
-        });
-        newArrayLabelAssets = [];
-        newArrayDataAssets = [];
-        sortedArrayOfObjAssets.forEach(function(d) {
-            newArrayLabelAssets.push(d.label);
-            newArrayDataAssets.push(d.data);
-        });
-        assetChart.data.datasets[0].data = newArrayDataAssets;
-        assetChart.data.labels = newArrayLabelAssets
-        assetChart.update();
-        // 
-    }
-    dataAssetChart()
     // TARGET ASSETS //
 
     // DETAIL TARGET ASSETS //
@@ -876,6 +1088,8 @@
         var activePoints = assetChart.getElementsAtEventForMode(evt, 'point', assetChart.options);
         var firstPoint = activePoints[0];
         var label = assetChart.data.labels[firstPoint.index];
+        var id = dataAssets[firstPoint.index].id;
+        var value = assetChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
 
         var area = $("#areaFilter").val()
         var year = $("#yearFilter").val()
@@ -893,6 +1107,7 @@
                 year_fil: year,
                 month_fil: month,
                 label_fil: label,
+                id_fil: id,
             },
             cache: false,
             beforeSend: function() {
@@ -905,26 +1120,35 @@
                 document.getElementById("loader").style.display = "none";
 
                 var dataJson = JSON.parse(res)
-                console.log(dataJson)
 
                 $("#detailGrap .modal-body").html("");
-
                 $("#detailGrap").modal();
-
                 $("#detailGrap .modal-body").append(`
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-12 pr-5">
-                                    <canvas id="detailAssetsSub1"></canvas>
-                                </div>
-                                <div class="col-md-12">
-                                    <canvas id="detailAssetsSub2"></canvas>
-                                </div>
-                            </div>
+                    <div class="row py-3 mb-5">
+                        <div class="col-md-5 pr-5">
+                            <canvas id="detailAssetsSub1"></canvas>
                         </div>
                         <div class="col-md-7" style="height:300px;">
                             <canvas id="detailAssets"></canvas>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 border-top py-3">
+                            <div class="col-md-12 mb-3">
+                                <span id="assetsSub2Title" class="h5 mb-5"></span>
+                            </div>
+                            <div class="row">
+                                <div style="height:300px;" class="col-md-5 pr-5">
+                                    <canvas id="detailAssetsSub2"></canvas>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div style="height:300px;" class="col-md-12">
+                                            <canvas id="assetsSub2Month"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `);
@@ -935,7 +1159,7 @@
                 bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
                 bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
                 bgGradient.addColorStop(0.1, 'blue');
-
+                
                 var assetsMonthChart = new Chart(detailAssets, {
                     type: 'line',
                     data: {
@@ -1000,8 +1224,13 @@
                 // DETAIL ASSETS MONTH //
 
                 // DETAIL TARGET ASSSES SUB 1 //
-                var ctxAssetsSub = document.getElementById("detailAssetsSub1");
-                ctxAssetsSub.height = 300;
+                var assetsSub1 = dataJson.data_detail_assetssub
+                var setAssetsSub1 = [{
+                    label: assetsSub1.map(function(v){return v.label}),
+                    data: assetsSub1.map(function(v){return v.data})
+                }];
+                var ctxAssetsSub1 = document.getElementById("detailAssetsSub1");
+                ctxAssetsSub1.height = 300;
                 var ict_unit = [];
                 var efficiency = [];
                 var coloR = [];
@@ -1011,20 +1240,22 @@
                     var b = Math.floor(Math.random() * 255);
                     return "rgb(" + r + "," + g + "," + b + ")";
                 };
-                var data = dataJson.data_detail_assetssub;
+                // var data = dataJson.data_detail_assetssub;
+                var data = setAssetsSub1[0].data
                 for (var i in data) {
                     ict_unit.push("ICT Unit " + data[i].ict_unit);
                     efficiency.push(data[i].efficiency);
                     coloR.push(dynamicColors());
                 }
-                var assetsSub1Chart = new Chart(ctxAssetsSub, {
+                var assetsSub1Chart = new Chart(ctxAssetsSub1, {
                     type: 'bar',
                     data: {
-                        labels: dataJson.data_detail_assetssub_label,
+                        // labels: dataJson.data_detail_assetssub_label,
+                        labels: setAssetsSub1[0].label,
                         datasets: [{
                             axis: 'y',
                             label: '',
-                            data: dataJson.data_detail_assetssub,
+                            data: setAssetsSub1[0].data,
                             fill: false,
                             minBarLength: 2,
                             barThickness: 20,
@@ -1042,15 +1273,6 @@
                             ],
                             borderWidth: 1
                         }]
-
-                        // CUSTOME DATA ARRAY //
-                        // datasets: [{
-                        //     data: dataJson.data_detail_assetssub_join,
-                        //     parsing: {
-                        //       // xAxisKey: 'id',
-                        //       yAxisKey: 'y',
-                        //     },
-                        // }],
                     },
                     options: {
                         responsive: true,
@@ -1082,7 +1304,7 @@
                     },
                     plugins: [ChartDataLabels],
                 });
-                // DETAIL SUB 1 //
+                // ASSETS DETAIL SUB 1 //
 
                 // GRAP ASSETS MONTH SUB 1 //
                 document.getElementById("detailAssetsSub1").onclick = function(evt) {
@@ -1090,7 +1312,7 @@
                     var firstPoint = activePoints[0];
                     var label = assetsSub1Chart.data.labels[firstPoint.index];
                     var value = assetsSub1Chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-                    // console.log(value)
+                    var id = assetsSub1[firstPoint.index].id;
 
                     var area = $("#areaFilter").val()
                     var year = $("#yearFilter").val()
@@ -1107,7 +1329,8 @@
                             area_fil: area,
                             year_fil: year,
                             month_fil: month,
-                            label_fil: label,
+                            // label_fil: label,
+                            id_fil: id,
                         },
                         cache: false,
                         beforeSend: function() {
@@ -1123,16 +1346,222 @@
                             assetsMonthChart.data.datasets[0].data = dataJson.data_assets_month_sub1;
                             assetsMonthChart.update();
                             // GRAFIS LINE ALL MONTH //
+
+                            // ASSETS DETAIL SUB 2 //
+                            var dataAssetsSub2 = dataJson.data_detail_assetssub2
+                            var setAssetsSub2 = [{
+                                label: dataAssetsSub2.map(function(v){return v.label}),
+                                data: dataAssetsSub2.map(function(v){return v.data})
+                            }];
+                            assetsSub2Chart.data.labels = setAssetsSub2[0].label;
+                            assetsSub2Chart.data.datasets[0].data = setAssetsSub2[0].data;
+                            assetsSub2Chart.update();
+                            // ASSETS DETAIL SUB 2 //
+
+                            // GRAP ASSETS MONTH SUB 2 //
+                            $('#assetsSub2Title').text('')
+                            assetsSub2MonthChart.data.datasets[0].data = [];
+                            assetsSub2MonthChart.update();
+                            document.getElementById("detailAssetsSub2").onclick = function(evt) {
+                                var activePoints = assetsSub2Chart.getElementsAtEventForMode(evt, 'point', assetsSub2Chart.options);
+                                var firstPoint = activePoints[0];
+                                var label = assetsSub2Chart.data.labels[firstPoint.index];
+                                var value = assetsSub2Chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+
+                                var area = $("#areaFilter").val()
+                                var year = $("#yearFilter").val()
+                                var month = $("#monthFilter").val()
+                                var id = dataAssetsSub2[firstPoint.index].id;
+                                var labelTitle = label;
+
+                                $('#assetsSub2Title').text(labelTitle)
+
+                                $.ajax({
+                                    url: '<?= site_url('analitic/srs/dashboard/grap_detail_assets'); ?>',
+                                    type: 'POST',
+                                    data: {
+                                        area_fil: area,
+                                        year_fil: year,
+                                        month_fil: month,
+                                        // label_fil: label,
+                                        id_fil: id,
+                                    },
+                                    cache: false,
+                                    beforeSend: function() {
+                                        document.getElementById("loader").style.display = "block";
+                                    },
+                                    complete: function() {
+                                        document.getElementById("loader").style.display = "none";
+                                    },
+                                    success: function(res) {
+                                        var dataJson = JSON.parse(res)
+
+                                        // GRAFIS LINE ALL MONTH //
+                                        assetsSub2MonthChart.data.datasets[0].data = dataJson.data_assets_month_sub2;
+                                        assetsSub2MonthChart.update();
+                                        // GRAFIS LINE ALL MONTH //
+                                    }
+                                })
+                            }
+                            // GRAP ASSETS MONTH SUB 2 //
                         }
                     })
                 }
                 // GRAP ASSETS MONTH SUB 1 //
+
+                // ASSETS DETAIL SUB 2 //
+                var dataAssetsSub2 = dataJson.data_detail_assetssub2
+                var setAssetsSub2 = [{
+                    label: dataAssetsSub2.map(function(v){return v.label}),
+                    data: dataAssetsSub2.map(function(v){return v.data})
+                }];
+                var colorRand = getColorRand(setAssetsSub2[0].label.length);
+                var assetsSub2 = document.getElementById("detailAssetsSub2").getContext('2d');
+                var assetsSub2Chart = new Chart(assetsSub2, {
+                    type: 'pie',
+                    data: {
+                        labels: [],
+                        datasets: [
+                            {
+                                data: [],
+                                hoverOffset: 10,
+                                backgroundColor: colorRand,
+                                // spacing: 0,
+                                // borderAlign: 'center',
+                                // offset: 3,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: 10,
+                                bottom: 5,
+                                left: 5,
+                                // right: 5,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 10
+                                }
+                            },
+                            title: {
+                                display: false,
+                                text: 'Chart.js Pie Chart'
+                            },
+                            labels: [
+                                // render: (args) => {
+                                //     return `${args.label}\n(${args.value})`
+                                // },
+                                // {
+                                //     render: (args) => {
+                                //         return `${args.label}`
+                                //     },
+                                //     position: 'outside',
+                                //     fontColor: '#fff',
+                                //     fontSize: 12,
+                                //     arc: true,
+                                //     // textMargin: 18,
+                                //     // showZero: true,
+                                //     // overlap: true,
+                                // },
+                                {
+                                    render: (args) => {
+                                        return `${args.value}`
+                                    },
+                                    fontColor: '#fff',
+                                },
+                            ],
+                        },
+                    },
+                })
+                // ASSETS DETAIL SUB 2 //
+
+                // ASSETS SUB 2 MONTH //
+                var assetsSub2Month = document.getElementById("assetsSub2Month").getContext('2d');
+                const bgMSub2 = assetsSub2Month.createLinearGradient(0, 0, 0, 400);
+                bgMSub2.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
+                bgMSub2.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
+                bgMSub2.addColorStop(0.1, 'blue');
+                var assetsSub2MonthChart = new Chart(assetsSub2Month, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                        datasets: [{
+                            pointStyle: 'circle',
+                            pointRadius: 8,
+                            label: '',
+                            data: [],
+                            fill: true,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 205, 86, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(201, 203, 207, 1)'
+                            ],
+                            tension: 0.1,
+                            segment: {
+                                borderColor: 'red',
+                                backgroundColor: 'rgba(201, 90, 80, 0.3)',
+                            },
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 13,
+                                    },
+                                    color: '#FFF'
+                                },
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    precision: 0,
+                                    color: '#FFF'
+                                },
+                                min: 0,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                color: '#FFF'
+                            }
+                        },
+                    }
+                });
+                // ASSETS SUB 2 MONTH //
             }
         });
     };
     // DETAIL TARGET ASSETS //
 
     // RISK //
+    var dataRisk = <?= $grap_risk ?>;
+    var setRisk = [{
+        label: dataRisk.map(function(v){return v.label}),
+        data: dataRisk.map(function(v){return v.data})
+    }];
     var ctxRis = document.getElementById("risChart");
     ctxRis.height = 250;
     var ict_unit = [];
@@ -1144,7 +1573,7 @@
         var b = Math.floor(Math.random() * 255);
         return "rgb(" + r + "," + g + "," + b + ")";
     };
-    var data = <?= $data_risk; ?>;
+    var data = setRisk[0].data;
     for (var i in data) {
         ict_unit.push("ICT Unit " + data[i].ict_unit);
         efficiency.push(data[i].efficiency);
@@ -1153,11 +1582,11 @@
     var risChart = new Chart(ctxRis, {
         type: 'bar',
         data: {
-            labels: <?= $data_risk; ?>,
+            labels: setRisk[0].label,
             datasets: [{
                 axis: 'y',
                 label: '',
-                data: <?= $grap_risk ?>,
+                data: setRisk[0].data,
                 fill: false,
                 minBarLength: 2,
                 barThickness: 20,
@@ -1205,18 +1634,20 @@
         },
         plugins: [ChartDataLabels],
     });
+    // RISK //
 
     // DETAIL RISK //
     document.getElementById("risChart").onclick = function(evt) {
         var activePoints = risChart.getElementsAtEventForMode(evt, 'point', risChart.options);
         var firstPoint = activePoints[0];
         var label = risChart.data.labels[firstPoint.index];
+        var id = dataRisk[firstPoint.index].id;
 
         var area = $("#areaFilter").val()
         var year = $("#yearFilter").val()
         var month = $("#monthFilter").val()
         var labelTitle = label;
-        // alert(label)
+
         $('#detailGrapLabel').text('')
         $('#detailGrapLabel').text(labelTitle)
 
@@ -1227,7 +1658,8 @@
                 area_fil: area,
                 year_fil: year,
                 month_fil: month,
-                label_fil: label,
+                // label_fil: label,
+                id_fil: id,
             },
             cache: false,
             beforeSend: function() {
@@ -1240,37 +1672,46 @@
                 document.getElementById("loader").style.display = "none";
 
                 var dataJson = JSON.parse(res)
-                // console.log(dataJson)
 
                 $("#detailGrap .modal-body").html("");
-
                 $("#detailGrap").modal();
-
                 $("#detailGrap .modal-body").append(`
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-12 pr-5">
-                                    <canvas id="detailRiskSub1"></canvas>
-                                </div>
-                                <div class="col-md-12">
-                                    <canvas id="detailRiskSub2"></canvas>
-                                </div>
-                            </div>
+                    <div class="row py-3 mb-5">
+                        <div class="col-md-5 pr-5">
+                            <canvas id="detailRiskSub1"></canvas>
                         </div>
                         <div class="col-md-7" style="height:300px;">
                             <canvas id="detailRisk"></canvas>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 border-top py-3">
+                            <div class="col-md-12 mb-3">
+                                <span id="riskSub2Title" class="h5 mb-5"></span>
+                            </div>
+                            <div class="row">
+                                <div style="height:300px;" class="col-md-5 pr-5">
+                                    <canvas id="riskSub2"></canvas>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div style="height:300px;" class="col-md-12">
+                                            <canvas id="riskSub2Month"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 `);
 
-                // GRAP DETAIL RISK //
+                // RISK MONTH //
                 var detailRisk = document.getElementById("detailRisk").getContext('2d');
                 const bgGradient = detailRisk.createLinearGradient(0, 0, 0, 400);
                 bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
                 bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
                 bgGradient.addColorStop(0.1, 'blue');
-
+                
                 var riskMonthChart = new Chart(detailRisk, {
                     type: 'line',
                     data: {
@@ -1279,7 +1720,7 @@
                             pointStyle: 'circle',
                             pointRadius: 8,
                             label: '',
-                            data: dataJson.data_detail_risk,
+                            data: dataJson.data_risk_month,
                             fill: true,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 1)',
@@ -1332,8 +1773,15 @@
                         },
                     }
                 });
+                // RISK MONTH //
 
-                // DETAIL RISK SUB 1 //
+                // RISK SUB 1 //
+                var dataRiSub1 = dataJson.data_risk_sub1
+                var setRiSub1 = [{
+                    label: dataRiSub1.map(function(v){return v.label}),
+                    data: dataRiSub1.map(function(v){return v.data})
+                }];
+
                 var ctxRisSub = document.getElementById("detailRiskSub1");
                 // ctxRisSub.height = 100;
                 var ict_unit = [];
@@ -1345,7 +1793,7 @@
                     var b = Math.floor(Math.random() * 255);
                     return "rgb(" + r + "," + g + "," + b + ")";
                 };
-                var data = dataJson.data_detail_risksub;
+                var data = setRiSub1[0].data;
                 for (var i in data) {
                     ict_unit.push("ICT Unit " + data[i].ict_unit);
                     efficiency.push(data[i].efficiency);
@@ -1354,11 +1802,11 @@
                 var risMntChart = new Chart(ctxRisSub, {
                     type: 'bar',
                     data: {
-                        labels: dataJson.data_detail_risksub_label,
+                        labels: setRiSub1[0].label,
                         datasets: [{
                             axis: 'y',
                             label: '',
-                            data: dataJson.data_detail_risksub,
+                            data: setRiSub1[0].data,
                             fill: false,
                             minBarLength: 2,
                             barThickness: 20,
@@ -1405,13 +1853,14 @@
                     },
                     plugins: [ChartDataLabels],
                 });
-                // DETAIL RISK SUB 1 //
+                // RISK SUB 1 //
 
-                // GRAP RISK MONTH SUB 1 //
+                // RISK SUB 1 MONTH //
                 document.getElementById("detailRiskSub1").onclick = function(evt) {
                     var activePoints = risMntChart.getElementsAtEventForMode(evt, 'point', risMntChart.options);
                     var firstPoint = activePoints[0];
                     var label = risMntChart.data.labels[firstPoint.index];
+                    var id = dataRiSub1[firstPoint.index].id;
 
                     var area = $("#areaFilter").val()
                     var year = $("#yearFilter").val()
@@ -1428,7 +1877,7 @@
                             area_fil: area,
                             year_fil: year,
                             month_fil: month,
-                            label_fil: label,
+                            id_fil: id,
                         },
                         cache: false,
                         beforeSend: function() {
@@ -1444,117 +1893,201 @@
                             riskMonthChart.data.datasets[0].data = dataJson.data_risk_sub1_month;
                             riskMonthChart.update();
                             // GRAFIS LINE ALL MONTH //
+
+                            // RISK SUB 2 PIE //
+                            dataRiSub2 = dataJson.data_risk_sub2
+                            setRisSub2 = [{
+                                label: dataRiSub2.map(function(v){return v.label}),
+                                data: dataRiSub2.map(function(v){return v.data})
+                            }];
+                            risSub2Chart.data.labels = setRisSub2[0].label;
+                            risSub2Chart.data.datasets[0].data = setRisSub2[0].data;
+                            risSub2Chart.update();
+                            // RISK SUB 2 PIE //
+
+                            // RISK SUB 2 MONTH //
+                            $('#riskSub2Title').text('') // remove current title
+                            risSub2MonthChart.data.datasets[0].data = [];
+                            risSub2MonthChart.update(); // clear data
+
+                            document.getElementById("riskSub2").onclick = function(evt) {
+                                var activePoints = risSub2Chart.getElementsAtEventForMode(evt, 'point', risSub2Chart.options);
+                                var firstPoint = activePoints[0];
+                                var label = risSub2Chart.data.labels[firstPoint.index];
+                                var value = risSub2Chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+
+                                var area = $("#areaFilter").val()
+                                var year = $("#yearFilter").val()
+                                var month = $("#monthFilter").val()
+                                var id = dataRiSub2[firstPoint.index].id;
+                                var labelTitle = label;
+
+                                $('#riskSub2Title').text(labelTitle)
+
+                                $.ajax({
+                                    url: '<?= site_url('analitic/srs/dashboard/grap_detail_risk'); ?>',
+                                    type: 'POST',
+                                    data: {
+                                        area_fil: area,
+                                        year_fil: year,
+                                        month_fil: month,
+                                        id_fil: id,
+                                    },
+                                    cache: false,
+                                    beforeSend: function() {
+                                        document.getElementById("loader").style.display = "block";
+                                    },
+                                    complete: function() {
+                                        document.getElementById("loader").style.display = "none";
+                                    },
+                                    success: function(res) {
+                                        var dataJson = JSON.parse(res)
+
+                                        // GRAFIS LINE ALL MONTH //
+                                        risSub2MonthChart.data.datasets[0].data = dataJson.data_risk_sub2_month;
+                                        risSub2MonthChart.update();
+                                        // GRAFIS LINE ALL MONTH //
+                                    }
+                                })
+                            }
+                            // RISK SUB 2 MONTH //
                         }
                     })
                 }
-                // GRAP RISK MONTH SUB 1 //
+                // RISK SUB 1 MONTH //
+                
+                // RISK PIE SUB 2 //
+                var dataRiSub2 = dataJson.data_risk_sub2
+                var setRisSub2 = [{
+                    label: dataRiSub2.map(function(v){return v.label}),
+                    data: dataRiSub2.map(function(v){return v.data})
+                }];
+                var colorRand = getColorRand(dataRiSub2[0].label.length);
+                var risSub2 = document.getElementById("riskSub2").getContext('2d');
+                var risSub2Chart = new Chart(risSub2, {
+                    type: 'pie',
+                    data: {
+                        labels: [],
+                        datasets: [
+                            {
+                                data: [],
+                                hoverOffset: 10,
+                                backgroundColor: colorRand,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: 10,
+                                bottom: 5,
+                                left: 5,
+                                // right: 5,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 10
+                                }
+                            },
+                            title: {
+                                display: false,
+                                text: 'Chart.js Pie Chart'
+                            },
+                            labels: [
+                                {
+                                    render: (args) => {
+                                        return `${args.value}`
+                                    },
+                                    fontColor: '#fff',
+                                },
+                            ],
+                        },
+                    },
+                })
+                // RISK PIE SUB 2 //
 
-                // DETAIL RISK SUB 2 //
-                // var ctxRisSub2 = document.getElementById("detailRiskSub2");
-                // ctxRisSub2.height = 50;
-                // var ict_unit = [];
-                // var efficiency = [];
-                // var coloR = [];
-                // var dynamicColors = function() {
-                //     var r = Math.floor(Math.random() * 255);
-                //     var g = Math.floor(Math.random() * 255);
-                //     var b = Math.floor(Math.random() * 255);
-                //     return "rgb(" + r + "," + g + "," + b + ")";
-                // };
-                // var data = dataJson.data_detail_risksub2;
-                // for (var i in data) {
-                //     ict_unit.push("ICT Unit " + data[i].ict_unit);
-                //     efficiency.push(data[i].efficiency);
-                //     coloR.push(dynamicColors());
-                // }
-                // var risSub2Chart = new Chart(ctxRisSub2, {
-                //     type: 'bar',
-                //     data: {
-                //         labels: dataJson.data_detail_risksub2_label,
-                //         datasets: [{
-                //             axis: 'y',
-                //             label: '',
-                //             data: dataJson.data_detail_risksub2,
-                //             fill: false,
-                //             // backgroundColor: coloR,
-                //             backgroundColor: [
-                //                 'rgba(255, 99, 132, 1)',
-                //                 'rgba(255, 159, 64, 1)',
-                //                 'rgba(255, 205, 86, 1)',
-                //                 'rgba(75, 192, 192, 1)',
-                //                 'rgba(54, 162, 235, 1)',
-                //                 'rgba(153, 102, 255, 1)',
-                //                 'rgba(153, 102, 255, 1)',
-                //                 'rgba(201, 203, 207, 1)'
-                //             ],
-                //             borderWidth: 1
-                //         }]
-                //     },
-                //     options: {
-                //         responsiveAnimationDuration: 5000,
-                //         indexAxis: 'y',
-                //         scales: {
-                //             x: {
-                //                 display: false
-                //             },
-                //             y: {
-                //                 ticks: {
-                //                     font: {
-                //                         size: 10,
-                //                     },
-                //                     color: '#000'
-                //                 },
-                //             }
-                //         },
-                //         plugins: {
-                //             legend: {
-                //                 display: false
-                //             },
-                //             datalabels: {
-                //                 color: '#000',
-                //                 // margin: 5
-                //             }
-                //         },
-                //     },
-                //     plugins: [ChartDataLabels],
-                // });
-                // DETAIL RISK SUB 2 //
+                // RISK MONTH SUB 2 //
+                var risSub2Month = document.getElementById("riskSub2Month").getContext('2d');
+                const bgMSub2 = risSub2Month.createLinearGradient(0, 0, 0, 400);
+                bgMSub2.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
+                bgMSub2.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
+                bgMSub2.addColorStop(0.1, 'blue');
+
+                var risSub2MonthChart = new Chart(risSub2Month, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                        datasets: [{
+                            pointStyle: 'circle',
+                            pointRadius: 8,
+                            label: '',
+                            data: [],
+                            fill: true,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 205, 86, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(201, 203, 207, 1)'
+                            ],
+                            tension: 0.1,
+                            segment: {
+                                borderColor: 'red',
+                                backgroundColor: 'rgba(201, 90, 80, 0.3)',
+                            },
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 13,
+                                    },
+                                    color: '#FFF'
+                                },
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    precision: 0,
+                                    color: '#FFF'
+                                },
+                                min: 0,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                color: '#FFF'
+                            }
+                        },
+                    }
+                });
+                // RISK MONTH SUB 2 //
             }
         });
     };
     // DETAIL RISK //
 
-    function dataRiskChart() {
-        // risk
-        var labelRis = <?= $data_risk ?>;
-        var dataRis = <?= $grap_risk ?>;
-        arrayOfObjRis = labelRis.map(function(d, i) {
-            return {
-                label: d,
-                data: dataRis[i] || 0
-            };
-        });
-        sortedArrayOfObjRis = arrayOfObjRis.sort(function(a, b) {
-            return b.data - a.data;
-        });
-        newArrayLabelRis = [];
-        newArrayDataRis = [];
-        sortedArrayOfObjRis.forEach(function(d) {
-            newArrayLabelRis.push(d.label);
-            newArrayDataRis.push(d.data);
-        });
-
-
-        risChart.data.datasets[0].data = newArrayDataRis;
-        risChart.data.labels = newArrayLabelRis
-        risChart.update();
-        // 
-    }
-    dataRiskChart()
-
     // line charts all area 
     var ctxLine = document.getElementById("barLine").getContext('2d');
-
     const bgGradient = ctxLine.createLinearGradient(0, 0, 0, 400);
     bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
     bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
@@ -1624,7 +2157,7 @@
         }
     })
 
-    // DOUGHNUT TOTAL //
+    // DOUGHNUT HUMINT TOTAL //
     var ctxDoughnutAll = document.getElementById("barDonatAll").getContext('2d');
     const centerText = {
         // id = 'centerText',
@@ -1697,7 +2230,7 @@
                     ctx.textBaseLine = 'middle';
                     ctx.textAlign = textPosition;
                     ctx.fillStyle = '#FFF';
-                    ctx.fillText(chart.data.labels[index] + '(' + dougnutChartAll.data.datasets[0].dataDUmmy[index] + ') ', xLine + extraLine, yLine);
+                    ctx.fillText(`${chart.data.labels[index]} (${dougnutChartAll.data.datasets[0].dataDUmmy[index]})`, xLine + extraLine, yLine);
                 })
             })
         }
@@ -1781,69 +2314,6 @@
     })
     Chart.defaults.color = '#FFF';
 
-    // RISK LEVEL MAX
-    // var ctxRisLvl = document.getElementById("risLevelChart");
-    // ctxRisLvl.height = 300;
-    var ict_unit = [];
-    var efficiency = [];
-    var coloR = [];
-    var dynamicColors = function() {
-        var r = Math.floor(Math.random() * 255);
-        var g = Math.floor(Math.random() * 255);
-        var b = Math.floor(Math.random() * 255);
-        return "rgb(" + r + "," + g + "," + b + ")";
-    };
-    var data = <?= $label_risk_level; ?>;
-    for (var i in data) {
-        ict_unit.push("ICT Unit " + data[i].ict_unit);
-        efficiency.push(data[i].efficiency);
-        coloR.push(dynamicColors());
-    }
-    // var risLvlChart = new Chart(ctxRisLvl, {
-    //     type: 'bar',
-    //     data: {
-    //         labels: <?= $label_risk_level; ?>,
-    //         datasets: [{
-    //             axis: 'y',
-    //             label: '',
-    //             data: <?= $grap_risk_level ?>,
-    //             fill: false,
-    //             // backgroundColor: coloR,
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 1)',
-    //                 'rgba(255, 159, 64, 1)',
-    //                 'rgba(255, 205, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(201, 203, 207, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-
-    //     options: {
-    //         responsiveAnimationDuration: 5000,
-    //         indexAxis: 'y',
-    //         scales: {
-    //             x: {
-    //                 display: false
-    //             }
-    //         },
-    //         plugins: {
-    //             legend: {
-    //                 display: false
-    //             },
-    //             datalabels: {
-    //                 color: '#FFF'
-    //             }
-    //         }
-    //     },
-    //     plugins: [ChartDataLabels],
-    // });
-    // RISK LEVEL MAX
-
     // PLANT DOUGHNUT //
     var ctxDoughnutPlant = document.getElementById("barDonatPlant").getContext('2d');
     var dougnutChartPlant = new Chart(ctxDoughnutPlant, {
@@ -1870,11 +2340,13 @@
                         display: false
                     },
                     ticks: {
-                        display: false, //try2 i tried to set ticks for scale
+                        display: false,
                     },
                 }
             },
             plugins: {
+                responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: true,
                     position: "right",
@@ -1900,116 +2372,30 @@
         type: 'line',
         data: {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-            datasets: [{
-                    label: 'PEOPLE',
-                    data: <?= $grap_soi_average_month['people']; ?>,
-                    borderColor: "rgba(0, 176, 80, 1)",
-                    backgroundColor: "rgba(0, 176, 80, 1)",
+            datasets: [
+                {
+                  label: 'PEOPLE',
+                  data: <?=$grap_soi_average_month['people'];?>,
+                  borderColor: "rgba(0, 176, 80, 1)",
+                  backgroundColor: "rgba(0, 176, 80, 1)",
                 },
                 {
-                    label: 'SYSTEM',
-                    data: <?= $grap_soi_average_month['system']; ?>,
-                    borderColor: "rgba(0, 176, 240, 1)",
-                    backgroundColor: "rgba(0, 176, 240, 1)",
+                  label: 'SYSTEM',
+                  data: <?=$grap_soi_average_month['system'];?>,
+                  borderColor: "rgba(0, 176, 240, 1)",
+                  backgroundColor: "rgba(0, 176, 240, 1)",
                 },
                 {
-                    label: 'DEVICE',
-                    data: <?= $grap_soi_average_month['device']; ?>,
-                    borderColor: "rgba(255, 0, 0, 1)",
-                    backgroundColor: "rgba(255, 0, 0, 1)",
+                  label: 'DEVICE',
+                  data: <?=$grap_soi_average_month['device'];?>,
+                  borderColor:  "rgba(255, 0, 0, 1)",
+                  backgroundColor:  "rgba(255, 0, 0, 1)",
                 },
                 {
-                    label: 'NETWORKING',
-                    data: <?= $grap_soi_average_month['network']; ?>,
-                    borderColor: "rgba(112, 48, 160, 1)",
-                    backgroundColor: "rgba(112, 48, 160, 1)",
-                },
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    min: 0.00,
-                    max: 5.00,
-                    // beginAtZero: true,
-                    ticks: {
-                        precision: 0,
-                        // stepSize: 1,
-                        callback: (yValue) => {
-                            // return Math.floor(yValue); // format to your liking
-                            return Number(yValue).toFixed(2); // format to your liking
-                        },
-                    },
-                }
-            },
-            plugins: {
-                filler: {
-                    propagate: false
-                },
-                'samples-filler-analyser': {
-                    target: 'chart-analyser'
-                }
-            },
-            interaction: {
-                intersect: false,
-            },
-        },
-    });
-    // SOI AVERAGE PER MONTH  //
-
-    // SOI AREA //
-    var grapSoiArea = document.getElementById("grapSoiArea").getContext('2d');
-    var grapSoiAreahChart = new Chart(grapSoiArea, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-            datasets: [{
-                    label: 'PLANT 1',
-                    data: <?= $grap_soi_avg_areamonth['plant_1']; ?>,
-                    // borderColor: "rgba(0, 176, 80, 1)",
-                    // backgroundColor: "rgba(0, 176, 80, 1)",
-                },
-                {
-                    label: 'PLANT 2',
-                    data: <?= $grap_soi_avg_areamonth['plant_2']; ?>,
-                    // borderColor: "rgba(0, 176, 240, 1)",
-                    // backgroundColor: "rgba(0, 176, 240, 1)",
-                },
-                {
-                    label: 'PLANT 3',
-                    data: <?= $grap_soi_avg_areamonth['plant_3']; ?>,
-                    // borderColor:  "rgba(255, 0, 0, 1)",
-                    // backgroundColor:  "rgba(255, 0, 0, 1)",
-                },
-                {
-                    label: 'PLANT 4',
-                    data: <?= $grap_soi_avg_areamonth['plant_4']; ?>,
-                    // borderColor: "rgba(112, 48, 160, 1)",
-                    // backgroundColor: "rgba(112, 48, 160, 1)",
-                },
-                {
-                    label: 'PLANT 5',
-                    data: <?= $grap_soi_avg_areamonth['plant_5']; ?>,
-                    // borderColor: "rgba(112, 48, 160, 1)",
-                    // backgroundColor: "rgba(112, 48, 160, 1)",
-                },
-                {
-                    label: 'VLC',
-                    data: <?= $grap_soi_avg_areamonth['vlc']; ?>,
-                    // borderColor: "rgba(112, 48, 160, 1)",
-                    // backgroundColor: "rgba(112, 48, 160, 1)",
-                },
-                {
-                    label: 'HEAD OFFICE',
-                    data: <?= $grap_soi_avg_areamonth['head_office']; ?>,
-                    // borderColor: "rgba(112, 48, 160, 1)",
-                    // backgroundColor: "rgba(112, 48, 160, 1)",
-                },
-                {
-                    label: 'PART CENTER',
-                    data: <?= $grap_soi_avg_areamonth['part_center']; ?>,
-                    // borderColor: "rgba(112, 48, 160, 1)",
-                    // backgroundColor: "rgba(112, 48, 160, 1)",
+                  label: 'NETWORKING',
+                  data: <?=$grap_soi_average_month['network'];?>,
+                  borderColor: "rgba(112, 48, 160, 1)",
+                  backgroundColor: "rgba(112, 48, 160, 1)",
                 },
             ],
         },
@@ -2029,25 +2415,310 @@
                 },
             },
             plugins: {
-                filler: {
-                    propagate: false
-                },
-                'samples-filler-analyser': {
-                    target: 'chart-analyser'
-                }
+              filler: {
+                propagate: false
+              },
+              'samples-filler-analyser': {
+                target: 'chart-analyser'
+              }
             },
             interaction: {
-                intersect: false,
+              intersect: false,
+            },
+        },
+    });
+    // SOI AVERAGE PER MONTH  //
+
+    // SOI AREA //
+    var grapSoiArea = document.getElementById("grapSoiArea").getContext('2d');
+    var grapSoiAreahChart = new Chart(grapSoiArea, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+            datasets: [
+                {
+                  label: 'PLANT 1',
+                  data: <?=$grap_soi_avg_areamonth['plant_1'];?>,
+                  // borderColor: "rgba(0, 176, 80, 1)",
+                  // backgroundColor: "rgba(0, 176, 80, 1)",
+                },
+                {
+                  label: 'PLANT 2',
+                  data: <?=$grap_soi_avg_areamonth['plant_2'];?>,
+                  // borderColor: "rgba(0, 176, 240, 1)",
+                  // backgroundColor: "rgba(0, 176, 240, 1)",
+                },
+                {
+                  label: 'PLANT 3',
+                  data: <?=$grap_soi_avg_areamonth['plant_3'];?>,
+                  // borderColor:  "rgba(255, 0, 0, 1)",
+                  // backgroundColor:  "rgba(255, 0, 0, 1)",
+                },
+                {
+                  label: 'PLANT 4',
+                  data: <?=$grap_soi_avg_areamonth['plant_4'];?>,
+                  // borderColor: "rgba(112, 48, 160, 1)",
+                  // backgroundColor: "rgba(112, 48, 160, 1)",
+                },
+                {
+                  label: 'PLANT 5',
+                  data: <?=$grap_soi_avg_areamonth['plant_5'];?>,
+                  // borderColor: "rgba(112, 48, 160, 1)",
+                  // backgroundColor: "rgba(112, 48, 160, 1)",
+                },
+                {
+                  label: 'VLC',
+                  data: <?=$grap_soi_avg_areamonth['vlc'];?>,
+                  // borderColor: "rgba(112, 48, 160, 1)",
+                  // backgroundColor: "rgba(112, 48, 160, 1)",
+                },
+                {
+                  label: 'HEAD OFFICE',
+                  data: <?=$grap_soi_avg_areamonth['head_office'];?>,
+                  // borderColor: "rgba(112, 48, 160, 1)",
+                  // backgroundColor: "rgba(112, 48, 160, 1)",
+                },
+                {
+                  label: 'PART CENTER',
+                  data: <?=$grap_soi_avg_areamonth['part_center'];?>,
+                  // borderColor: "rgba(112, 48, 160, 1)",
+                  // backgroundColor: "rgba(112, 48, 160, 1)",
+                },
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    min: 0,
+                    max: 5,
+                    // beginAtZero: true,
+                    ticks: {
+                        precision: 0,
+                        // stepSize: 1,
+                        callback: (yValue) => {
+                            return Number(yValue).toFixed(2); // format to your liking
+                        },
+                    },
+                },
+            },
+            plugins: {
+              filler: {
+                propagate: false
+              },
+              'samples-filler-analyser': {
+                target: 'chart-analyser'
+              }
+            },
+            interaction: {
+              intersect: false,
             },
         },
     });
     // SOI AREA //
+
+    // SOI DETAIL //
+    document.getElementById("grapSoi").onclick = function(evt) {
+        var activePoints = srsChart.getElementsAtEventForMode(evt, 'point', srsChart.options);
+        var firstPoint = activePoints[0];
+        if(firstPoint)
+        {
+            var label = srsChart.data.labels[firstPoint.index];
+            var data = srsChart.data.datasets[0].data[0];
+
+            var area = $("#areaFilter").val();
+            var year = $("#yearFilter").val();
+            var month = $("#monthFilter").val();
+
+            $.ajax({
+                url: '<?= site_url('analitic/srs/dashboard/grap_trend_soi'); ?>',
+                type: 'POST',
+                data: {
+                    area_fil: area,
+                    year_fil: year,
+                    month_fil: month,
+                },
+                cache: false,
+                beforeSend: function() {
+                    document.getElementById("loader").style.display = "block";
+                },
+                complete: function() {
+                    document.getElementById("loader").style.display = "none";
+                },
+                success: function(res) {
+
+                            console.log(res)
+                    var dataJson = JSON.parse(res)
+
+                    $("#detailGrapSmall .modal-body").html("");
+                    $("#detailGrapSmall").modal();
+                    $('#detailGrapSmallLabel').text('Detail')
+
+                    $("#detailGrapSmall .modal-body").append(`
+                        <div class="row">
+                            <div class="col-md-12 py-2 mb-3">
+                                <div class="row">
+                                    <div class="col-md-6 text-center px-3">
+                                        <div id="detailIndex" role-off="button" class="d-flex flex-column">
+                                            <span class="text-bold h3">${data.y.toFixed(2)}</span>
+                                            <span>INDEX</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-center px-3">
+                                        <div id="detailSoi" role-off="button" class="d-flex flex-column">
+                                        <span class="text-bold h3">${data.x.toFixed(2)}</span>
+                                        <span>SOI</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 py-3">
+                                <div class="row">
+                                    <div class="col-md-12 pb-3 mb-3 border-bottom">
+                                        <span class="h5">Trend Index Resiko</span>
+                                    </div>
+                                    <div class="col-md-12" style="height:250px;">
+                                        <canvas id="trendGrapSoi"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+
+                    // TREND SOI YEAR //
+                    var trendSoi = document.getElementById("trendGrapSoi").getContext('2d');
+                    const bgGradient = trendSoi.createLinearGradient(0, 0, 0, 400);
+                    bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
+                    bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
+                    bgGradient.addColorStop(0.1, 'blue');
+                    var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+                    var trendSoiChart = new Chart(trendSoi, {
+                        type: 'line',
+                        data: {
+                            labels: monthList,
+                            datasets: [{
+                                pointStyle: 'circle',
+                                pointRadius: 8,
+                                // label: ,
+                                data: dataJson.data_trendyear_total,
+                                fill: true,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(255, 205, 86, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(201, 203, 207, 1)'
+                                ],
+                                tension: 0.1,
+                                segment: {
+                                    borderColor: 'red',
+                                    backgroundColor: 'rgba(201, 90, 80, 0.3)',
+                                },
+                                borderWidth: 1,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        font: {
+                                            size: 13,
+                                        },
+                                        color: '#FFF'
+                                    },
+                                },
+                                y: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        precision: 0,
+                                        color: '#FFF'
+                                    },
+                                    min: 0,
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                datalabels: {
+                                    color: '#FFF'
+                                }
+                            },
+                        }
+                    });
+                    // TREND SOI YEAR //
+
+                    document.getElementById("trendGrapSoi").onclick = function(evt) {
+                        var activePoints = trendSoiChart.getElementsAtEventForMode(evt, 'point', trendSoiChart.options);
+                        var firstPoint = activePoints[0];
+
+                        if(firstPoint)
+                        {
+                            var label = trendSoiChart.data.labels[firstPoint.index];
+                            var data = trendSoiChart.data.datasets[0].data[0];
+                            console.log(data)
+                            $.ajax({
+                                url: '<?= site_url('analitic/srs/dashboard/grap_risksource_soi'); ?>',
+                                type: 'POST',
+                                data: {
+                                    area_fil: area,
+                                    year_fil: year,
+                                    month_fil: month,
+                                },
+                                cache: false,
+                                beforeSend: function() {
+                                    document.getElementById("loader").style.display = "block";
+                                },
+                                complete: function() {
+                                    document.getElementById("loader").style.display = "none";
+                                },
+                                success: function(res) {
+                                    document.getElementById("loader").style.display = "none";
+
+                                    // var dataJson = JSON.parse(res)
+
+                                    $("#detailGrapSmall .modal-body").html("");
+                                    $("#detailGrapSmall").modal();
+                                    $('#detailGrapSmallLabel').text('Detail Index');
+
+                                    $("#detailGrapSmall .modal-body").append(res);
+
+                                }
+                            });
+                        }
+                    }
+
+                    // document.getElementById("detailSoi").onclick = function(evt) {
+                    //     $("#detailGrapSmall .modal-body").html("");
+                    //     $("#detailGrapSmall").modal();
+                    //     $('#detailGrapSmallLabel').text('Detail SOI');
+                    // }
+                }
+            });
+        }
+    }
+    // SOI DETAIL //
 
     // ALL CHART WHEN UPDATE FILTER //
     $("#areaFilter, #yearFilter, #monthFilter").change(function(e) {
         var area = $("#areaFilter").val()
         var year = $("#yearFilter").val()
         var month = $("#monthFilter").val()
+
+        // SOI Deskripsi
+        if(year == '2022' && month.length == 0)
+        {
+            $('#isoDesc').show()
+        }
+        else
+        {
+            $('#isoDesc').hide()
+        }
 
         $.ajax({
             url: '<?= site_url('analitic/srs/dashboard/grap_srs'); ?>',
@@ -2067,13 +2738,12 @@
             },
             success: function(res) {
                 var json = JSON.parse(res)
-                console.log(json.data_soi[0].avg_soi)
 
                 // SOI //
                 var dataSrs = [{
                     r: 8,
-                    x: json.data_soi[0].avg_soi,
-                    y: json.data_index[0].max_iso
+                    x: parseFloat(json.data_soi[0].avg_soi),
+                    y: parseFloat(json.data_index[0].max_iso)
                 }];
                 srsChart.data.datasets[0].data = dataSrs;
                 srsChart.update();
@@ -2082,16 +2752,19 @@
                 const dataX = json.data_soi[0].avg_soi;
                 const dataY = json.data_index[0].max_iso;
 
-                if ((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2)) {
-                    $('#indexSoi').attr('style', 'background-color: rgb(233 233 9 / 69%)') // yellow
+                if((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2))
+                {
+                    $('#indexSoi').attr('style','background-color: rgb(233 233 9 / 69%)') // yellow
                 }
-
-                if (dataX >= 4 && dataY <= 2) {
-                    $('#indexSoi').attr('style', 'background-color: rgb(0 128 9 / 69%)') // green
+                
+                if(dataX >= 4 && dataY <= 2)
+                {
+                    $('#indexSoi').attr('style','background-color: rgb(0 128 9 / 69%)') // green
                 }
-
-                if (dataX <= 4 && dataY >= 2) {
-                    $('#indexSoi').attr('style', 'background-color: rgb(255 0 9 / 69%)') // red
+                
+                if(dataX <= 4 && dataY >= 2)
+                {
+                    $('#indexSoi').attr('style','background-color: rgb(255 0 9 / 69%)') // red
                 }
                 // INDEX BG SOI //
 
@@ -2101,14 +2774,10 @@
                 // GRAFIS SOI AVERAGE MONTH //
 
                 // SOI AVG PILAR //
-                $('#avgPeople').text('')
-                console.log(json.grap_soi_avgpilar[0].avg_people)
+                $('#avgPeople, #avgSystem, #avgDevice, #avgNetwork').text('')
                 $('#avgPeople').text(json.grap_soi_avgpilar[0].avg_people)
-                $('#avgSystem').text('')
                 $('#avgSystem').text(json.grap_soi_avgpilar[0].avg_system)
-                $('#avgDevice').text('')
                 $('#avgDevice').text(json.grap_soi_avgpilar[0].avg_device)
-                $('#avgNetwork').text('')
                 $('#avgNetwork').text(json.grap_soi_avgpilar[0].avg_network)
                 // SOI AVG PILAR //
 
@@ -2119,76 +2788,46 @@
                 // SOI //
 
                 // RISK SOURCE //
-                var labelRso = <?= $data_risk_source ?>;
-                var dataRso = json.data_risk_source;
-                arrayOfObj = labelRso.map(function(d, i) {
-                    return {
-                        label: d,
-                        data: dataRso[i] || 0
-                    };
-                });
-                sortedArrayOfObj = arrayOfObj.sort(function(a, b) {
-                    return b.data - a.data;
-                });
-                newArrayLabelRso = [];
-                newArrayDataRso = [];
-                sortedArrayOfObj.forEach(function(d) {
-                    newArrayLabelRso.push(d.label);
-                    newArrayDataRso.push(d.data);
-                });
-                rsoChart.data.datasets[0].data = newArrayDataRso;
-                rsoChart.data.labels = newArrayLabelRso
+                dataRiskSource = json.data_risk_source;
+                setRiskSource = [{
+                    label: dataRiskSource.map(function(v){return v.label}),
+                    data: dataRiskSource.map(function(v){return v.data})
+                }];
+                rsoChart.data.datasets[0].data = setRiskSource[0].data;
+                rsoChart.data.labels = setRiskSource[0].label
                 rsoChart.update();
                 // RISK SOURCE //
 
                 // RISK //
-                var labelRis = json.data_risk_label;
-                var dataRis = json.data_risk;
-                arrayOfObjRis = labelRis.map(function(d, i) {
-                    return {
-                        label: d,
-                        data: dataRis[i] || 0
-                    };
-                });
-                sortedArrayOfObjRis = arrayOfObjRis.sort(function(a, b) {
-                    return b.data - a.data;
-                });
-                newArrayLabelRis = [];
-                newArrayDataRis = [];
-                sortedArrayOfObjRis.forEach(function(d) {
-                    newArrayLabelRis.push(d.label);
-                    newArrayDataRis.push(d.data);
-                });
-                risChart.data.datasets[0].data = newArrayDataRis;
-                risChart.data.labels = newArrayLabelRis
+                dataRisk = json.data_risk;
+                setRisk = [{
+                    label: dataRisk.map(function(v){return v.label}),
+                    data: dataRisk.map(function(v){return v.data})
+                }];
+                risChart.data.labels = setRisk[0].label
+                risChart.data.datasets[0].data = setRisk[0].data
                 risChart.update();
                 // RISK //
 
                 // TARGET ASSETS //
-                var labelAssets = <?= $target_assets ?>;
-                var dataAssets = json.data_target_assets;
-                arrayOfObjAssets = labelAssets.map(function(d, i) {
-                    return {
-                        label: d,
-                        data: dataAssets[i] || 0
-                    };
-                });
-                sortedArrayOfObjAssets = arrayOfObjAssets.sort(function(a, b) {
-                    return b.data - a.data;
-                });
-                newArrayLabelAssets = [];
-                newArrayDataAssets = [];
-                sortedArrayOfObjAssets.forEach(function(d) {
-                    newArrayLabelAssets.push(d.label);
-                    newArrayDataAssets.push(d.data);
-                });
-                assetChart.data.datasets[0].data = newArrayDataAssets;
-                assetChart.data.labels = newArrayLabelAssets
+                dataAssets = json.data_target_assets;
+                datasetsAssets = [{
+                    label: dataAssets.map(function(v){return v.label}),
+                    data: dataAssets.map(function(v){return v.data})
+                }];
+                assetChart.data.datasets[0].data = datasetsAssets[0].data;
+                assetChart.data.labels =  datasetsAssets[0].label
                 assetChart.update();
                 // TARGET ASSETS //
 
                 // GRAFIS ALL PLANT //
-                dougnutChartPlant.data.datasets[0].data = json.data_trans_area;
+                resAreaPolar = json.data_trans_area;
+                dataAreaPolar = [{
+                    label: resAreaPolar.map(function(v){return v.label}),
+                    data: resAreaPolar.map(function(v){return v.total})
+                }];
+                dougnutChartPlant.data.labels = dataAreaPolar[0].label;
+                dougnutChartPlant.data.datasets[0].data = dataAreaPolar[0].data;
                 dougnutChartPlant.update();
                 // GRAFIS ALL PLANT //
 
@@ -2201,31 +2840,7 @@
                 dougnutChartAll.data.datasets[0].dataDUmmy = json.data_trans_month;
                 dougnutChartAll.update();
                 // GRAFIS DOUGHNUT PER MONTH //
-
-                // RISK LEVEL //
-                var labelRisLvl = json.data_risk_lbl_lvl;
-                var dataRisLvl = json.data_risk_level;
-                arrayOfObjRisLvl = labelRisLvl.map(function(d, i) {
-                    return {
-                        label: d,
-                        data: dataRisLvl[i] || 0
-                    };
-                });
-                sortedArrayOfObjRisLvl = arrayOfObjRisLvl.sort(function(a, b) {
-                    return b.data - a.data;
-                });
-                newArrayLabelRisLvl = [];
-                newArrayDataRisLvl = [];
-                sortedArrayOfObjRisLvl.forEach(function(d) {
-                    newArrayLabelRisLvl.push(d.label);
-                    newArrayDataRisLvl.push(d.data);
-                });
-                // risLvlChart.data.datasets[0].data = newArrayDataRisLvl;
-                // risLvlChart.data.labels = newArrayLabelRisLvl
-                // risLvlChart.update();
-                // RISK LEVEL //
             }
         });
-
     })
 </script>

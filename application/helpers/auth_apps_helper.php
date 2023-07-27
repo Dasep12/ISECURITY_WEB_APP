@@ -120,6 +120,23 @@ if ( ! function_exists('is_role')) {
     }
 }
 
+if ( ! function_exists('is_access_privilege')) {
+    function is_access_privilege($module,$privilege) {
+		$ci  =& get_instance();
+        $role = $ci->session->userdata('role');
+        $npk = $ci->session->userdata('npk');
+
+        $ci->load->model(['Roles_m']);
+     	$access_module = $ci->Roles_m->access_modul($npk, $module)->row();
+
+		if($privilege == 'crt' && $access_module->$privilege == 1) {
+			return true;
+		}
+		
+		return false;
+    }
+}
+
 // if ( ! function_exists('is_access_module')) {
 //     function is_access_module($module, $method) {
 // 		$ci  =& get_instance();

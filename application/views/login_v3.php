@@ -15,9 +15,11 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://isecuritydaihatsu.com/assets/img/icon.png">
 
     <style type="text/css">
-        html, body {
+        html,
+        body {
             height: 100%;
         }
+
         body {
             display: flex;
             align-items: center;
@@ -27,12 +29,21 @@
             background-image: url('./assets/dist/img/bg-login-2.jpg');
             background-size: cover;
         }
-        .alert { padding: 5px 10px !important; }
-        .logo { width: 70%; height: auto; }
+
+        .alert {
+            padding: 5px 10px !important;
+        }
+
+        .logo {
+            width: 70%;
+            height: auto;
+        }
+
         .form-bg {
             margin: auto;
         }
-        .form-container{
+
+        .form-container {
             /*background: linear-gradient(#E9374C,#D31128);*/
             /*background: linear-gradient(#b16262,#fb0103);*/
             position: relative;
@@ -43,41 +54,49 @@
             /*border: 1px solid #DC2036;*/
             border: transparent;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
-        .form-container .form-icon{
+
+        .form-container .form-icon {
             color: #fff;
             font-size: 13px;
             text-align: center;
-            text-shadow: 0 0 20px rgba(0,0,0,0.2);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             width: 50%;
             padding: 70px 0;
             vertical-align: top;
             display: inline-block;
         }
-        .form-container .form-icon i{
+
+        .form-container .form-icon i {
             font-size: 124px;
             margin: 0 0 15px;
             display: block;
         }
-        .form-container .form-icon .signup a{
+
+        .form-container .form-icon .signup a {
             color: #fff;
             text-transform: capitalize;
             transition: all 0.3s ease;
         }
-        .form-container .form-icon .signup a:hover{ text-decoration: underline; }
-        .form-container .form-horizontal{
+
+        .form-container .form-icon .signup a:hover {
+            text-decoration: underline;
+        }
+
+        .form-container .form-horizontal {
             /*background: rgba(255,255,255,0.99);*/
             /* background: linear-gradient(#f76262,#fb0103);*/
-            background: linear-gradient(#9497d3b3,#fb010305);
+            background: linear-gradient(#9497d3b3, #fb010305);
             width: 50%;
             padding: 60px 30px;
             margin: -20px 0;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             display: inline-block;
         }
-        .form-container .title{
+
+        .form-container .title {
             /*color: #454545;*/
             color: #fff;
             font-size: 23px;
@@ -87,14 +106,16 @@
             letter-spacing: 0.5px;
             margin: 0 0 30px 0;
         }
-        .form-horizontal .form-group{
-            background-color: rgba(255,255,255,0.15);
+
+        .form-horizontal .form-group {
+            background-color: rgba(255, 255, 255, 0.15);
             margin: 0 0 15px;
             /*border: 1px solid #b5b5b5;*/
             border: 1px solid #ffffff;
             border-radius: 20px;
         }
-        .form-horizontal .input-icon{
+
+        .form-horizontal .input-icon {
             /*color: #b5b5b5;*/
             color: #fff;
             font-size: 15px;
@@ -105,7 +126,8 @@
             vertical-align: top;
             display: inline-block;
         }
-        .form-horizontal .form-control{
+
+        .form-horizontal .form-control {
             /*color: #b5b5b5;*/
             color: #ffffff;
             background-color: transparent;
@@ -120,19 +142,24 @@
             display: inline-block;
             transition: all 0.3s;
         }
-        .form-control:active, .form-control:focus {
+
+        .form-control:active,
+        .form-control:focus {
             background-color: transparent;
         }
-        .form-horizontal .form-control:focus{
+
+        .form-horizontal .form-control:focus {
             box-shadow: none;
             border: none;
         }
-        .form-horizontal .form-control::placeholder{
+
+        .form-horizontal .form-control::placeholder {
             /*color: #b5b5b5;*/
             color: #ffffff;
             font-size: 13px;
             text-transform: capitalize;
         }
+
         .form-control:-webkit-autofill,
         .form-control:-webkit-autofill:hover,
         .form-control:-webkit-autofill:focus,
@@ -140,7 +167,8 @@
             transition: background-color 5000s ease-in-out 0s;
             -webkit-text-fill-color: #fff !important;
         }
-        .form-horizontal .btn{
+
+        .form-horizontal .btn {
             padding: 10px 0;
             color: #ffffff;
             /*background: #E9374C;*/
@@ -155,26 +183,31 @@
             border-radius: 20px;
             transition: all 0.3s ease;
         }
+
         .form-horizontal .btn:hover,
-        .form-horizontal .btn:focus{
+        .form-horizontal .btn:focus {
             color: #fff;
             background-color: #45486a;
             /*box-shadow: 0 0 5px rgba(0,0,0,0.5);*/
             box-shadow: 0 0 5px #ffffff;
         }
-        .form-horizontal .forgot-pass{
+
+        .form-horizontal .forgot-pass {
             font-size: 12px;
             text-align: center;
             display: block;
         }
-        .form-horizontal .forgot-pass a{
+
+        .form-horizontal .forgot-pass a {
             color: #999;
             transition: all 0.3s ease;
         }
-        .form-horizontal .forgot-pass a:hover{
+
+        .form-horizontal .forgot-pass a:hover {
             color: #777;
             text-decoration: underline;
         }
+
         .head-logos {
             position: absolute;
             top: 0;
@@ -182,20 +215,26 @@
             display: flex;
             padding: 10px;
         }
-            .head-logos img {
-                display: block;
-                width: 100%;
-                max-width: 100%;
-                height: 30px;
-                padding-left: 10px;
+
+        .head-logos img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: 30px;
+            padding-left: 10px;
+        }
+
+        @media only screen and (max-width:576px) {
+            .form-container {
+                padding-bottom: 15px;
             }
-        @media only screen and (max-width:576px){
-            .form-container{ padding-bottom: 15px; }
-            .form-container .form-icon{
+
+            .form-container .form-icon {
                 width: 100%;
                 padding: 20px 0;
             }
-            .form-container .form-horizontal{
+
+            .form-container .form-horizontal {
                 width: 100%;
                 margin: 0;
             }
@@ -210,13 +249,14 @@
                 <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8">
                     <div class="form-container">
                         <div class="head-logos">
-                            <img src="<?=base_url('assets/dist/img/daihatsu-sahabatku.png');?>">
-                            <img src="<?=base_url('assets/dist/img/i-care.png');?>">
-                            <img src="<?=base_url('assets/dist/img/logo-daihatsu-2.png');?>">
+                            <img src="<?= base_url('assets/dist/img/logo-daihatsu-2.png'); ?>">
+                            <img src="<?= base_url('assets/dist/img/daihatsu-sahabatku.png'); ?>">
+                            <img src="<?= base_url('assets/dist/img/i-care.png'); ?>">
+                            <img src="<?= base_url('assets/dist/img/logo_admcomunity.png'); ?>">
                         </div>
                         <div class="form-icon">
                             <!-- <i class="fa fa-user-circle"></i> -->
-                            <img class="logo" src="<?=base_url('assets/dist/img/img-login-1.png');?>">
+                            <img class="logo" src="<?= base_url('assets/dist/img/img-login-1.png'); ?>">
                             <!-- <span class="signup"><a href="">Don't have account? Signup</a></span> -->
                         </div>
                         <form class="form-horizontal" onsubmit="return cek()" action="<?= base_url('Login/cekLogin') ?>" method="post">

@@ -942,7 +942,7 @@
                 bulan: blan
             },
             success: function(e) {
-                // console.log(e);
+                console.log(e);
                 var pademangan = e[0].properties.res;
                 var cilincing = e[1].properties.res;
                 var penjaringan = e[2].properties.res;
@@ -1052,16 +1052,16 @@
     //     })
     // }
 
-    function loadMapKarawang(thn, blan) {
+    function loadMapKarawang(thn, bln) {
         $.ajax({
             url: "<?= base_url('analitic/crime/Crime/mapKarawang') ?>",
             method: "POST",
             data: {
                 tahun: thn,
-                bulan: blan
+                bulan: bln
             },
             success: function(e) {
-                // console.log(e);
+                console.log(e);
                 var teljambar = e[0].properties.res;
                 var teljamtim = e[1].properties.res;
                 var klari = e[2].properties.res;
@@ -1326,7 +1326,7 @@
                 data: <?= $penggelapan_karawang ?>
             }]
         }
-        kar = new Highcharts.chart(karawangSetahun);
+        kar = Highcharts.chart(karawangSetahun);
         // 
 
         // jakut setahun
@@ -1604,6 +1604,7 @@
                 },
                 success: function(e) {
                     const data = JSON.parse(e);
+                    console.log(data);
                     karawang.subtitle.update({
                         text: 'Periode Tahun ' + tahun
                     });
@@ -1689,8 +1690,6 @@
                     // mappingKarawang(tahun, bulan);
                     document.getElementById("monthly_jakut").innerHTML = bulanConvert(bulan);
                     document.getElementById("year_jakut").innerHTML = tahun;
-
-
                 }
             })
 

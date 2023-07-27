@@ -15,13 +15,6 @@ class LaporanHarian extends CI_Controller{
          redirect('NotFound');
       }
     }
-
-    function index()
-    {
-      $this->load->view('template/header');
-      // $this->load->view('');
-      $this->load->view('template/fotter');
-    }
 }
 
 ?>

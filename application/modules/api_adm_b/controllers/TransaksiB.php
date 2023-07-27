@@ -335,14 +335,14 @@ class TransaksiB extends RestController
                         'msg' => 'success'
                     );
                 }
-                // elseif($result == '02') 
-                // {
-                //     $response = array(
-                //         'status' => false,
-                //         'code' => '211',
-                //         'msg' => 'already exists'
-                //     );
-                // }
+                elseif($result == '01') 
+                {
+                    $response = array(
+                        'status' => true,
+                        'code' => '211',
+                        'msg' => 'tidak ada temuan'
+                    );
+                }
                 else
                 {
                     $response = array(

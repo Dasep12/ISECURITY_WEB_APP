@@ -1338,6 +1338,7 @@
 				for (var i = seriesLength - 1; i > -1; i--) {
 					chartPatrolAll.series[i].remove();
 				}
+				
 				let series = [];
 				for (let i = 0; i < data.length; i++) {
 					let dataR = [{

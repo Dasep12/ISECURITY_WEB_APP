@@ -144,7 +144,7 @@
         <div class="container">
           <ul class="nav page-navigation">
             <li class="nav-item">
-              <a class="nav-link" href="<?= base_url('Home')?>">
+              <a class="nav-link" href="<?= base_url('dsh')?>">
                 <i class="ti-layout-grid2 menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
               </a>
@@ -160,7 +160,7 @@
                 <div class="col-group-wrapper row">
 
                 <?php if(($user->security_operation) == 1 ) { ?>  
-                <div class="col-group col-lg-6">
+                <div class="col-group col-lg-3">
                     <div class="row">   
                       <div class="col-12">
                       <p class="category-heading">Security Operational</p>
@@ -169,22 +169,19 @@
                           <div class="col-md-6">
                             <ul>
                               <li class="nav-item"><a class="nav-link" href="<?= base_url('tamu')?>">Tamu</a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('kendaraan')?>">Kendaraan </a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('barang')?>">Barang</a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('outsourching')?>">Outsourching</a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('patroli')?>">Patroli</a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('kontraktor')?>">Kontraktor</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('NotFound')?>">Kendaraan </a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('NotFound')?>">Barang</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('mutasi')?>">Outsourching</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('mutasi')?>">Patroli</a></li>
                             </ul>
                           </div>
                           <div class="col-md-6">
                             <ul>
-
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('laporanharian')?>">Laporan Harian </a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('laporankejadian')?>">Laporan Kejadian</a></li>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('laporankehilangan')?>">Laporan Kehilangan</a></li>
-                              <li class="nav-item"><a class="nav-link" href="#">Laporan Kehilangan</a></li>
-                              <li class="nav-item"><a class="nav-link" href="#">Dokumen</a></li>
-                              <li class="nav-item"><a class="nav-link" href="#">Memo Security</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('agt')?>">Kontraktor</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('NotFound')?>">Laporan Harian </a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('NotFound')?>">Laporan Kejadian</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('mutasi')?>">Laporan Kehilangan</a></li>
+                             
                             </ul>
                           </div>
                         </div>
@@ -203,7 +200,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <ul>
-                              <li class="nav-item"><a class="nav-link" href="<?= base_url('anggota')?>">Anggota</a></li>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('anggota')?>">Data Anggota</a></li>
                               <li class="nav-item"><a class="nav-link" href="<?= base_url('SecAdm/Inventaris')?>">Inventaris</a></li>
                               <li class="nav-item"><a class="nav-link" href="<?= base_url('SecAdm/Pembelian')?>">Pembelian</a></li>
                               <li class="nav-item"><a class="nav-link" href="<?= base_url('SecAdm/Budget')?>">Budget</a></li>
@@ -216,7 +213,27 @@
                 </div>
                 <?php } ?>
 
-              
+                <?php if(($user->layanan_security) == 1) {?>
+                  <div class="col-group col-lg-3">
+                    <div class="row">   
+                      <div class="col-12">
+                      <p class="category-heading">Layanan Security</p>
+                      <div class="submenu-item">
+                        <div class="row">
+                          <div class="col-md-8">
+                            <ul>
+                              <li class="nav-item"><a class="nav-link" href="<?= base_url('tamu')?>">Tamu</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#">Dokumen</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#">Laporan Kehilangan</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#">Memo Security</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>   
+                    </div>
+                </div>
+                <?php } ?>
 
                 <?php if(($user->security_information) == 1) {?>
                   <div class="col-group col-lg-3">
@@ -354,13 +371,13 @@
                     <div class="col-12">
                       <div class="submenu-item">
                           <ul>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/Perusahaan')?>">Perusahaan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/Kendaraan')?>">Kendaraan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/Karyawan')?>">Karyawan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/Tamu')?>">Tamu</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/Outsourching')?>">Outsourching</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/Kontraktor')?>">Kontraktor</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?= base_url('Cd/User')?>">User</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Perusahaan</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Kendaraan</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Karyawan</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Tamu</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Outsourching</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Kontraktor</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">User</a></li>
                           </ul>
                       </div>
                     </div>

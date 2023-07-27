@@ -53,7 +53,8 @@ class M_Dashboard extends CI_Model
 
     public function performancePatroliAllPlant($year, $plant)
     {
-        $all = count($this->getPlant());
+        // $all = count($this->getPlant());
+        $all = 3;
         $result = array();
         for ($i = 1; $i <= 12; $i++) {
             $hariPembagi = cal_days_in_month(CAL_GREGORIAN, $i, $year);

@@ -5,67 +5,43 @@ class Tamu extends CI_Controller{
     function __construct()
     {
       parent::__construct();
-      $this->iremake = $this->load->database('iremake', TRUE);
-      $this->load->model('Login_model');
-      $this->load->model('Admin_model');
-      $this->load->model('SecOps_model');
-      $id = "ADM-220927";
-      $cek = $this->Login_model->cek_msrole($id)->row();
+      $id = $this->session->userdata('id_akun');
+      $cek = $this->Login->cek_msrole($id)->row();
+      $validation = $cek->security_operation;
       if ($id == null || $id == "") {
            $this->session->set_flashdata('info', 'sessi berakhir silahkan login kembali');
               redirect('Login');
           } 
-     
+      if ($validation != 1){
+         redirect('NotFound');
+      }
     }
 
     function index(){
       
-      $id = $this->Login_model->cek_msrole("ADM-220927")->row();
-      
+      $id = $this->Login->cek_msrole($this->session->userdata('id_akun'))->row();
       $where = $id->wilayah;
       $data = array(
-          'link'   => $this->uri->segment(3),
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => "ADM-220927"))->row(),
-          'group' => $this->Admin_model->group($where),
-          'wilayah' => $this->iremake->get_where('admviewtrans_sgpprofile', array('wilayah' => $where))->num_rows(),
+          'user' => $this->db->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
+          'group' => $this->Admin->group($where),
+          'wilayah' => $this->db->get_where('admviewtrans_sgpprofile', array('wilayah' => $where))->num_rows(),
         );
-        
-      $this->load->view("template/sidebarIsec",$data);
-      $this->load->view('SecOps/HomeVms');
-      $this->load->view('template/SecOpsJS');
-      $this->load->view("template/footer");
-    }
-
-    function TamuSecops(){
       
-      $id = $this->Login_model->cek_msrole("ADM-220927")->row();
-      
-      $where = $id->wilayah;
-      $data = array(
-          'link'   => $this->uri->segment(3),
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => "ADM-220927"))->row(),
-          'group' => $this->Admin_model->group($where),
-          'wilayah' => $this->iremake->get_where('admviewtrans_sgpprofile', array('wilayah' => $where))->num_rows(),
-        );
-        
-      $this->load->view("template/sidebarIsec",$data);
+      $this->load->view('template/header',$data);
       $this->load->view('SecOps/Tamu');
-      $this->load->view('template/SecOpsJS');
-      $this->load->view("template/footer");
+      $this->load->view('template/fotter');
     }
-
 
     function inputPerusahaan(){
       $id = $this->Login->cek_msrole($this->session->userdata('id_akun'))->row();
       $where = $id->area_kerja;
       $data = array(
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
-          'perusahaan'  => $this->iremake->get('admisecmstr_perusahaan')->result(),
+          'user' => $this->db->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
+          'perusahaan'  => $this->db->get('admisecmstr_perusahaan')->result(),
         );
       $this->load->view('template/header',$data);
       $this->load->view('SecOps/InputPerusahaan',$data);
-      $this->load->view('Template/SecOpsJS');
-      $this->load->view('template/footer');
+      $this->load->view('template/fotter');
     }
 
     function Inputcompany(){
@@ -77,7 +53,7 @@ class Tamu extends CI_Controller{
           'perusahaan'          => strtoupper($nama),
           'status_perusahaan'   => $this->input->post('status'),
         );
-        $input = $this->iremake->insert('admisecmstr_perusahaan', $data);
+        $input = $this->db->insert('admisecmstr_perusahaan', $data);
         if($input){
           echo 'Sukses';
         }else{
@@ -93,7 +69,7 @@ class Tamu extends CI_Controller{
         'id_department'       => $id,
         'department'          => strtoupper($nama),
       );
-      $input = $this->iremake->insert('admisecmstr_depart', $data);
+      $input = $this->db->insert('admisecmstr_depart', $data);
       if($input){
         echo 'Sukses';
       }else{
@@ -102,23 +78,16 @@ class Tamu extends CI_Controller{
   }
 
     function DataTamu(){
-      $id = $this->Login_model->cek_msrole("ADM-220927")->row();
+      $id = $this->Login->cek_msrole($this->session->userdata('id_akun'))->row();
       $where = $id->area_kerja;
       $data = array(
-          'link'   => $this->uri->segment(3),
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => "ADM-220927"))->row(),
-          'tamu' => $this->iremake->get('admsecmstr_tamu')->result(),
+          'user' => $this->db->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
+          'tamu' => $this->db->get('admsecmstr_tamu')->result(),
         );
 
-        $this->load->view("template/sidebarIsec",$data);
-        $this->load->view('SecOps/InputTamu');
-        $this->load->view('template/SecOpsJS');
-        $this->load->view("template/footer");
-
-      // $this->load->view('template/header',$data);
-      // $this->load->view('SecOps/InputTamu',$data);
-      // $this->load->view('Template/SecOpsJS');
-      // $this->load->view('template/footer');
+      $this->load->view('template/header',$data);
+      $this->load->view('SecOps/InputTamu',$data);
+      $this->load->view('template/fotter');
     }
 
     function InputTamu(){
@@ -139,10 +108,10 @@ class Tamu extends CI_Controller{
         'id_perusahaan'       =>   $perusahaan,
         'tglPendaftaran'      =>   date("Y-m-d"),
         );
-        $input = $this->iremake->insert('admsecmstr_tamu',$data);
+        $input = $this->db->insert('admsecmstr_tamu',$data);
         if($input){
            //   insert admmsadmin_profile
-           $config['upload_path']="./assets/ImgSec/tamu"; //path folder file upload
+           $config['upload_path']="./assets/img/tamu"; //path folder file upload
            $config['allowed_types']='jpeg|jpg|png|JPG'; //type file yang boleh di upload
            $config['encrypt_name'] = TRUE; //enkripsi file name upload
            
@@ -153,7 +122,7 @@ class Tamu extends CI_Controller{
                $idtamu = $id;//id_karyawan
                $image= $data['upload_data']['file_name']; //set file name ke variable image
                
-               $result= $this->SecOps_model->UploadFotoTamu($idtamu,$image); //kirim value ke model m_upload
+               $result= $this->SecOps->UploadFotoTamu($idtamu,$image); //kirim value ke model m_upload
                echo 'Sukses';
            }
         }else{
@@ -230,8 +199,8 @@ class Tamu extends CI_Controller{
       }
       echo '<pre>';
       $part = explode(" ",$pareValue['ParsedText']);
-      echo json_encode($newarray);
-      // print_r($part);
+      // echo json_encode($newarray);
+      print_r($part);
     }
     
     function uploadKTP(){
@@ -251,7 +220,7 @@ class Tamu extends CI_Controller{
           echo '<pre>';
           var_dump($info);
           die();
-          if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($location); 
+          if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($location);
           elseif ($info['mime'] == 'image/gif') $image = imagecreatefromgif($location);
           elseif ($info['mime'] == 'image/png') $image = imagecreatefrompng($location);
           imagejpeg($image, $location, 60);
@@ -266,165 +235,41 @@ class Tamu extends CI_Controller{
     function getCompany(){
 
         $searchTerm = $this->input->post('searchTerm'); 
-        $response = $this->SecOps_model->getUsers($searchTerm);
+        $response = $this->SecOps->getUsers($searchTerm);
 
         echo json_encode($response);
     }
 
     function getTamu(){
         $searchTerm = $this->input->post('searchTerm');
-        $response = $this->SecOps_model->getTamu($searchTerm);
+        $response = $this->SecOps->getTamu($searchTerm);
 
         echo json_encode($response);
     }
 
-    function getBertemuBp(){
-      $searchTerm = $this->input->post('searchTerm');
-      $response = $this->SecOps_model->getBertemuBp($searchTerm);
-
-      echo json_encode($response);
-    }
-
-    function getProfileBP(){
-      $id_bp = $this->input->post('id_businesspartner');
-      $list = $this->iremake->get_where("admisecmstr_bp",array("id_businesspartner" => $id_bp))->result();
-      echo json_encode($list);
-    }  
-
     function getProfileTamu(){
       $id_tamu = $this->input->post("id_tamu");
-      $list = $this->iremake->get_where("admviewprof_tamu", array("id_tamu" => $id_tamu))->result();
+      $list = $this->db->get_where("admviewprof_tamu", array("id_tamu" => $id_tamu))->result();
       echo json_encode($list);
     }
 
-    function getKaryawan(){
+    function getDepartment(){
+
       $searchTerm = $this->input->post('searchTerm'); 
-      $response = $this->SecOps_model->getKar($searchTerm);
+      $response = $this->SecOps->getDepartment($searchTerm);
       echo json_encode($response);
     }
 
-    function getProfileTKaryawan(){
-      $Bertemu = $this->input->post("id_karyawan");
-      $list = $this->iremake->get_where("admviewtrans_karprofile", array("id_karyawan" => $Bertemu))->result();
-      echo json_encode($list);
-    }
-
-    function inputDivisi(){
-      $nama = strtoupper($this->input->post('divisi'));
-      $part = explode(" ",$nama);
-      $id = substr($part[0],0,3) . rand(15,50) . substr($part[1],0,3) . rand(10,100)  ;
-      $data = array(
-        'id_divisi'           => $id,
-        'id_department'       => $this->input->post('Getdepart'),
-        'divisi'          => strtoupper($nama),
-      );
-
-     
-      $input = $this->iremake->insert('admisecmstr_divisi', $data);
-      if($input){
-        echo 'Sukses';
-      }else{
-        echo 'Gagal';
-      }
-    }
-
-    function Visitor(){
-      $id = $this->Login_model->cek_msrole("ADM-220927")->row();
+    function InputVisitor(){
+      $id = $this->Login->cek_msrole($this->session->userdata('id_akun'))->row();
       $where = $id->area_kerja;
       $data = array(
-          'link'   => $this->uri->segment(3),
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => 'ADM-220927'))->row(),
-          'tamu' => $this->iremake->get('admsecmstr_tamu')->result(),
-        );
-      
-        $this->load->view("template/sidebarIsec",$data);
-        $this->load->view('SecOps/InputVisitor',$data);
-        $this->load->view('template/SecOpsJS');
-        $this->load->view("template/footer");
-    }
-
-    function InputVisitor()
-    {
-      $admin = $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => 'ADM-220927'))->row();
-      $AdminArea = $admin->area_kerja;
-      $id_visitor = strtoupper($this->input->post('namaTa')); 
-      $part = explode(" ",$id_visitor);
-      $month_num = date('m');
-      $month_name = strtoupper(date("F", mktime(0, 0, 0, $month_num, 10)));
-      $id = substr($part[0],0,3) ."/" . rand(10,1000) . '/' . $month_name .'/' . date('d').'/'. date('Y');
-    
-      $data = array(
-        'id_transaksi'  =>  $id,
-        'id_tamu'       => $id_visitor,
-        'id_department' => $this->input->post('department'),
-        'id_divisi'     => $this->input->post('divisi'),
-        'id_karyawan'   => $this->input->post('Bertemu'),
-        'kepentingan'   => strtoupper($this->input->post('kepentingan')),
-        'tanggal'       => date('Y-m-d'),
-        'area'          => $AdminArea,
-      );
-      $input = $this->iremake->insert('admisectrans_visitor',$data);
-      if($input){
-        echo 'Sukses';
-      }else{
-        echo 'Gagal';
-      }
-    }
-
-    function ListVisitor()
-    {
-      $tanggal = date('Y-m-d');
-      
-      $id = $this->Login_model->cek_msrole("ADM-220927")->row();
-      $where = $id->area_kerja;
-      $data = array(
-          'link'   => $this->uri->segment(3),
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => "ADM-220927"))->row(),
-          'tamu' => $this->iremake->query("SELECT * FROM admviewtrans_visitor WHERE tanggal =  '$tanggal' AND area = '$where' ")->result(),
-        );
-
-        // echo '<pre>';
-        // var_dump($data);
-        // die();
-      
-        $this->load->view("template/sidebarIsec",$data);
-        $this->load->view('SecOps/ListVisitor');
-        $this->load->view('template/SecOpsJS');
-        $this->load->view("template/footer");
-    }
-
-    function DataBaseTamu()
-    {
-      $id = $this->Login_model->cek_msrole($this->session->userdata('id_akun'))->row();
-      $where = $id->area_kerja;
-      $data = array(
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
-          'tamu' => $this->iremake->get('admviewprof_tamu')->result(),
+          'user' => $this->db->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
+          'tamu' => $this->db->get('admsecmstr_tamu')->result(),
         );
 
       $this->load->view('template/header',$data);
-      $this->load->view('SecOps/DataBaseTamu');
-      $this->load->view('Template/SecOpsJS');
-      $this->load->view('template/fotter');
-    }
-
-    function ProfileTamu($id_tamu)
-    {
-
-      $id = $this->Login_model->cek_msrole($this->session->userdata('id_akun'))->row();
-      $where = $id->area_kerja;
-      $data = array(
-          'user' => $this->iremake->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
-          'ProfileTamu' => $this->iremake->get_where('admviewprof_tamu',array('id_tamu' => $id_tamu))->row(),
-          'TransaksiTamu'  => $this->iremake->get_where('admviewtrans_visitor', array('id_tamu' => $id_tamu))->result(),
-        );
-        // echo '<pre>';
-        // var_dump($data);
-        // die();
-
-      $this->load->view('template/header',$data);
-      $this->load->view('SecOps/ProfileTamu');
-      $this->load->view('Template/SecOpsJS');
+      $this->load->view('SecOps/InputVisitor',$data);
       $this->load->view('template/fotter');
     }
 }

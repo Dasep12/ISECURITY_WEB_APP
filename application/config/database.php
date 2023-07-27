@@ -97,76 +97,76 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
-// $db['srs_bi'] = array(
-// 	'dsn' 	   => '',
-// 	'hostname' => '103.189.234.208',
-// 	'username' => 'sa',
-// 	'password' => 'Astra123',
-// 	'port' 	   => '1433',
-// 	'database' => 'srs_bi',
-// 	'dbdriver' => 'sqlsrv',
+$db['srs_bi'] = array(
+	'dsn' 	   => '',
+	'hostname' => '103.189.234.208',
+	'username' => 'sa',
+	'password' => 'Astra123',
+	'port' 	   => '1433',
+	'database' => 'srs_bi',
+	'dbdriver' => 'sqlsrv',
 
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => TRUE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
-
-
-// $db['iremake'] = array(
-// 	'dsn' 	   => '',
-// 	'hostname' => '103.63.25.164',
-// 	'username' => 'sa',
-// 	'password' => 'Astra123',
-// 	'port' 	   => '1433',
-// 	'database' => 'iremake',
-// 	'dbdriver' => 'sqlsrv',
-
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => TRUE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
 
 
-// $db['isecurity'] = array(
-// 	'dsn' 	   => '',
-// 	'hostname' => '103.189.234.208',
-// 	'username' => 'server_ida',
-// 	'password' => 'Astra@12345',
-// 	'database' => 'isecurity',
-// 	'dbdriver' => 'mysqli',
+$db['soa_bi'] = array(
+	'dsn' 	   => '',
+	'hostname' => '103.189.234.208',
+	'username' => 'sa',
+	'password' => 'Astra123',
+	'port' 	   => '1433',
+	'database' => 'soa_bi',
+	'dbdriver' => 'sqlsrv',
 
-// 	'port' 	   => '3306',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => TRUE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+
+$db['isecurity'] = array(
+	'dsn' 	   => '',
+	'hostname' => 'localhost',
+	'username' => 'server_ida',
+	'password' => 'Astra@12345',
+	'database' => 'isecurity',
+	'dbdriver' => 'mysqli',
+
+	'port' 	   => '3306',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);

@@ -85,32 +85,16 @@ class M_dashboard_dev extends CI_Model
         $year = empty($year) ? date('Y') : $year;
         $month = $this->input->post('month_fil', true);
         
-        if(!empty($month))
-        {
-            $q = "SELECT FORMAT((max(tio.risk_level_id) * 0.2) + (max(iml.impact_level) * 0.8),'N2') max_iso
-                    from dbo.admiseciso_transaction tio
-                    inner join (
-                        select siml.area_id, siml.impact_level
-                            from dbo.admiseciso_transaction siml
-                            where siml.disable=0 and siml.status=1
-                        group by siml.area_id, siml.impact_level
-                    ) iml on iml.area_id=tio.area_id
-                WHERE tio.disable=0 AND tio.status=1
-                ";
-        }
-        else
-        {
-            $q = "SELECT FORMAT((avg(tio.risk_level_id) * 0.2) + (avg(iml.impact_level) * 0.8),'N2') max_iso
-                    from dbo.admiseciso_transaction tio
-                    inner join (
-                        select siml.area_id, siml.impact_level
-                            from dbo.admiseciso_transaction siml
-                            where siml.disable=0 and siml.status=1
-                        group by siml.area_id, siml.impact_level
-                    ) iml on iml.area_id=tio.area_id
-                WHERE tio.disable=0 AND tio.status=1
-                ";
-        }
+        $q = "SELECT FORMAT(COALESCE((COALESCE(max(arl.[level]),0) * 0.2) + (COALESCE(max(iml.impact_level),0) * 0.8),0),'N2') max_iso
+                from dbo.admiseciso_transaction tio
+                inner join srs_bi.dbo.admiseciso_risk_level arl ON arl.id=tio.risk_level_id 
+                inner join (
+                    select siml.area_id, siml.impact_level ,siml.status ,siml.disable ,siml.event_date
+                        from dbo.admiseciso_transaction siml
+                    group by siml.area_id, siml.impact_level ,siml.status ,siml.disable ,siml.event_date
+                ) iml on iml.area_id=tio.area_id and iml.status=tio.status AND iml.disable=tio.disable AND iml.event_date=tio.event_date 
+            WHERE tio.disable=0 AND tio.status=1
+            ";
 
         if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
         if(!empty($area)) $q .= " tio.area_id=$area ";
@@ -131,7 +115,7 @@ class M_dashboard_dev extends CI_Model
         $year = empty($year) ? date('Y') : $year;
         $month = $this->input->post('month_fil', true);
 
-        $q = "SELECT FORMAT(ISNULL( ( AVG(soi.people) + AVG(soi.device) + AVG(soi.[system]) +
+        $q = "SELECT FORMAT(COALESCE(( AVG(soi.people) + AVG(soi.device) + AVG(soi.[system]) +
                 + AVG(soi.network) ) / 4 , 0 ), 'N2') avg_soi
                 FROM dbo.admisecsoi_transaction soi
             WHERE soi.disable=0 and soi.status=1
@@ -221,7 +205,6 @@ class M_dashboard_dev extends CI_Model
         return $res;
     }
 
-
     public function grap_soi_avg_montharea()
     {
         $year = $this->input->post('year_fil', true);
@@ -258,6 +241,61 @@ class M_dashboard_dev extends CI_Model
         return $res;
     }
 
+    public function grap_type_source()
+    {
+        if($this->input->post())
+        {
+            $area = $this->input->post('area_fil', true);
+            $year = $this->input->post('year_fil', true);
+            $month = $this->input->post('month_fil', true);
+
+            $q = "
+                SELECT count(hmn.id) total_h, count(osn.id) total_o
+                    from srs_bi.dbo.admiseciso_transaction trs
+                    left outer join (
+                        select ars.id ,ars.type_source ,ars.risksource_categ_id ,ars.status
+                            from srs_bi.dbo.admiseciso_risksource_sub ars
+                        group by ars.id ,ars.type_source ,ars.risksource_categ_id ,ars.status
+                    ) hmn ON (hmn.id=trs.risk_source_id OR hmn.id=trs.risksource_sub1_id) and hmn.type_source=1 and hmn.status=1 
+                    left outer join (
+                        select a.id ,a.type_source ,a.risksource_categ_id ,a.status
+                            from srs_bi.dbo.admiseciso_risksource_sub a
+                        group by a.id ,a.type_source ,a.risksource_categ_id ,a.status
+                    ) osn ON (osn.id=trs.risk_source_id OR osn.id=trs.risksource_sub1_id) and osn.type_source=2 and osn.status=1 
+                WHERE trs.disable=0 AND trs.status=1
+            ";
+                if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
+                if(!empty($area)) $q .= " trs.area_id=$area ";
+                if(!empty($area) && !empty($year)) $q .= ' AND ';
+                if(!empty($year)) $q .= " year(trs.event_date)=$year ";
+                if((!empty($area) || !empty($year)) && !empty($month)) $q .= ' AND ';
+                if(!empty($month)) $q .= " month(trs.event_date)=$month ";
+        }
+        else
+        {
+            $year_now = date('Y');
+
+            $q = "
+                SELECT count(hmn.id) total_h, count(osn.id) total_o
+                    from srs_bi.dbo.admiseciso_transaction trs
+                    left outer join (
+                        select ars.id ,ars.type_source ,ars.risksource_categ_id ,ars.status
+                            from srs_bi.dbo.admiseciso_risksource_sub ars
+                        group by ars.id ,ars.type_source ,ars.risksource_categ_id ,ars.status
+                    ) hmn ON (hmn.id=trs.risk_source_id OR hmn.id=trs.risksource_sub1_id) and hmn.type_source=1 and hmn.status=1 
+                    left outer join (
+                        select a.id ,a.type_source ,a.risksource_categ_id ,a.status
+                            from srs_bi.dbo.admiseciso_risksource_sub a
+                        group by a.id ,a.type_source ,a.risksource_categ_id ,a.status
+                    ) osn ON (osn.id=trs.risk_source_id OR osn.id=trs.risksource_sub1_id) and osn.type_source=2 and osn.status=1 
+                WHERE year(trs.event_date)=$year_now AND trs.disable=0 AND trs.status=1";
+        }
+
+        $res = $this->srsdb->query($q);
+
+        return $res;
+    }
+
     public function grap_risk_source()
     {
         if($this->input->post())
@@ -267,7 +305,7 @@ class M_dashboard_dev extends CI_Model
             $month = $this->input->post('month_fil', true);
 
             $q = "
-                SELECT rso.title, ISNULL(tis.total, 0) total
+                SELECT rso.id, rso.type_source, rso.title, ISNULL(tis.total, 0) total
                     FROM dbo.admiseciso_risksource_sub rso
                     left join ( 
                         select count(1) total, stis.risk_source_id
@@ -281,7 +319,7 @@ class M_dashboard_dev extends CI_Model
                         $q .= " group by stis.risk_source_id
                     ) tis on tis.risk_source_id=rso.id 
                 WHERE rso.risksource_categ_id=1
-                ORDER BY rso.title ASC
+                ORDER BY tis.total DESC
                 ";
         }
         else
@@ -289,7 +327,7 @@ class M_dashboard_dev extends CI_Model
             $year_now = date('Y');
 
             $q = "
-                SELECT ISNULL(tis.total, 0) total
+                SELECT rso.id ,rso.type_source ,rso.title, ISNULL(tis.total, 0) total
                     FROM dbo.admiseciso_risksource_sub rso
                     left join ( 
                         select count(1) total, stis.risk_source_id
@@ -298,7 +336,7 @@ class M_dashboard_dev extends CI_Model
                         group by stis.risk_source_id
                     ) tis on tis.risk_source_id=rso.id 
                 WHERE rso.risksource_categ_id=1
-                ORDER BY rso.title ASC
+                ORDER BY tis.total DESC
                 ";
         }
 
@@ -316,7 +354,7 @@ class M_dashboard_dev extends CI_Model
             $month = $this->input->post('month_fil', true);
 
             $q = "
-                SELECT TOP 10 ris.title, ISNULL(tis.total, 0) total
+                SELECT TOP 10 ris.id, ris.title, ISNULL(tis.total, 0) total
                     FROM dbo.admiseciso_risk_sub ris
                     LEFT JOIN ( 
                         select count(1) total, stis.risk_id
@@ -329,7 +367,7 @@ class M_dashboard_dev extends CI_Model
                             if(!empty($month)) $q .= " month(stis.event_date)=$month ";
                         $q .= " group by stis.risk_id
                     ) tis on tis.risk_id=ris.id 
-                WHERE ris.risk_categ_id=1
+                WHERE ris.risk_categ_id=1 AND ris.status=1
                 ORDER BY tis.total DESC
                 ";
 
@@ -339,7 +377,7 @@ class M_dashboard_dev extends CI_Model
             $year_now = date('Y');
 
             $q = "
-                SELECT TOP 10 ris.title, ISNULL(tis.total, 0) total
+                SELECT TOP 10 ris.id, ris.title, ISNULL(tis.total, 0) total
                     FROM dbo.admiseciso_risk_sub ris
                     LEFT JOIN ( 
                         select count(1) total, stis.risk_id
@@ -347,7 +385,7 @@ class M_dashboard_dev extends CI_Model
                         WHERE year(stis.event_date)='$year_now' and stis.status=1 and stis.disable=0
                         GROUP BY stis.risk_id
                     ) tis on tis.risk_id=ris.id 
-                WHERE ris.risk_categ_id=1
+                WHERE ris.risk_categ_id=1 AND ris.status=1
                 ORDER BY tis.total DESC
             ";
         }
@@ -366,7 +404,7 @@ class M_dashboard_dev extends CI_Model
             $month = $this->input->post('month_fil', true);
 
             $q = "
-                SELECT ISNULL(tis.total, 0) total
+                SELECT ass.id, ass.title, ISNULL(tis.total, 0) total
                     FROM dbo.admiseciso_assets_sub ass
                     LEFT JOIN ( 
                         select count(1) total, stis.assets_id
@@ -380,7 +418,7 @@ class M_dashboard_dev extends CI_Model
                         $q .= " group by stis.assets_id
                     ) tis on tis.assets_id=ass.id 
                 WHERE ass.assets_categ_id=1
-                ORDER BY ass.title ASC
+                ORDER BY tis.total DESC
                 ";
 
         }
@@ -389,7 +427,7 @@ class M_dashboard_dev extends CI_Model
             $year_now = date('Y');
 
             $q = "
-                SELECT ISNULL(tis.total, 0) total
+                SELECT ass.id, ass.title, ISNULL(tis.total, 0) total
                     FROM dbo.admiseciso_assets_sub ass
                     LEFT JOIN ( 
                         select count(1) total, stis.assets_id
@@ -398,7 +436,7 @@ class M_dashboard_dev extends CI_Model
                         group by stis.assets_id 
                     ) tis on tis.assets_id=ass.id 
                 WHERE ass.assets_categ_id=1
-                ORDER BY ass.title ASC
+                ORDER BY tis.total DESC
             ";
         }
 
@@ -589,13 +627,16 @@ class M_dashboard_dev extends CI_Model
         return $res;
     }
 
-    public function grap_risk_month_avg()
+    public function grap_detail_risk($sub_name)
     {
         if($this->input->post())
         {
             $area = $this->input->post('area_fil', true);
             $year = $this->input->post('year_fil', true);
+            $year = empty($year) ? date('Y') : $year;
             $month = $this->input->post('month_fil', true);
+            // $label = $this->input->post('label_fil', true);
+            $id = $this->input->post('id_fil', true);
 
             $q = "
                 WITH months(MonthNum) AS
@@ -606,34 +647,55 @@ class M_dashboard_dev extends CI_Model
                         FROM months
                     WHERE MonthNum < 12
                 )
-                SELECT m.MonthNum month_num, AVG(t.impact_level) avg_impact
+                SELECT m.MonthNum month_num ,count(t.id) total
                     FROM months m
-                    LEFT OUTER JOIN dbo.admiseciso_transaction AS t ON MONTH(t.event_date)=m.MonthNum AND  t.disable=0 AND t.status=1";
+                    LEFT OUTER JOIN (
+                        select str.id ,str.event_date ,str.area_id
+                            from dbo.admiseciso_transaction str
+                            where str.".$sub_name."=(select id from dbo.admiseciso_risk_sub where  id=$id) and str.disable=0 and str.status=1
+                        group by str.id ,str.event_date ,str.area_id
+                    ) AS t ON MONTH(t.event_date)=m.MonthNum ";
                     if(!empty($area) || !empty($year)) $q .= ' AND ';
                     if(!empty($area)) $q .= " t.area_id=$area ";
                     if(!empty($area) && !empty($year)) $q .= ' AND ';
                     if(!empty($year)) $q .= " year(t.event_date)=$year ";
             $q .= " GROUP BY m.MonthNum ";
+            // lower(title)=lower('".$label."'))
         }
-        else
-        {
-            $year_now = date('Y');
 
-            $q = "
-                WITH months(MonthNum) AS
-                (
-                    SELECT 1
-                    UNION ALL
-                    SELECT MonthNum+1 
-                        FROM months
-                    WHERE MonthNum < 12
-                )
-                SELECT m.MonthNum month_num, AVG(t.impact_level) avg_impact
-                    FROM months m
-                LEFT OUTER JOIN dbo.admiseciso_transaction AS t ON MONTH(t.event_date)=m.MonthNum AND YEAR(t.event_date)='$year_now' AND t.disable=0 AND t.status=1
-                GROUP BY m.MonthNum
+        $res = $this->srsdb->query($q);
+
+        return $res;
+    }
+
+    public function grap_detail_risk_sub($sub_name)
+    {
+        $area = $this->input->post('area_fil', true);
+        $year = $this->input->post('year_fil', true);
+        $year = empty($year) ? date('Y') : $year;
+        $month = $this->input->post('month_fil', true);
+        $id = $this->input->post('id_fil', true);
+
+        $q = "
+            SELECT rsu.id ,rsu.title ,ISNULL(t.total,0) total
+                FROM dbo.admiseciso_risk_sub rsu
+                LEFT OUTER JOIN (
+                    SELECT count(1) total ,atr.".$sub_name."
+                        from dbo.admiseciso_transaction atr 
+                        where atr.disable=0 AND atr.status=1";
+                        if(!empty($area) || !empty($year)) $q .= ' AND ';
+                        if(!empty($area)) $q .= " atr.area_id=$area ";
+                        if(!empty($area) && !empty($year)) $q .= ' AND ';
+                        if(!empty($year)) $q .= " year(atr.event_date)=$year ";
+                        if((!empty($area) || !empty($year)) && !empty($month)) $q .= ' AND ';
+                        if(!empty($month)) $q .= " month(atr.event_date)=$month ";
+                    $q .= "group by atr.".$sub_name."
+                ) t ON t.".$sub_name."=rsu.id
+            WHERE rsu.risk_categ_id=(select risk_categtarget_id from dbo.admiseciso_risk_sub where id=$id)
+            GROUP BY rsu.id ,rsu.title ,t.total
+            ORDER BY t.total DESC
             ";
-        }
+            // lower(title)=lower('".$label."')
 
         $res = $this->srsdb->query($q);
 
@@ -693,15 +755,13 @@ class M_dashboard_dev extends CI_Model
         return $res;
     }
 
-    public function grap_detail_risk($sub_name)
+    public function grap_risk_month_avg()
     {
         if($this->input->post())
         {
             $area = $this->input->post('area_fil', true);
             $year = $this->input->post('year_fil', true);
-            $year = empty($year) ? date('Y') : $year;
             $month = $this->input->post('month_fil', true);
-            $label = $this->input->post('label_fil', true);
 
             $q = "
                 WITH months(MonthNum) AS
@@ -712,52 +772,34 @@ class M_dashboard_dev extends CI_Model
                         FROM months
                     WHERE MonthNum < 12
                 )
-                SELECT m.MonthNum month_num ,count(t.id) total
+                SELECT m.MonthNum month_num, AVG(t.impact_level) avg_impact
                     FROM months m
-                    LEFT OUTER JOIN (
-                        select str.id ,str.event_date ,str.area_id
-                            from dbo.admiseciso_transaction str
-                            where str.".$sub_name."=(select id from dbo.admiseciso_risk_sub where lower(title)=lower('".$label."')) and str.disable=0 and str.status=1
-                        group by str.id ,str.event_date ,str.area_id
-                    ) AS t ON MONTH(t.event_date)=m.MonthNum ";
+                    LEFT OUTER JOIN dbo.admiseciso_transaction AS t ON MONTH(t.event_date)=m.MonthNum AND  t.disable=0 AND t.status=1";
                     if(!empty($area) || !empty($year)) $q .= ' AND ';
                     if(!empty($area)) $q .= " t.area_id=$area ";
                     if(!empty($area) && !empty($year)) $q .= ' AND ';
                     if(!empty($year)) $q .= " year(t.event_date)=$year ";
             $q .= " GROUP BY m.MonthNum ";
         }
+        else
+        {
+            $year_now = date('Y');
 
-        $res = $this->srsdb->query($q);
-
-        return $res;
-    }
-
-    public function grap_detail_risk_sub($sub_name)
-    {
-        $area = $this->input->post('area_fil', true);
-        $year = $this->input->post('year_fil', true);
-        $year = empty($year) ? date('Y') : $year;
-        $month = $this->input->post('month_fil', true);
-        $label = $this->input->post('label_fil', true);
-
-        $q = "
-            SELECT rsu.id ,rsu.title ,ISNULL(t.total,0) total
-                FROM dbo.admiseciso_risk_sub rsu
-                LEFT OUTER JOIN (
-                    SELECT count(1) total ,atr.".$sub_name."
-                        from dbo.admiseciso_transaction atr 
-                        where atr.disable=0 AND atr.status=1";
-                        if(!empty($area) || !empty($year)) $q .= ' AND ';
-                        if(!empty($area)) $q .= " atr.area_id=$area ";
-                        if(!empty($area) && !empty($year)) $q .= ' AND ';
-                        if(!empty($year)) $q .= " year(atr.event_date)=$year ";
-                        if((!empty($area) || !empty($year)) && !empty($month)) $q .= ' AND ';
-                        if(!empty($month)) $q .= " month(atr.event_date)=$month ";
-                    $q .= "group by atr.".$sub_name."
-                ) t ON t.".$sub_name."=rsu.id
-            WHERE rsu.risk_categ_id=(select risk_categtarget_id from dbo.admiseciso_risk_sub where lower(title)=lower('".$label."'))
-            GROUP BY rsu.id ,rsu.title ,t.total
+            $q = "
+                WITH months(MonthNum) AS
+                (
+                    SELECT 1
+                    UNION ALL
+                    SELECT MonthNum+1 
+                        FROM months
+                    WHERE MonthNum < 12
+                )
+                SELECT m.MonthNum month_num, AVG(t.impact_level) avg_impact
+                    FROM months m
+                LEFT OUTER JOIN dbo.admiseciso_transaction AS t ON MONTH(t.event_date)=m.MonthNum AND YEAR(t.event_date)='$year_now' AND t.disable=0 AND t.status=1
+                GROUP BY m.MonthNum
             ";
+        }
 
         $res = $this->srsdb->query($q);
 
@@ -771,6 +813,7 @@ class M_dashboard_dev extends CI_Model
         $year = empty($year) ? date('Y') : $year;
         $month = $this->input->post('month_fil', true);
         $label = $this->input->post('label_fil', true);
+        $id = $this->input->post('id_fil', true);
 
         $q = "
             WITH months(MonthNum) AS
@@ -781,19 +824,20 @@ class M_dashboard_dev extends CI_Model
                     FROM months
                 WHERE MonthNum < 12
             )
-            SELECT m.MonthNum month_num ,count(t.id) total
+            SELECT m.MonthNum month_num ,count(t.total) total
                 FROM months m
                 LEFT OUTER JOIN (
-                    select str.id ,str.event_date ,str.area_id
+                    select count(str.id) total ,str.event_date ,str.area_id
                         from dbo.admiseciso_transaction str
-                        where str.".$sub_name."=(select id from dbo.admiseciso_risksource_sub where lower(title)=lower('".$label."')) and str.disable=0 and str.status=1
+                        where str.".$sub_name."=(select id from dbo.admiseciso_risksource_sub where id=$id) and str.disable=0 and str.status=1
                     group by str.id ,str.event_date ,str.area_id
                 ) AS t ON MONTH(t.event_date)=m.MonthNum ";
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
                 if(!empty($area)) $q .= " t.area_id=$area ";
                 if(!empty($area) && !empty($year)) $q .= ' AND ';
                 if(!empty($year)) $q .= " year(t.event_date)=$year ";
-        $q .= " GROUP BY m.MonthNum ";
+        $q .= " GROUP BY m.MonthNum, t.total ORDER BY t.total DESC";
+        // lower(title)=lower('".$label."')
 
         $res = $this->srsdb->query($q);
 
@@ -806,7 +850,8 @@ class M_dashboard_dev extends CI_Model
         $year = $this->input->post('year_fil', true);
         $year = empty($year) ? date('Y') : $year;
         $month = $this->input->post('month_fil', true);
-        $label = $this->input->post('label_fil', true);
+        // $label = $this->input->post('label_fil', true);
+        $id = $this->input->post('id_fil', true);
 
         $q = "
             SELECT rsu.id ,rsu.title ,ISNULL(t.total,0) total
@@ -823,9 +868,11 @@ class M_dashboard_dev extends CI_Model
                         if(!empty($month)) $q .= " month(atr.event_date)=$month ";
                     $q .= "group by atr.".$sub_name."
                 ) t ON t.".$sub_name."=rsu.id
-            WHERE rsu.risksource_categ_id=(select risksource_categtarget_id from dbo.admiseciso_risksource_sub where lower(title)=lower('".$label."'))
+            WHERE rsu.risksource_categ_id=(select risksource_categtarget_id from dbo.admiseciso_risksource_sub where id=$id)
             GROUP BY rsu.id ,rsu.title ,t.total
+            ORDER BY t.total DESC
             ";
+            // lower(title)=lower('".$label."')
 
         $res = $this->srsdb->query($q);
 
@@ -838,7 +885,8 @@ class M_dashboard_dev extends CI_Model
         $year = $this->input->post('year_fil', true);
         $year = empty($year) ? date('Y') : $year;
         $month = $this->input->post('month_fil', true);
-        $label = $this->input->post('label_fil', true);
+        // $label = $this->input->post('label_fil', true);
+        $id = $this->input->post('id_fil', true);
 
         $q = "
             WITH months(MonthNum) AS
@@ -854,7 +902,7 @@ class M_dashboard_dev extends CI_Model
                 LEFT OUTER JOIN (
                     select str.id ,str.event_date ,str.area_id
                         from dbo.admiseciso_transaction str
-                        where str.".$sub_name."=( select top 1 id from dbo.admiseciso_assets_sub where trim(lower(title))=trim(lower('".$label."')) ) and str.disable=0 and str.status=1
+                        where str.".$sub_name."=( select top 1 id from dbo.admiseciso_assets_sub where id=$id ) and str.disable=0 and str.status=1
                     group by str.id ,str.event_date ,str.area_id
                 ) AS t ON MONTH(t.event_date)=m.MonthNum ";
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
@@ -862,6 +910,7 @@ class M_dashboard_dev extends CI_Model
                 if(!empty($area) && !empty($year)) $q .= ' AND ';
                 if(!empty($year)) $q .= " year(t.event_date)=$year ";
         $q .= " GROUP BY m.MonthNum ";
+        // where trim(lower(title))=trim(lower('".$label."')) )
 
         $res = $this->srsdb->query($q);
 
@@ -875,6 +924,7 @@ class M_dashboard_dev extends CI_Model
         $year = empty($year) ? date('Y') : $year;
         $month = $this->input->post('month_fil', true);
         $label = $this->input->post('label_fil', true);
+        $id = $this->input->post('id_fil', true);
 
         $q = "
             SELECT rsu.id ,rsu.title ,ISNULL(t.total,0) total
@@ -891,9 +941,11 @@ class M_dashboard_dev extends CI_Model
                         if(!empty($month)) $q .= " month(atr.event_date)=$month ";
                     $q .= "group by atr.".$sub_name."
                 ) t ON t.".$sub_name."=rsu.id
-            WHERE rsu.assets_categ_id=(select top 1 assets_categtarget_id from dbo.admiseciso_assets_sub where lower(title)=lower('".$label."'))
+            WHERE rsu.assets_categ_id=(select top 1 assets_categtarget_id from dbo.admiseciso_assets_sub where id=$id)
             GROUP BY rsu.id ,rsu.title ,t.total
+            ORDER BY t.total DESC
             ";
+            // lower(title)=lower('".$label."'))
 
         $res = $this->srsdb->query($q);
 

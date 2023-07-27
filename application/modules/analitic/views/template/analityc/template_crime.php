@@ -227,8 +227,8 @@ date_default_timezone_set('Asia/Jakarta');
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="<?= base_url('analitic/crime/Crime/Dashboard') ?>" class="nav-link
-                            <?php if ($this->uri->segment(4) == 'Dashboard') {
+                            <a href="<?= base_url('analitic/crime/Crime/dashboard') ?>" class="nav-link
+                            <?php if ($this->uri->segment(4) == 'dashboard') {
                                 echo 'active';
                             } ?>">
                                 <i class="nav-icon fas fa-tachometer-alt "></i>

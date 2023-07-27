@@ -15,17 +15,6 @@ class Kontraktor extends CI_Controller{
          redirect('NotFound');
       }
     }
-    
-    function index()
-    {
-      $data = array(
-        'user' => $this->db->get_where('admviewakun_admin', array('id_karyawan' => $this->session->userdata('id_akun')))->row(),
-      );
-      $this->load->view('template/header',$data);
-      $this->load->view('SecOps/Kontraktor');
-      $this->load->view('template/SecOpsJS');
-      $this->load->view('template/fotter');
-    }
 }
 
 ?>

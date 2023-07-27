@@ -90,12 +90,12 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="<?= base_url('assets') ?>/dist/img/security.png" class="img-circle elevation-2" alt="User Image">
+                <div style="padding-left:0" class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center justify-content-center">
+                    <div class="image pr-2">
+                        <img style="width: 3.0rem;" src="<?= base_url('assets') ?>/dist/img/security.png" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block" style="font-size: 14px">ISECURITY</a>
+                        <a href="#" class="d-block font-weight-bold" style="font-size: 18px">Security<br>BigData Analytic</a>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                        <li class="nav-item ">
+                        <li class="nav-item">
                             <a href="<?= base_url('Menu') ?>" class="nav-link
                             <?php if ($link == 'Menu' || $link == '') {
                                 echo 'active';
@@ -118,10 +118,9 @@
 
                         <!-- user_role() == 'ADMIN' -->
                         <?php if (is_super_admin() || is_app('SOP')) { ?>
-                            <li class="nav-header">Security</li>
+                            <!-- <li class="nav-header">Security</li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <!-- <i class="nav-icon fas fa-coeg"></i> -->
                                     <i class="nav-icon fas fa-layer-group"></i>
                                     <p>
                                         Security Operation
@@ -146,10 +145,10 @@
                                         <i class="right fas fa-angle-right"></i>
                                     </p>
                                 </a>
-                            </li>
+                            </li> -->
                         <?php } ?>
 
-                        <li class="nav-header">Data Analytic</li>
+                        <!-- <li class="nav-header">Data Analytic</li> -->
 
                         <?php if (is_super_admin() || is_app('SRS')) { ?>
                             <li class="nav-item">
@@ -161,7 +160,28 @@
                                     </p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="<?= site_url('analitic/soa/dashboard') ?>" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>
+                                        Security Operation
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>
+                                        Security Information
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                            </li>
                         <?php  } ?>
+
                         <?php if (is_super_admin() || is_app('CRI')) { ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('analitic/crime/Crime/dashboard') ?>" class="nav-link">

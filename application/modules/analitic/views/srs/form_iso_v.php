@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Internal Source</h1>
+                <h1>HUMINT Source</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="">Security Risk Survey</a></li>
-                    <li class="breadcrumb-item"><a href="">Internal Source</a></li>
+                    <li class="breadcrumb-item"><a href="">HUMINT Source</a></li>
                 </ol>
             </div>
         </div>
@@ -46,6 +46,7 @@
                         <button class="nav-link <?= is_author() ? 'active' : ''; ?>" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Input Data</button>
                         <?php } ?>
                         <button class="nav-link <?= !is_author() ? 'active' : ''; ?>" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">View Data</button>
+                        <button class="nav-link " id="nav-searchdata-tab" data-toggle="tab" data-target="#nav-searchdata" type="button" role="tab" aria-controls="nav-searchdata" aria-selected="false">Search Data</button>
                     </div>
                 </nav>
 
@@ -125,8 +126,8 @@
 
                                     <div class="form-group col-3">
                                         <label for="riskLevel">Risk Level</label>
-                                        <?= $select_rle; ?>
-                                        <!-- <input id="riskLevel" class="form-control" type="text" name="risk_level" readonly required> -->
+                                        <!-- <?= $select_rle; ?> -->
+                                        <input id="riskLevel" class="form-control" type="text" name="risk_level" readonly required>
                                     </div>
                                 </div>
 
@@ -164,7 +165,7 @@
                                 <div class="form-row mt-2 mb-4">
                                     <div class="form-group col-7">
                                         <label for="chronology">Chronology</label>
-                                        <textarea id="chronology" class="form-control" name="chronology" rows="3" required></textarea>
+                                        <textarea id="chronology" class="form-control" name="chronology" rows="3"></textarea>
                                     </div>
 
                                     <div class="form-group col-3">
@@ -261,6 +262,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tab-pane fade" id="nav-searchdata" role="tabpanel" aria-labelledby="nav-profile-tab">
+                       <div class="card">
+                            <div class="card-body px-lg-4 py-5">
+                                <form id="formSearch" method="post" action="#">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h1 class="text-white">SEARCH</h1>
+                                        </div>
+                                        <div class="col-8 mx-auto">
+                                            <!-- <input class="form-control" type="text" name="" placeholder="Type something..."> -->
+                                            <div class="input-group">
+                                                <input type="search" class="form-control rounded" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                                                <button type="submit" class="btn btn-primary">search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -269,6 +291,24 @@
 
 <!-- Detail Modal -->
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <!-- <h5 class="modal-title" id="detailModalLabel"></h5> -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Search Data Modal -->
+<div class="modal fade" id="detailSearchModal" tabindex="-1" aria-labelledby="detailSearchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -337,6 +377,8 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="<?= base_url('vendor/tinymce/tinymce.min.js'); ?>"></script>
 
 <script type="text/javascript">
     $( document ).ready(function() {
@@ -460,7 +502,7 @@
 
         $('input[name="date_filter"]').on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm'));
-      });
+        });
 
         $('#btn-filter').click(function(){
             table.ajax.reload();  //just reload table
@@ -500,6 +542,33 @@
                 success : function(data){
                     $(".lds-ring").hide();
                     $('#detailModal .modal-body').html(data);//menampilkan data ke dalam modal
+                }
+            });
+        })
+
+        $('#detailSearchModal').on('shown.bs.modal', function (e) {
+            const target = $(e.relatedTarget);
+            const modal = $(this);
+            const id = target.data('id')
+            const row = $(target).closest("tr");
+            const title = row.find("td:nth-child(2)");
+
+            // console.log(title)
+            // modal.find('#detailModalLabel').text(tds.text());
+
+            $.ajax({
+                url: '<?= site_url('analitic/srs/internal_source/detail_search'); ?>',
+                type: 'POST',
+                data: {
+                  id: id,
+                },
+                cache: false,
+                beforeSend: function() {
+                  $(".lds-ring").show();
+                },
+                success : function(data){
+                    $(".lds-ring").hide();
+                    $('#detailSearchModal .modal-body').html(data);//menampilkan data ke dalam modal
                 }
             });
         })
@@ -717,9 +786,8 @@
             const subRisk = $('#subRisk')
             const subRisk2 = $('#subRisk2')
 
-            $('#riskLevel').find(":selected").text(val.split(":")[1])
-            // $('#riskLevel').val(val.split(":")[1])
-            // console.log(val.split(':'))
+            $('#riskLevel').val(val.split(":")[1])
+            // $('#riskLevel').find(":selected").text(val.split(":")[1])
 
             subRisk.parents('.form-group').remove()
             subRisk2.parents('.form-group').remove()
@@ -802,5 +870,42 @@
             // })
             // .catch(() => alert('oh no!'));
         });
+
+        $('#formSearch').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = $(this).serialize();
+            console.log(data);
+            $.ajax({
+                url: '<?= site_url('analitic/srs/internal_source/search'); ?>',
+                type: 'POST',
+                data: data,
+                cache: false,
+                beforeSend: function() {
+                  $(".lds-ring").show();
+                },
+                success : function(data){
+                    $(".lds-ring").hide();
+                    $('#searchResult').remove();
+                    $('#formSearch input').parents('.col-8').after(data);
+                }
+            });
+
+        })
+    });
+    
+    // TinyMCE //
+    tinymce.init({ 
+        selector: '#chronology',
+        height: 300,
+        extended_valid_elements : "script[src|async|defer|type|charset]",
+        plugins: [
+            "advlist code autolink link image lists charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking spellchecker",
+            "table contextmenu directionality emoticons paste textcolor fullscreen"
+        ],
+        fullscreen_native: true,
+        toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect ",
+        toolbar2: "| print preview "
     });
 </script>

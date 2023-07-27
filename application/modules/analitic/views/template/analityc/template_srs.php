@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<?= base_url('assets') ?>/dist/css/adminlte.min.css?<?= date('Y-m-d H:i:s') ?>">
     <link rel="stylesheet" href="<?= base_url('assets') ?>/dist/css/jquery-ui.css">
     <!-- jQuery -->
-    <script src="<?= base_url('assets/dist/js/jquery.min.js');?>"></script>
+    <script src="<?= base_url('assets/dist/js/jquery.min.js'); ?>"></script>
 
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"
 			integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
@@ -32,10 +32,10 @@
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> -->
 
     <!-- Select2 -->
-    <link rel="stylesheet" href="<?= base_url('assets/dist/select2/css/select2.min.css');?>">
+    <link rel="stylesheet" href="<?= base_url('assets/dist/select2/css/select2.min.css'); ?>">
 
-    <link rel="stylesheet" href="<?= base_url('assets/dist/datetimepicker/jquery.datetimepicker.css');?>">
-    <link rel="stylesheet" href="<?= base_url('assets/dist/datetimerange/daterangepicker.css');?>">
+    <link rel="stylesheet" href="<?= base_url('assets/dist/datetimepicker/jquery.datetimepicker.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/dist/datetimerange/daterangepicker.css'); ?>">
 
     <!--  -->
     <script src="<?= base_url('assets/dist/js') ?>/jquery.dataTables.min.js"></script>
@@ -44,14 +44,18 @@
     <script src="<?= base_url('assets/dist/js') ?>/dataTables.fixedHeader.min.js"></script>
 
     <!-- tags input -->
-    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/dist/css/jquery-tagsinput.min.css');?>" />
-    <script src="<?= base_url('assets/dist/js/jquery-tagsinput.min.js');?>" defer></script>
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/dist/css/jquery-tagsinput.min.css'); ?>" />
+    <script src="<?= base_url('assets/dist/js/jquery-tagsinput.min.js'); ?>" defer></script>
 
     <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
     <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
 
     <!-- TEMPLATE SRS CUSTOM -->
     <link rel="stylesheet" href="<?= base_url('assets') ?>/css/srs.css?<?= date('Y-m-d H:i:s') ?>">
+
+    <link rel="stylesheet" href="<?= base_url('assets/dist/css/bootstrap-datepicker.min.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/dist/css/bootstrap-datepicker.css'); ?>">
+
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
     <script type="text/javascript" src="<?= base_url('assets/dist') ?>/js/kuma-gauge.jquery.js"></script>
@@ -88,7 +92,7 @@
 
         <!-- Main Sidebar Container -->
         <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4"> -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed" style="padding-top: 8vh;">
             <!-- Brand Logo -->
             <a href="<?= base_url('assets') ?>/index3.html" class="brand-link">
                 <img src="<?= base_url('assets') ?>/dist/img/logo.jpeg" alt="AdminLTE Logo" style='margin-left:2px' class="brand-image img-square elevation-5" style="opacity: .8">
@@ -135,49 +139,81 @@
                         </li> -->
 
                         <?php if (is_module('SRSISO')) { ?>
-                            <li class="nav-item">
-                                <a href="<?= base_url('analitic/srs/internal_source') ?>" class="nav-link <?= ($link == 'internal_source') ? 'active' : ''; ?>">
+                            <li class="nav-item <?= ($sub_link !== '' && $sub_link == 'dashboard_humint' || $sub_link == 'internal_source') ? 'menu-open' : ''; ?>">
+                                <a href="<?= base_url('analitic/srs/dashboard/humint') ?>" class="nav-link">
                                     <i class="nav-icon fas fa-share-alt-square"></i>
                                     <p>
-                                        Internal Source
+                                        <!-- Internal Source -->
+                                        HUMINT Source
                                         <!-- <i class="right fas fa-angle-left"></i> -->
                                     </p>
                                 </a>
-                                <!-- <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('analitic/srs/internal_source/form') ?>" class="nav-link <?= ($sub_link !== '' && $sub_link == 'form') ? 'active' : ''; ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Form Input</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Master</p>
-                                    </a>
-                                </li>
-                            </ul> -->
-                            </li>
-                        <?php } ?>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('analitic/srs/dashboard_humint') ?>" class="nav-link <?= ($sub_link !== '' && $sub_link == 'dashboard_humint') ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('analitic/srs/internal_source') ?>" class="nav-link <?= ($sub_link !== '' && $sub_link == 'internal_source') ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Input & View</p>
+                                        </a>
+                                    </li>
 
-                        <?php if (is_module('SRSSOI')) { ?>
-                            <li class="nav-item">
-                                <a href="<?= base_url('analitic/srs/soi') ?>" class="nav-link <?= ($link == 'soi') ? 'active' : ''; ?>">
-                                    <i class="nav-icon fas fa-shield-alt"></i>
-                                    <p>SOI</p>
-                                </a>
+                                </ul>
                             </li>
                         <?php } ?>
 
                         <?php if (is_module('SRSESO') || is_super_admin()) { ?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-copy"></i>
-                                <p>
-                                    External Source
-                                </p>
-                            </a>
-                        </li>
+                            <li class="nav-item <?= ($sub_link !== '' && $sub_link == 'dashboard_osint' || $link == 'osint') ? 'menu-open' : ''; ?> ">
+                                <a href="<?= base_url('analitic/srs/osint') ?>" class="nav-link <?= ($link == 'osint') ? 'active' : ''; ?>">
+                                    <i class="nav-icon fas fa-copy"></i>
+                                    <p>
+                                        <!-- External Source -->
+                                        OSINT Source
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('analitic/srs/dashboard_osint') ?>" class="nav-link <?= ($sub_link !== '' && $sub_link == 'dashboard_osint') ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('analitic/srs/osint') ?>" class="nav-link  <?= ($link == 'osint' &&  $sub_link != 'dashboard') ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Input & View</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (is_module('SRSSOI')) { ?>
+                            <li class="nav-item <?= ($link !== '' && $link == 'soi' || $link == 'dashboard_soi') ? 'menu-open' : ''; ?>">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-shield-alt"></i>
+                                    <p>SOI</p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('analitic/srs/dashboard_soi') ?>" class="nav-link <?= ($link !== '' && $link == 'dashboard_soi') ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('analitic/srs/soi') ?>" class="nav-link <?= ($link !== '' && $link == 'soi') ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Input & View</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
                         <?php } ?>
                     </ul>
                 </nav>
@@ -232,7 +268,7 @@
     <script type="text/javascript" src="<?= base_url('assets/dist/js/jquery-ui.js'); ?>"></script>
 
     <!-- Date Time Picker -->
-    <!-- <script type="text/javascript" src="<?= base_url('assets/dist/datetimepicker/jquery.js') ?>"></script> -->
+    <script type="text/javascript" src="<?= base_url('assets/dist/js/bootstrap-datepicker.min.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/dist/datetimepicker/jquery.datetimepicker.js'); ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/dist/datetimerange/moment.min.js'); ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/dist/datetimerange/daterangepicker.min.js'); ?>"></script>
@@ -242,8 +278,8 @@
 <script>
     $(document).ready(function() {
 
-        $('#tgl1,#tgl2').datepicker({
-            dateFormat: 'yy-mm-dd',
+        $('#tgl1,#tgl2,#datetimepicker2').datepicker({
+            format: 'yyyy-mm-dd',
             autoclose: true
         });
         $('#tgl13').datepicker({
