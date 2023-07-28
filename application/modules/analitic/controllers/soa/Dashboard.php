@@ -117,9 +117,6 @@ class Dashboard extends CI_Controller
             $people[] = array(
                 'label' => $key,
                 'data' => $people_item,
-                'borderColor' => $color,
-                // 'borderColor' => "rgba(".rand(0, 255).", ".rand(0, 99).", ". rand(0, 255).", 1",
-                'backgroundColor' => $color,
             );
 
             $num++;
@@ -144,7 +141,7 @@ class Dashboard extends CI_Controller
     {
 
         $vehicle = $this->soadb->query("SELECT  s.title , s.id from admisecdrep_sub  s
-        where s.categ_id  = 1   and s.disable  = 0  and id != 33  ");
+        where s.categ_id  = 1   and s.disable  = 0  and  id in(1,2,3,1037)  ");
         $result = array();
         foreach ($vehicle->result() as $v) {
             $res = array(

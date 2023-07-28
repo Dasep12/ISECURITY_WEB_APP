@@ -19,6 +19,7 @@
     </div>
 </section>
 
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -233,15 +234,16 @@
                 bpTotal = $("#bpTotal"),
                 contractorTotal = $("#contractorTotal"),
                 peoplePerDay = $("#peoplePerDay"),
-            ]
-
-            console.log(area)
+            ];
 
             people(field);
             peopleCategory(field);
             vehicle(field);
-            // peoplePerDays(peopleCategoryDayChart, field);
             material(field);
+            FvehiclePie(field);
+            FpiePeople(field);
+            FpieMaterial(field);
+            FtraficLine(field);
         })
 
         people(field);
@@ -251,6 +253,7 @@
         FvehiclePie(field);
         FpiePeople(field);
         FpieMaterial(field);
+        FtraficLine(field);
     })
 
     function people(field) {
@@ -417,7 +420,7 @@
         },
         plotOptions: {
             pie: {
-                // innerSize: 60,
+                size: 170,
                 showInLegend: true,
                 depth: 30,
                 allowPointSelect: true,
@@ -426,9 +429,15 @@
                     enabled: true,
                     // distance: -60,
                     color: "white",
-                    format: "{point.y}",
+                    formatter: function() {
+                        return '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
+                    }
                 }
             },
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:11px"></span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
         },
         series: [{
             data: []
@@ -447,12 +456,13 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
+                document.getElementById("loader").style.display = "block";
             },
             complete: function() {
-                // document.getElementById("loader").style.display = "none";
+                document.getElementById("loader").style.display = "none";
             },
             success: function(res) {
+                // console.log(res)
                 let data = JSON.parse(res);
                 var seriesLength = vehiclePie.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
@@ -501,7 +511,7 @@
         plotOptions: {
             pie: {
                 showInLegend: true,
-                // innerSize: 60,
+                size: 170,
                 depth: 30,
                 allowPointSelect: true,
                 cursor: "pointer",
@@ -509,9 +519,15 @@
                     enabled: true,
                     // distance: -60,
                     color: "white",
-                    format: "{point.y}",
+                    formatter: function() {
+                        return '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
+                    }
                 }
             },
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:11px"></span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
         },
         series: [{
             name: 'Medals',
@@ -534,13 +550,14 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
+                document.getElementById("loader").style.display = "block";
             },
             complete: function() {
-                // document.getElementById("loader").style.display = "none";
+                document.getElementById("loader").style.display = "none";
             },
             success: function(res) {
-                console.log(res);
+                // console.log(res);
+
                 let data = JSON.parse(res);
                 // console.log(data)
                 var seriesLength = piePeople.series.length;
@@ -588,8 +605,9 @@
         },
         plotOptions: {
             pie: {
+
                 showInLegend: true,
-                // innerSize: 60,
+                size: 170,
                 depth: 30,
                 allowPointSelect: true,
                 cursor: "pointer",
@@ -597,9 +615,16 @@
                     enabled: true,
                     // distance: -60,
                     color: "white",
-                    format: "{point.y}",
-                }
+                    formatter: function() {
+                        return '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
+                    }
+                },
+
             },
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:11px"></span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
         },
         series: [{
             name: 'Medals',
@@ -612,7 +637,8 @@
             }, {
                 name: 'Surat Jalan',
                 y: 300
-            }]
+            }],
+
         }]
     });
 
@@ -628,13 +654,13 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
+                document.getElementById("loader").style.display = "block";
             },
             complete: function() {
-                // document.getElementById("loader").style.display = "none";
+                document.getElementById("loader").style.display = "none";
             },
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 let data = JSON.parse(res);
                 var seriesLength = pieMaterial.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
@@ -642,14 +668,12 @@
                 }
                 let datas = [];
                 for (let i = 0; i < data.length; i++) {
-                    console.log(data[i].total);
                     datas.push({
                         name: data[i].title,
                         // y: data[i].total
                         y: parseInt(data[i].total)
                     });
                 }
-                console.log(datas);
                 pieMaterial.addSeries({
                     data: datas
                 });
@@ -666,7 +690,7 @@
     // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
     var traficLine = Highcharts.chart('traficDay', {
         chart: {
-            type: 'line',
+            type: 'spline',
             backgroundColor: 'transparent',
             height: 320,
         },
@@ -691,25 +715,57 @@
             }
         },
         plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
+            series: {
+                label: {
+                    connectorAllowed: false
                 },
-                enableMouseTracking: false
+                marker: {
+                    fillColor: '#FFFFFF',
+                    lineWidth: 4,
+                    lineColor: null // inherit from series
+                }
             }
         },
         series: [{
             name: 'Business Partner',
-            data: [12, 23, 4, 5, 5, 20, 45, 66, 33, 23, 20, 67, 44, 33, 21, 12, 23, 4, 5, 5, 13, 19, 56, 34, 22, 20, 45, 4, 5, 5, 20],
-            lineWidth: 4
+            data: [],
         }, {
             name: 'Contractor',
-            data: [13, 19, 56, 34, 22, 20, 45, 66, 33, 23, 13, 19, 56, 34, 22, 20, 45, 66, 33, 23, 67, 44, 33, 21],
-            lineWidth: 4
+            data: [],
         }, {
             name: 'Visitor',
-            data: [20, 67, 44, 33, 21, 12, 23, 4, 5, 5, 20, 45, 66, 33, 23, 13, 20, 45, 66, 33, 23, 33, 23, 13, 19],
-            lineWidth: 4
+            data: [],
         }]
     });
+
+    function FtraficLine(field) {
+        $.ajax({
+            url: '<?= site_url('analitic/soa/dashboard/peopleCategoryDayTotal'); ?>',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("loader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("loader").style.display = "none";
+            },
+            success: function(res) {
+                let data = JSON.parse(res);
+
+                let datas = [];
+                for (let i = 0; i < data.length; i++) {
+                    traficLine.series[i].update({
+                        data: data[i].data,
+                        name: data[i].label
+                    });
+                }
+
+            }
+        });
+    }
 </script>

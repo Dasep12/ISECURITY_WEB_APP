@@ -42,10 +42,15 @@ class M_dashboard extends CI_Model
         $month = $this->input->post('month_fil', true);
         $year = $this->input->post('year_fil', true);
 
+        // $q = "SELECT FORMAT(COALESCE(SUM(b.attendance),0), 'N0') AS total_people
+        //         FROM soa_bi.dbo.admisecdrep_transaction as a
+        //         INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id 
+        //         WHERE a.disable=0";
         $q = "SELECT FORMAT(COALESCE(SUM(b.attendance),0), 'N0') AS total_people
-                FROM soa_bi.dbo.admisecdrep_transaction as a
-                INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id 
-                WHERE a.disable=0";
+        FROM soa_bi.dbo.admisecdrep_transaction as a
+        INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id and 
+        b.people_id in (7,8,9)
+        WHERE a.disable=0 ";
 
         if (!empty($area)) $q .= " AND a.area_id='$area'";
         if (!empty($month)) $q .= " AND MONTH(a.report_date)='$month'";
@@ -65,7 +70,7 @@ class M_dashboard extends CI_Model
         $q = "SELECT FORMAT(COALESCE(SUM(atv.amount),0), 'N0') AS total
                 FROM soa_bi.dbo.admisecdrep_transaction as a
                 INNER JOIN soa_bi.dbo.admisecdrep_transaction_vehicle atv ON atv.trans_id=a.id 
-            WHERE a.disable=0";
+            WHERE a.disable=0 and atv.type_id in (1,2,3,1037) ";
 
         if (!empty($area)) $q .= " AND a.area_id='$area'";
         if (!empty($month)) $q .= " AND MONTH(a.report_date)='$month'";
@@ -120,7 +125,7 @@ class M_dashboard extends CI_Model
             )
             SELECT m.DayNum day_num ,tas.id AS people_categ ,tas.title ,COALESCE(SUM(trx.total),0) total
             FROM days m
-                INNER JOIN soa_bi.dbo.admisecdrep_sub tas ON tas.categ_id=2 AND tas.id != 32
+                INNER JOIN soa_bi.dbo.admisecdrep_sub tas ON tas.id in (7,8,9) 
                 LEFT OUTER JOIN (
                     SELECT atp.people_id, atr.report_date, atr.disable, SUM(atp.attendance) AS total
                         FROM soa_bi.dbo.admisecdrep_transaction atr
@@ -129,7 +134,7 @@ class M_dashboard extends CI_Model
                     GROUP BY atp.people_id, atr.report_date, atr.disable
                 ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.people_id=tas.id AND YEAR(trx.report_date)='$year' 
                     AND MONTH(trx.report_date)='$month'
-            WHERE tas.disable=0
+            WHERE tas.disable=0 
             GROUP BY m.DayNum, tas.id ,tas.title
             ORDER BY tas.id ASC";
 
@@ -147,7 +152,7 @@ class M_dashboard extends CI_Model
         $q = "SELECT FORMAT(COALESCE(SUM(atm.document_in),0), 'N0') AS total
                 FROM soa_bi.dbo.admisecdrep_transaction atr
                 LEFT JOIN soa_bi.dbo.admisecdrep_transaction_material atm ON atm.trans_id=atr.id
-            WHERE atr.disable=0";
+            WHERE atr.disable=0 and atm.category_id in (12,1035,1036)";
 
         if (!empty($year)) $q .= " AND YEAR(atr.report_date)='$year'";
         if (!empty($month)) $q .= " AND MONTH(atr.report_date)='$month'";
@@ -164,7 +169,7 @@ class M_dashboard extends CI_Model
         $month = $this->input->post('month_fil', true);
         $year = $this->input->post('year_fil', true);
 
-        $q = "SELECT FORMAT(COALESCE(SUM(atv.amount),0), 'N0') AS total
+        $q = "SELECT COALESCE(SUM(atv.amount),0) AS total
                 FROM admisecdrep_transaction as a
                 INNER JOIN admisecdrep_transaction_vehicle atv ON atv.trans_id=a.id 
             WHERE a.disable=0 and atv.type_id = '$id'  ";
@@ -189,7 +194,7 @@ class M_dashboard extends CI_Model
         $year = $this->input->post('year_fil', true);
 
         $q = "SELECT tas.id, tas.title
-                ,FORMAT(COALESCE(trx.total, 0), 'N0') AS total_kehadiran
+                ,COALESCE(trx.total, 0) AS total_kehadiran
                 FROM soa_bi.dbo.admisecdrep_sub tas
                 LEFT JOIN (
                     SELECT atp.people_id, atr.disable, SUM(atp.attendance) AS total
@@ -216,7 +221,7 @@ class M_dashboard extends CI_Model
         $year = $this->input->post('year_fil', true);
 
         $q = "SELECT tas.id, tas.title
-                ,FORMAT(COALESCE(trx.total, 0), 'N0') AS total
+                ,COALESCE(trx.total, 0) AS total
                 FROM soa_bi.dbo.admisecdrep_sub tas
                 LEFT JOIN (
                     SELECT atp.category_id, atr.disable, SUM(atp.document_in) AS total
