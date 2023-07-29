@@ -77,6 +77,10 @@ a:hover { color: #c2c7d0 !important; }
     color: #ffffff !important;
 }
 
+.tab-content button[type="submit"] {
+    background-color: rgb(50, 68, 115) !important;
+}
+
 .content-wrapper {
     background-color: rgb(248, 248, 248) !important;
     /* background-color: rgb(75 85 106 / 16%) !important; */
