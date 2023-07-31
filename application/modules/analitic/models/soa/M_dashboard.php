@@ -42,10 +42,6 @@ class M_dashboard extends CI_Model
         $month = $this->input->post('month_fil', true);
         $year = $this->input->post('year_fil', true);
 
-        // $q = "SELECT FORMAT(COALESCE(SUM(b.attendance),0), 'N0') AS total_people
-        //         FROM soa_bi.dbo.admisecdrep_transaction as a
-        //         INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id 
-        //         WHERE a.disable=0";
         $q = "SELECT FORMAT(COALESCE(SUM(b.attendance),0), 'N0') AS total_people
         FROM soa_bi.dbo.admisecdrep_transaction as a
         INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id and 
@@ -77,7 +73,6 @@ class M_dashboard extends CI_Model
         if (!empty($year)) $q .= " AND YEAR(a.report_date)='$year'";
 
         $res_q = $this->srsdb->query($q);
-
         return $res_q;
     }
 
@@ -101,7 +96,7 @@ class M_dashboard extends CI_Model
 
         $q .= " GROUP BY atp.people_id, atr.disable
                 ) AS trx ON trx.people_id=tas.id 
-            WHERE tas.categ_id=2 AND tas.disable=0 ORDER BY tas.id ASC";
+            WHERE tas.categ_id=2 AND tas.disable=0 ORDER BY tas.id ASC ";
 
         $res_q = $this->srsdb->query($q);
 
@@ -114,29 +109,118 @@ class M_dashboard extends CI_Model
         $month = empty($month) ? date('m') : $month;
         $year = $this->input->post('year_fil', true);
         $year = empty($year) ? date('Y') : $year;
-
+        $area = $this->input->post('area_fil', true);
+        $whereArea = "";
+        if ($area) {
+            $whereArea .= 'AND trx.area_id  = ' . $area;
+        }
+        $kalendar = CAL_GREGORIAN;
+        $days = cal_days_in_month($kalendar, $month, $year);
         $q = "WITH days(DayNum) AS
             (
                 SELECT 1
                 UNION ALL
                 SELECT DayNum+1 
                     FROM days
-                WHERE DayNum < 30
+                WHERE DayNum < '$days'
             )
             SELECT m.DayNum day_num ,tas.id AS people_categ ,tas.title ,COALESCE(SUM(trx.total),0) total
             FROM days m
                 INNER JOIN soa_bi.dbo.admisecdrep_sub tas ON tas.id in (7,8,9) 
                 LEFT OUTER JOIN (
-                    SELECT atp.people_id, atr.report_date, atr.disable, SUM(atp.attendance) AS total
+                    SELECT atp.people_id, atr.report_date, atr.disable, atr.area_id  , SUM(atp.attendance) AS total
                         FROM soa_bi.dbo.admisecdrep_transaction atr
                         INNER JOIN soa_bi.dbo.admisecdrep_transaction_people atp ON atp.trans_id=atr.id
-                        -- WHERE MONTH(atr.report_date)=4 AND atr.disable=0
-                    GROUP BY atp.people_id, atr.report_date, atr.disable
+                    GROUP BY atp.people_id, atr.report_date, atr.disable , atr.area_id 
                 ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.people_id=tas.id AND YEAR(trx.report_date)='$year' 
                     AND MONTH(trx.report_date)='$month'
+                    $whereArea
             WHERE tas.disable=0 
             GROUP BY m.DayNum, tas.id ,tas.title
             ORDER BY tas.id ASC";
+
+        $res_q = $this->srsdb->query($q);
+
+        return $res_q;
+    }
+
+    public function vehicleCategoryDayTotal()
+    {
+        $month = $this->input->post('month_fil', true);
+        $month = empty($month) ? date('m') : $month;
+        $year = $this->input->post('year_fil', true);
+        $year = empty($year) ? date('Y') : $year;
+        $area = $this->input->post('area_fil', true);
+        $whereArea = "";
+        if ($area) {
+            $whereArea .= 'AND trx.area_id  = ' . $area;
+        }
+        $kalendar = CAL_GREGORIAN;
+        $days = cal_days_in_month($kalendar, $month, $year);
+        $q = "WITH days(DayNum) AS
+        (
+            SELECT 1
+            UNION ALL
+            SELECT DayNum+1 
+                FROM days
+            WHERE DayNum < '$days'
+        )
+        SELECT m.DayNum day_num ,tas.id AS vehicle_categ ,tas.title ,COALESCE(SUM(trx.total),0) total
+        FROM days m
+            INNER JOIN soa_bi.dbo.admisecdrep_sub tas ON tas.id in (1,2,3,1037) 
+            LEFT OUTER JOIN (
+                SELECT atp.type_id, atr.report_date, atr.disable, atr.area_id  ,  SUM(atp.amount) AS total
+                    FROM soa_bi.dbo.admisecdrep_transaction atr
+                    INNER JOIN soa_bi.dbo.admisecdrep_transaction_vehicle atp ON atp.trans_id=atr.id
+                GROUP BY atp.type_id, atr.report_date, atr.disable , atr.area_id
+            ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.type_id=tas.id AND YEAR(trx.report_date)='$year' 
+                AND MONTH(trx.report_date)='$month'
+                $whereArea
+        WHERE tas.disable=0 
+        GROUP BY m.DayNum, tas.id ,tas.title
+        ORDER BY tas.id ASC";
+
+        $res_q = $this->srsdb->query($q);
+
+        return $res_q;
+    }
+
+
+    public function documentCategoryDayTotal()
+    {
+        $month = $this->input->post('month_fil', true);
+        $month = empty($month) ? date('m') : $month;
+        $year = $this->input->post('year_fil', true);
+        $year = empty($year) ? date('Y') : $year;
+        $area = $this->input->post('area_fil', true);
+        $whereArea = "";
+        if ($area) {
+            $whereArea .= 'AND trx.area_id  = ' . $area;
+        }
+        $kalendar = CAL_GREGORIAN;
+        $days = cal_days_in_month($kalendar, $month, $year);
+        $q = "WITH days(DayNum) AS
+        (
+            SELECT 1
+            UNION ALL
+            SELECT DayNum+1 
+                FROM days
+            WHERE DayNum < '$days'
+        )
+        SELECT m.DayNum day_num ,tas.id AS document_categ ,tas.title ,COALESCE(SUM(trx.total),0) total
+        FROM days m
+            INNER JOIN soa_bi.dbo.admisecdrep_sub tas ON tas.id in (12,1036,1035) 
+            LEFT OUTER JOIN (
+                SELECT atp.category_id, atr.report_date, atr.disable,  atr.area_id  , SUM(atp.document_in) AS total
+                    FROM soa_bi.dbo.admisecdrep_transaction atr
+                    INNER JOIN soa_bi.dbo.admisecdrep_transaction_material atp ON atp.trans_id=atr.id
+                GROUP BY atp.category_id, atr.report_date, atr.disable , atr.area_id
+            ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.category_id=tas.id AND YEAR(trx.report_date)='$year' 
+                AND MONTH(trx.report_date)='$month'
+                $whereArea
+        WHERE tas.disable=0 
+        GROUP BY m.DayNum, tas.id ,tas.title
+        ORDER BY tas.id ASC";
 
         $res_q = $this->srsdb->query($q);
 
@@ -239,5 +323,115 @@ class M_dashboard extends CI_Model
         $res_q = $this->srsdb->query($q);
 
         return $res_q;
+    }
+
+
+    // data setahun
+    public function peopleSetahun()
+    {
+        $year = $this->input->post("year");
+        $area = $this->input->post("plant");
+        $wherePlant = "";
+        if ($area) {
+            $wherePlant .= " AND a.area_id='$area'";
+        }
+
+        $res = $this->soadb->query(";WITH months(MonthNumber) AS
+        (
+            SELECT 1
+            UNION ALL
+            SELECT MonthNumber+1 
+            FROM months
+            WHERE MonthNumber < 12
+        )
+        select
+        (
+          SELECT COALESCE(SUM(b.attendance),0) AS total_people
+                FROM soa_bi.dbo.admisecdrep_transaction as a
+                INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id and 
+                b.people_id in (7,8,9)
+                WHERE a.disable=0
+                AND MONTH(a.report_date)= MonthNumber
+                AND YEAR(a.report_date)='$year'
+                $wherePlant
+        )as total 
+        from months;");
+        $data = array();
+
+        foreach ($res->result() as $r) {
+            $data[] = $r->total;
+        }
+        return $data;
+    }
+
+
+    public function materialSetahun()
+    {
+        $year = $this->input->post("year");
+        $area = $this->input->post("plant");
+        $wherePlant = "";
+        if ($area) {
+            $wherePlant .= " AND atr.area_id='$area'";
+        }
+        $res = $this->soadb->query(";WITH months(MonthNumber) AS
+        (
+            SELECT 1
+            UNION ALL
+            SELECT MonthNumber+1 
+            FROM months
+            WHERE MonthNumber < 12
+        )
+        select MonthNumber  as bulan  ,
+        (
+          SELECT COALESCE(SUM(atm.document_in),0) AS total
+                    FROM soa_bi.dbo.admisecdrep_transaction atr
+                    LEFT JOIN soa_bi.dbo.admisecdrep_transaction_material atm ON atm.trans_id=atr.id
+                WHERE atr.disable=0 and atm.category_id in (12,1035,1036)
+                AND MONTH(atr.report_date)= MonthNumber
+                AND YEAR(atr.report_date)='$year'
+                $wherePlant 
+        )as total 
+        from months; ");
+        $data = array();
+
+        foreach ($res->result() as $r) {
+            $data[] = $r->total;
+        }
+        return $data;
+    }
+
+    public function vehicleSetahun()
+    {
+        $year = $this->input->post("year");
+        $area = $this->input->post("plant");
+        $wherePlant = "";
+        if ($area) {
+            $wherePlant .= " AND a.area_id='$area'";
+        }
+        $res = $this->soadb->query(";WITH months(MonthNumber) AS
+        (
+            SELECT 1
+            UNION ALL
+            SELECT MonthNumber+1 
+            FROM months
+            WHERE MonthNumber < 12
+        )
+        select MonthNumber  as bulan  ,
+        (
+          SELECT COALESCE(SUM(atv.amount),0) AS total
+                        FROM soa_bi.dbo.admisecdrep_transaction as a
+                        INNER JOIN soa_bi.dbo.admisecdrep_transaction_vehicle atv ON atv.trans_id=a.id 
+                    WHERE a.disable=0 and atv.type_id in (1,2,3,1037)
+                AND MONTH(a.report_date)= MonthNumber
+                AND YEAR(a.report_date)='$year'
+                $wherePlant
+        )as total 
+        from months; ");
+        $data = array();
+
+        foreach ($res->result() as $r) {
+            $data[] = $r->total;
+        }
+        return $data;
     }
 }

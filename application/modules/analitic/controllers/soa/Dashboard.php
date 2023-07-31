@@ -128,6 +128,75 @@ class Dashboard extends CI_Controller
         echo json_encode($people, true);
     }
 
+    public function vehicleCategoryDayTotal()
+    {
+        $peopleCategoryDayTotal = $this->M_dashboard->vehicleCategoryDayTotal()->result_array();
+
+        $people = array();
+
+
+        $categ = array();
+        $key = 'title';
+        foreach ($peopleCategoryDayTotal as $val) {
+            if (array_key_exists($key, $val)) {
+                $categ[$val[$key]][] = $val;
+            } else {
+                $categ[""][] = $val;
+            }
+        }
+
+        $people_item = array();
+        $num = 1;
+        foreach ($categ as $key => $pcd) {
+
+            foreach ($pcd as $i => $sva) {
+                $people_item[$i] = $sva['total'];
+            }
+            $people[] = array(
+                'label' => $key,
+                'data' => $people_item,
+            );
+
+            $num++;
+        }
+
+        echo json_encode($people, true);
+    }
+    public function documentCategoryDayTotal()
+    {
+        $peopleCategoryDayTotal = $this->M_dashboard->documentCategoryDayTotal()->result_array();
+
+        $people = array();
+
+
+        $categ = array();
+        $key = 'title';
+        foreach ($peopleCategoryDayTotal as $val) {
+            if (array_key_exists($key, $val)) {
+                $categ[$val[$key]][] = $val;
+            } else {
+                $categ[""][] = $val;
+            }
+        }
+
+        $people_item = array();
+        $num = 1;
+        foreach ($categ as $key => $pcd) {
+
+            foreach ($pcd as $i => $sva) {
+                $people_item[$i] = $sva['total'];
+            }
+            $people[] = array(
+                'label' => $key,
+                'data' => $people_item,
+            );
+
+            $num++;
+        }
+
+        echo json_encode($people, true);
+    }
+
     private function getColor($num)
     {
         $hash = md5('color' . $num);
@@ -167,5 +236,21 @@ class Dashboard extends CI_Controller
     {
 
         echo json_encode($this->M_dashboard->pieMaterial()->result());
+    }
+
+
+    // graphic 
+    public function grapichSetahun()
+    {
+        $people = $this->M_dashboard->peopleSetahun();
+        $document = $this->M_dashboard->materialSetahun();
+        $vehicle = $this->M_dashboard->vehicleSetahun();
+
+        $result = array(
+            array('label' => 'People', 'data' => $people),
+            array('label' => 'Vehicle', 'data' => $vehicle),
+            array('label' => 'Document', 'data' => $document),
+        );
+        echo json_encode($result);
     }
 }

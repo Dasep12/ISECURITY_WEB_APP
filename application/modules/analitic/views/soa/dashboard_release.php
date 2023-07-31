@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="form-group col d-flex align-items-end justify-content-end">
-                                    <span class="h1 ff-fugazone title-dashboard">SOA_Dashboard</span>
+                                    <span class="h3 ff-fugazone title-dashboard">Security Operational Analytic</span>
                                 </div>
                             </div>
                         </form>
@@ -56,7 +56,12 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card card-ver">
-                            <div class="card-body">
+                            <div class="card-body people" style="cursor:pointer">
+                                <div style="position: absolute;left:50%;top:40%" class="row justify-content-center loader">
+                                    <div class="overlay" style="display:block" id="totalPeople">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
+                                </div>
                                 <div class="img">
                                     <img src="<?= base_url() ?>/assets/images/icon/soa/ancestors.png">
                                 </div>
@@ -70,7 +75,12 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="card card-ver">
-                            <div class="card-body">
+                            <div class="card-body vehicle" style="cursor:pointer">
+                                <div style="position: absolute;left:50%;top:40%" class="row justify-content-center loader">
+                                    <div class="overlay" style="display:block" id="totalVehicle">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
+                                </div>
                                 <div class="img">
                                     <img src="<?= base_url() ?>assets/images/icon/soa/pollution.png">
                                 </div>
@@ -84,7 +94,12 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="card card-ver">
-                            <div class="card-body">
+                            <div class="card-body document" style="cursor:pointer">
+                                <div style="position: absolute;left:50%;top:40%" class="row justify-content-center loader">
+                                    <div class="overlay" style="display:block" id="totalDocument">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
+                                </div>
                                 <div class="img">
                                     <img src="<?= base_url() ?>assets/images/icon/soa/folder.png">
                                 </div>
@@ -96,38 +111,51 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-12">
-                        <div class="card card-ver">
-                            <div class="card-body">
-                                <div class="img">
-                                    <img src="../../assets/images/icon/people-white.png" >
-                                </div>
-                                <div class="text">
-                                    <span class="title">PATROL</span>
-                                    <span id="patrolTotal" class="value">0</span>
-                                    <span>Visit</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
             <div class="col-lg-9">
                 <div class="card people-perday" style="height: 363px;">
                     <div class="card-header">
-                        <h5>Traffic people per day</h5>
+                        <h5></h5>
                     </div>
                     <div class="card-body">
-                        <!-- <canvas id="peoplePerDay"></canvas> -->
+                        <div style="position: absolute;left:50%;top:40%" class="row justify-content-center loader">
+                            <div class="overlay" style="display:block" id="traficAllLoader">
+                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                            </div>
+                        </div>
+                        <div id="traficAll"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card people-perday" style="height: 363px;">
+                    <div class="card-header">
+                        <h5 id="headerDay">Traffic people per day</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="position: absolute;left:50%;top:40%" class="row justify-content-center loader">
+                            <div class="overlay" style="display:block" id="traficdayLoader">
+                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                            </div>
+                        </div>
                         <div id="traficDay"></div>
                     </div>
                 </div>
             </div>
+
+
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="card card-hor">
                             <div class="card-body text-center">
+                                <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                    <div class="overlay" style="display:block" id="trafikVehicle">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
+                                </div>
                                 <div id="vehicle"></div>
                             </div>
                         </div>
@@ -135,6 +163,11 @@
                     <div class="col-lg-4">
                         <div class="card card-hor">
                             <div class="card-body text-center">
+                                <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                    <div class="overlay" style="display:block" id="traficpeople">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
+                                </div>
                                 <div id="people"></div>
                             </div>
                         </div>
@@ -142,23 +175,18 @@
                     <div class="col-lg-4">
                         <div class="card card-hor">
                             <div class="card-body text-center">
+                                <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                    <div class="overlay" style="display:block" id="trafikmaterial">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
+                                </div>
                                 <div id="material"></div>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-3">
-                        <div class="card card-hor">
-                            <div class="card-body text-center">
-                                <h5 class="h6">Contractor</h5>
-                                <h4 id="contractorTotal" class="val">0</h4>
-                                <span>active on site</span>
-                            </div>
-                        </div>
-                    </div> -->
-
-
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -203,6 +231,7 @@
         ]
 
 
+        let isTraffic = 'people';
         let day = [];
         let dataSet = [];
         for (let i = 1; i <= 30; i++) {
@@ -243,7 +272,50 @@
             FvehiclePie(field);
             FpiePeople(field);
             FpieMaterial(field);
-            FtraficLine(field);
+            FtraficAll(field)
+
+            if (isTraffic == 'people') {
+                FpeopleCategori(field);
+            } else if (isTraffic == 'vehicle') {
+                FvehicleCategori(field)
+            } else if (isTraffic == 'document') {
+                FdocumentCategori(field)
+            }
+
+
+        })
+
+
+        // Trafice Days Update
+        $(".people").on('click', function() {
+            var field = [
+                year = $("#yearFilter").val(),
+                month = $("#monthFilter").val(),
+                area = $("#areaFilter").val(),
+            ]
+
+            isTraffic = 'people';
+            FpeopleCategori(field)
+        })
+
+        $(".vehicle").on('click', function() {
+            var field = [
+                year = $("#yearFilter").val(),
+                month = $("#monthFilter").val(),
+                area = $("#areaFilter").val(),
+            ]
+            isTraffic = 'vehicle';
+            FvehicleCategori(field)
+        })
+
+        $(".document").on('click', function() {
+            var field = [
+                year = $("#yearFilter").val(),
+                month = $("#monthFilter").val(),
+                area = $("#areaFilter").val(),
+            ]
+            isTraffic = 'document';
+            FdocumentCategori(field)
         })
 
         people(field);
@@ -253,8 +325,10 @@
         FvehiclePie(field);
         FpiePeople(field);
         FpieMaterial(field);
-        FtraficLine(field);
+        FpeopleCategori(field);
+        FtraficAll(field);
     })
+
 
     function people(field) {
         $.ajax({
@@ -268,10 +342,10 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
+                document.getElementById("totalPeople").style.display = "block";
             },
             complete: function() {
-                // document.getElementById("loader").style.display = "none";
+                document.getElementById("totalPeople").style.display = "none";
             },
             success: function(res) {
                 var json = JSON.parse(res)
@@ -292,10 +366,10 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
+                document.getElementById("totalVehicle").style.display = "block";
             },
             complete: function() {
-                // document.getElementById("loader").style.display = "none";
+                document.getElementById("totalVehicle").style.display = "none";
             },
             success: function(res) {
                 var json = JSON.parse(res)
@@ -317,10 +391,10 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
+                document.getElementById("totalDocument").style.display = "block";
             },
             complete: function() {
-                // document.getElementById("loader").style.display = "none";
+                document.getElementById("totalDocument").style.display = "none";
             },
             success: function(res) {
                 var json = JSON.parse(res)
@@ -349,7 +423,6 @@
             },
             success: function(res) {
                 var json = JSON.parse(res)
-
                 employeeTotal.text(json[0].total_kehadiran)
                 visitorTotal.text(json[1].total_kehadiran)
                 bpTotal.text(json[2].total_kehadiran)
@@ -357,6 +430,8 @@
             }
         });
     }
+
+
 
     // function peoplePerDays(peopleCategoryDayChart, field) {
     //     $.ajax({
@@ -456,10 +531,10 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                document.getElementById("loader").style.display = "block";
+                document.getElementById("trafikVehicle").style.display = "block";
             },
             complete: function() {
-                document.getElementById("loader").style.display = "none";
+                document.getElementById("trafikVehicle").style.display = "none";
             },
             success: function(res) {
                 // console.log(res)
@@ -531,10 +606,7 @@
         },
         series: [{
             name: 'Medals',
-            data: [{
-                name: 'Employee',
-                y: 500
-            }]
+            data: []
         }]
     });
 
@@ -550,10 +622,10 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                document.getElementById("loader").style.display = "block";
+                document.getElementById("traficpeople").style.display = "block";
             },
             complete: function() {
-                document.getElementById("loader").style.display = "none";
+                document.getElementById("traficpeople").style.display = "none";
             },
             success: function(res) {
                 // console.log(res);
@@ -628,17 +700,7 @@
         },
         series: [{
             name: 'Medals',
-            data: [{
-                name: 'PKB',
-                y: 500
-            }, {
-                name: 'PKO',
-                y: 267
-            }, {
-                name: 'Surat Jalan',
-                y: 300
-            }],
-
+            data: []
         }]
     });
 
@@ -654,10 +716,10 @@
             cache: false,
             beforeSend: function() {
                 // $(".lds-ring").show();
-                document.getElementById("loader").style.display = "block";
+                document.getElementById("trafikmaterial").style.display = "block";
             },
             complete: function() {
-                document.getElementById("loader").style.display = "none";
+                document.getElementById("trafikmaterial").style.display = "none";
             },
             success: function(res) {
                 // console.log(res);
@@ -687,7 +749,7 @@
     for (let i = 1; i <= 31; i++) {
         cate.push(i);
     }
-    // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
+
     var traficLine = Highcharts.chart('traficDay', {
         chart: {
             type: 'spline',
@@ -738,7 +800,9 @@
         }]
     });
 
-    function FtraficLine(field) {
+
+    // trafic people
+    function FpeopleCategori(field) {
         $.ajax({
             url: '<?= site_url('analitic/soa/dashboard/peopleCategoryDayTotal'); ?>',
             type: 'POST',
@@ -749,23 +813,198 @@
             },
             cache: false,
             beforeSend: function() {
-                document.getElementById("loader").style.display = "block";
+                document.getElementById("traficdayLoader").style.display = "block";
             },
             complete: function() {
-                document.getElementById("loader").style.display = "none";
+                document.getElementById("traficdayLoader").style.display = "none";
             },
             success: function(res) {
-                let data = JSON.parse(res);
+                var seriesLength = traficLine.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    traficLine.series[i].remove();
+                }
 
+                document.getElementById("headerDay").innerHTML = "Traffic people per day";
+                let data = JSON.parse(res);
                 let datas = [];
                 for (let i = 0; i < data.length; i++) {
+                    traficLine.addSeries({
+                        name: data[i].label,
+                        data: []
+                    });
                     traficLine.series[i].update({
                         data: data[i].data,
-                        name: data[i].label
+                        name: data[i].label,
+                        lineWidth: 2.5
                     });
                 }
 
             }
         });
+    }
+
+    // trafic vehicle
+    function FvehicleCategori(field) {
+        $.ajax({
+            url: '<?= site_url('analitic/soa/dashboard/vehicleCategoryDayTotal'); ?>',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("traficdayLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("traficdayLoader").style.display = "none";
+            },
+            success: function(res) {
+                var seriesLength = traficLine.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    traficLine.series[i].remove();
+                }
+                document.getElementById("headerDay").innerHTML = "Traffic vehicle per day";
+                let data = JSON.parse(res);
+                let datas = [];
+                for (let i = 0; i < data.length; i++) {
+
+                    traficLine.addSeries({
+                        name: data[i].label,
+                        data: []
+                    });
+                    traficLine.series[i].update({
+                        data: data[i].data,
+                        name: data[i].label,
+                        lineWidth: 2.5
+                    });
+                }
+            }
+        });
+    }
+
+    // trafic document
+    function FdocumentCategori(field) {
+        $.ajax({
+            url: '<?= site_url('analitic/soa/dashboard/documentCategoryDayTotal'); ?>',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("traficdayLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("traficdayLoader").style.display = "none";
+            },
+            success: function(res) {
+
+                let data = JSON.parse(res);
+                var seriesLength = traficLine.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    traficLine.series[i].remove();
+                }
+
+                document.getElementById("headerDay").innerHTML = "Traffic document per day";
+                let datas = [];
+                for (let i = 0; i < data.length; i++) {
+                    traficLine.addSeries({
+                        name: data[i].label,
+                        data: []
+                    });
+                    traficLine.series[i].update({
+                        data: data[i].data,
+                        name: data[i].label,
+                        lineWidth: 2.5
+                    });
+                }
+            }
+        });
+    }
+
+
+    var traficAll = Highcharts.chart('traficAll', {
+        chart: {
+            type: 'spline',
+            backgroundColor: 'transparent',
+            height: 320,
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        legend: {
+            itemStyle: {
+                color: '#000000',
+                fontWeight: 'bold'
+            }
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                marker: {
+                    fillColor: '#FFFFFF',
+                    lineWidth: 4,
+                    lineColor: null // inherit from series
+                }
+            }
+        },
+        series: [{
+            name: 'People',
+            // data: [12, 12, 31, 4, 26, 72, 82, 51, 8, 4, 22, 23],
+            data: [],
+        }, {
+            name: 'Vehicle',
+            data: [],
+        }, {
+            name: 'Document',
+            data: [],
+        }]
+    });
+
+    function FtraficAll(field) {
+        $.ajax({
+            url: "<?= base_url('analitic/soa/dashboard/grapichSetahun') ?>",
+            method: "POST",
+            data: {
+                year: year,
+                plant: area
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("traficAllLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("traficAllLoader").style.display = "none";
+            },
+            success: function(e) {
+                let data = JSON.parse(e);
+                let color = ["#c4125f", "#7d5cf2", "#eb5342"];
+                for (let i = 0; i < data.length; i++) {
+                    traficAll.series[i].update({
+                        name: data[i].label,
+                        data: data[i].data,
+                        color: color[i],
+                        lineWidth: 2.5
+                    });
+                }
+            }
+        })
     }
 </script>

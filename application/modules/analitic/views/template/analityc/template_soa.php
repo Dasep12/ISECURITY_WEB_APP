@@ -187,7 +187,7 @@
         }
     </style>
 </head>
-<div style="display:none;" id="loader" class="loading">Loading&#8230;</div>
+<!-- <div style="display:none;" id="loader" class="loading">Loading&#8230;</div> -->
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
     <!-- Site wrapper -->
