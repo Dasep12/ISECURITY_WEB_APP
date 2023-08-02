@@ -51,44 +51,10 @@ class Crime extends CI_Controller
         $data['link']   = $this->uri->segment(1);
         $bulan = date('m');
         $year = date('Y');
-        // $year = '2022';
-        // 
-        // $data['pencurian_jakut'] = $this->model->crimePerJenisKasusSetahun('Pencurian', 'Jakarta Utara', $year);
-        $data['pencurian_jakut'] = json_encode($this->crimeSetahun($year, "Jakarta Utara", "Pencurian"), true);
-        $data['kekerasan_jakut'] = json_encode($this->crimeSetahun($year, "Jakarta Utara", "Kekerasan"), true);
-        $data['narkoba_jakut'] = json_encode($this->crimeSetahun($year, "Jakarta Utara", "Narkoba"), true);
-        $data['perjudian_jakut'] = json_encode($this->crimeSetahun($year, "Jakarta Utara", "Perjudian"), true);
-        $data['penggelapan_jakut'] = json_encode($this->crimeSetahun($year, "Jakarta Utara", "Penggelapan"), true);
-        // 
 
-        // 
-        $data['pencurian_karawang'] = json_encode($this->crimeSetahun($year, "Karawang", "Pencurian"), true);
-        $data['kekerasan_karawang'] = json_encode($this->crimeSetahun($year, "Karawang", "Kekerasan"), true);
-        $data['narkoba_karawang'] = json_encode($this->crimeSetahun($year, "Karawang", "Narkoba"), true);
-        $data['perjudian_karawang'] = json_encode($this->crimeSetahun($year, "Karawang", "Perjudian"), true);
-        $data['penggelapan_karawang'] = json_encode($this->crimeSetahun($year, "Karawang", "Penggelapan"), true);
-        // 
+        // $year = '2023';
+        // $bulan = 3;
 
-
-        // 
-        $data['penjaringan_setahun'] = json_encode($this->crimeKecamatanSetahun("Penjaringan", "Jakarta Utara", $year), true);
-        $data['priok_setahun'] = json_encode($this->crimeKecamatanSetahun("Tanjung Priok", "Jakarta Utara", $year), true);
-        $data['cilincing_setahun'] = json_encode($this->crimeKecamatanSetahun("Cilincing", "Jakarta Utara", $year), true);
-        $data['gading_setahun'] = json_encode($this->crimeKecamatanSetahun("kelapa gading", "Jakarta Utara", $year), true);
-        $data['pademangan_setahun'] = json_encode($this->crimeKecamatanSetahun("Pademangan", "Jakarta Utara", $year), true);
-        $data['koja_setahun'] = json_encode($this->crimeKecamatanSetahun("Koja", "Jakarta Utara", $year), true);
-
-        $data['teljabar_setahun'] = json_encode($this->crimeKecamatanSetahun("Teluk Jambe Barat", "Karawang", $year), true);
-        $data['teljatim_setahun'] = json_encode($this->crimeKecamatanSetahun("Teluk Jambe Timur", "Karawang", $year), true);
-        $data['klari_setahun'] = json_encode($this->crimeKecamatanSetahun("Klari", "Karawang", $year), true);
-        $data['ciampel_setahun'] = json_encode($this->crimeKecamatanSetahun("Ciampel", "Karawang", $year), true);
-        $data['majalaya_setahun'] = json_encode($this->crimeKecamatanSetahun("Majalaya", "Karawang", $year), true);
-        $data['karaba_setahun'] = json_encode($this->crimeKecamatanSetahun("Karawang Barat", "Karawang", $year), true);
-        $data['karatim_setahun'] = json_encode($this->crimeKecamatanSetahun("Karawang Timur", "Karawang", $year), true);
-
-        // 
-
-        // 
         $data['jakut_setahun'] = json_encode($this->crimeAreaSetahun("Jakarta Utara", $year));
         $data['karawang_setahun'] = json_encode($this->crimeAreaSetahun("Karawang", $year));
         // 
@@ -179,6 +145,66 @@ class Crime extends CI_Controller
         $data['karawang_timur_kekerasan'] = $this->model->modelCrimeKategoriPerbulan("karawang timur", "kekerasan", $bulan, "karawang", $year);
         // 
         $this->template->load("template/analityc/template_crime", "crime/dashboard", $data);
+    }
+
+
+    public function graphicJakartaSetahun()
+    {
+        $year = $this->input->post("year");
+        $criteria = ['Pencurian', 'Kekerasan', 'Narkoba', 'Perjudian', 'Penggelapan'];
+
+        $res = array();
+        for ($i = 0; $i < count($criteria); $i++) {
+            $data = array('label' => $criteria[$i], 'data' => $this->crimeSetahun($year, "Jakarta Utara", $criteria[$i]));
+            $res[] = $data;
+        }
+        echo json_encode($res);
+    }
+
+    public function graphicKarawangSetahun()
+    {
+        $year = $this->input->post("year");
+        $criteria = ['Pencurian', 'Kekerasan', 'Narkoba', 'Perjudian', 'Penggelapan'];
+
+        $res = array();
+        for ($i = 0; $i < count($criteria); $i++) {
+            $data = array('label' => $criteria[$i], 'data' => $this->crimeSetahun($year, "Karawang", $criteria[$i]));
+            $res[] = $data;
+        }
+        echo json_encode($res);
+    }
+
+    public function graphicKecamatanJakutSetahun()
+    {
+        $year = $this->input->post("year");
+        $criteria = ['Penjaringan', 'Tanjung Priok', 'Cilincing', 'Kelapa Gading', 'Pademangan', 'Koja'];
+        $res = array();
+        for ($i = 0; $i < count($criteria); $i++) {
+            $data = array('label' => $criteria[$i], 'data' => $this->crimeKecamatanSetahun($criteria[$i], "Jakarta Utara", $year));
+            $res[] = $data;
+        }
+        $datas = array(
+            array($this->crimeAreaSetahun("Jakarta Utara", $year)),
+            $res
+        );
+        echo json_encode($datas);
+    }
+
+
+    public function graphicKecamatanKarawangSetahun()
+    {
+        $year = $this->input->post("year");
+        $criteria = ['Teluk Jambe Barat', 'Teluk Jambe Timur', 'Klari', 'Ciampel', 'Majalaya', 'Karawang Barat', 'Karawang Timur'];
+        $res = array();
+        for ($i = 0; $i < count($criteria); $i++) {
+            $data = array('label' => $criteria[$i], 'data' => $this->crimeKecamatanSetahun($criteria[$i], "Karawang", $year));
+            $res[] = $data;
+        }
+        $datas = array(
+            array($this->crimeAreaSetahun("Karawang", $year)),
+            $res
+        );
+        echo json_encode($datas);
     }
 
 
@@ -337,68 +363,35 @@ class Crime extends CI_Controller
         echo json_encode($jakarta);
     }
 
-
     public function mapJakut()
     {
-        $aslData = array();
         $bulan = $this->input->post("bulan");
         $tahun = $this->input->post("tahun");
-        $titik_jakut = array(
-            ['name' => 'Pademangan', 'lat' => '106.8148804', 'long' => '-6.1291514', 'total' => $this->model->totalCrimePerKecamatan("Pademangan", $bulan, $tahun)],
-            ['name' => 'Cilincing', 'lat' => '106.9147307', 'long' => '-6.1274945', 'total' => $this->model->totalCrimePerKecamatan("Cilincing", $bulan, $tahun)],
-            ['name' => 'Penjaringan', 'lat' => '106.7796358', 'long' => '-6.1145129', 'total' => $this->model->totalCrimePerKecamatan("Penjaringan", $bulan, $tahun)],
-            ['name' => 'Tanjung Priok', 'lat' => '106.8556447', 'long' => '-6.1275785', 'total' => $this->model->totalCrimePerKecamatan("Tanjung Priok", $bulan, $tahun)],
-            ['name' => 'Koja', 'lat' => '106.8887248', 'long' => '-6.1204506', 'total' => $this->model->totalCrimePerKecamatan("Koja", $bulan, $tahun)],
-            ['name' => 'Kelapa Gading', 'lat' => ' 106.8830528', 'long' => '-6.1596475', 'total' => $this->model->totalCrimePerKecamatan("Kelapa Gading", $bulan, $tahun)],
+        $data = array(
+            ['name' => 'Pademangan', 'total' => $this->model->totalCrimePerKecamatan("Pademangan", $bulan, $tahun)],
+            ['name' => 'Cilincing', 'total' => $this->model->totalCrimePerKecamatan("Cilincing", $bulan, $tahun)],
+            ['name' => 'Penjaringan', 'total' => $this->model->totalCrimePerKecamatan("Penjaringan", $bulan, $tahun)],
+            ['name' => 'Tanjung Priok', 'total' => $this->model->totalCrimePerKecamatan("Tanjung Priok", $bulan, $tahun)],
+            ['name' => 'Koja', 'total' => $this->model->totalCrimePerKecamatan("Koja", $bulan, $tahun)],
+            ['name' => 'Kelapa Gading', 'total' => $this->model->totalCrimePerKecamatan("Kelapa Gading", $bulan, $tahun)],
         );
-        for ($i = 0; $i < count($titik_jakut); $i++) {
-            $aslData[] = array(
-                'type' => 'Feature',
-                'properties' => array(
-                    "name" => $titik_jakut[$i]['name'],
-                    'popupContent' => '<center>' . $titik_jakut[$i]['name']  . ' <b>( ' . $titik_jakut[$i]['total'] . ' )</b></center>',
-                    'res'   => $titik_jakut[$i]['total']
-                ),
-                'geometry' => array(
-                    'type' => 'Point',
-                    'coordinates' => [$titik_jakut[$i]['lat'], $titik_jakut[$i]['long']]
-                )
-            );
-        }
-        $data = $aslData;
-        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data);
     }
 
+
     public function mapKarawang()
     {
-        $aslData = array();
         $bulan = $this->input->post("bulan");
         $tahun = $this->input->post("tahun");
-        $titik_jakut = array(
-            ['name' => 'Teluk Jambe Barat', 'lat' => '107.1710478', 'long' => '-6.3503106', 'total' => $this->model->totalCrimePerKecamatan("teluk jambe barat", $bulan, $tahun)],
-            ['name' => 'Teluk Jambe Timur', 'lat' => '107.2236389', 'long' => '-6.3426387', 'total' => $this->model->totalCrimePerKecamatan("Teluk Jambe Timur", $bulan, $tahun)],
-            ['name' => 'Klari', 'lat' => '107.3090157', 'long' => '-6.3957332', 'total' => $this->model->totalCrimePerKecamatan("Klari", $bulan, $tahun)],
-            ['name' => 'Ciampel', 'lat' => '107.2627573', 'long' => '-6.4281762', 'total' => $this->model->totalCrimePerKecamatan("Ciampel", $bulan, $tahun)],
-            ['name' => 'Majalaya', 'lat' => '107.3383852', 'long' => '-6.3005035', 'total' => $this->model->totalCrimePerKecamatan("majalaya", $bulan, $tahun)],
-            ['name' => 'Karawang Barat', 'lat' => '107.2455271', 'long' => '-6.3010751', 'total' => $this->model->totalCrimePerKecamatan("karawang barat", $bulan, $tahun)],
-            ['name' => 'Karawang Timur', 'lat' => '107.2954107', 'long' => '-6.2995816', 'total' => $this->model->totalCrimePerKecamatan("karawang timur", $bulan, $tahun)],
+        $data = array(
+            ['name' => 'Teluk Jambe Barat', 'total' => $this->model->totalCrimePerKecamatan("teluk jambe barat", $bulan, $tahun)],
+            ['name' => 'Teluk Jambe Timur', 'total' => $this->model->totalCrimePerKecamatan("Teluk Jambe Timur", $bulan, $tahun)],
+            ['name' => 'Klari', 'total' => $this->model->totalCrimePerKecamatan("Klari", $bulan, $tahun)],
+            ['name' => 'Ciampel', 'total' => $this->model->totalCrimePerKecamatan("Ciampel", $bulan, $tahun)],
+            ['name' => 'Majalaya', 'total' => $this->model->totalCrimePerKecamatan("majalaya", $bulan, $tahun)],
+            ['name' => 'Karawang Barat', 'total' => $this->model->totalCrimePerKecamatan("karawang barat", $bulan, $tahun)],
+            ['name' => 'Karawang Timur', 'total' => $this->model->totalCrimePerKecamatan("karawang timur", $bulan, $tahun)],
         );
-        for ($i = 0; $i < count($titik_jakut); $i++) {
-            $aslData[] = array(
-                'type' => 'Feature',
-                'properties' => array(
-                    "name" => $titik_jakut[$i]['name'],
-                    'popupContent' => '<center>' . $titik_jakut[$i]['name']  . ' <b>( ' . $titik_jakut[$i]['total'] . ' )</b></center>',
-                    'res'   => $titik_jakut[$i]['total']
-                ),
-                'geometry' => array(
-                    'type' => 'Point',
-                    'coordinates' => [$titik_jakut[$i]['lat'], $titik_jakut[$i]['long']]
-                )
-            );
-        }
-        $data = $aslData;
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data);
     }
@@ -439,11 +432,13 @@ class Crime extends CI_Controller
                     'kota'          => strval($crm[15]),
                     'kelurahan'     => strval($crm[13]),
                     'kec'           => strval($crm[14]),
+                    'status'        => 1,
                     'created_at'    => strval(date('Y-m-d H:i:s'))
                 );
                 array_push($params, $data);
             }
-            $upload = $this->model->mulitple_upload('admisec_crime', $params);
+            // $upload = $this->model->mulitple_upload('admisec_crime', $params);
+            $upload = $this->model->mulitple_upload('admisec_Tcrime', $params);
             if ($upload) {
                 $this->session->set_flashdata('info', 'Berhasil upload data');
                 redirect('analitic/crime/Crime/upload');
@@ -457,128 +452,64 @@ class Crime extends CI_Controller
         }
     }
 
+    public function mapingKategoriJakut()
+    {
+        $tahun = $this->input->post("tahun");
+        $bulan = $this->input->post("bulan");
+        $data = array(
+            array('Pademangan', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("pademangan", "perjudian", $bulan, "Jakarta Utara", $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("pademangan", "pencurian", $bulan, "Jakarta Utara", $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("pademangan", "penggelapan", $bulan, "Jakarta Utara", $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("pademangan", "narkoba", $bulan, "Jakarta Utara", $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("pademangan", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            )), array('Koja', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("koja", "perjudian", $bulan, "Jakarta Utara", $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("koja", "pencurian", $bulan, "Jakarta Utara", $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("koja", "penggelapan", $bulan, "Jakarta Utara", $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("koja", "narkoba", $bulan, "Jakarta Utara", $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("koja", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            )),
+            array('Tanjung Priok', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("Tanjung Priok", "perjudian", $bulan, "Jakarta Utara", $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("Tanjung Priok", "pencurian", $bulan, "Jakarta Utara", $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("Tanjung Priok", "penggelapan", $bulan, "Jakarta Utara", $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("Tanjung Priok", "narkoba", $bulan, "Jakarta Utara", $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("Tanjung Priok", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            )),
+            array('Penjaringan', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("Penjaringan", "perjudian", $bulan, "Jakarta Utara", $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("Penjaringan", "pencurian", $bulan, "Jakarta Utara", $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("Penjaringan", "penggelapan", $bulan, "Jakarta Utara", $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("Penjaringan", "narkoba", $bulan, "Jakarta Utara", $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("Penjaringan", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            )),
+            array('Cilincing', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("Cilincing", "perjudian", $bulan, "Jakarta Utara", $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("Cilincing", "pencurian", $bulan, "Jakarta Utara", $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("Cilincing", "penggelapan", $bulan, "Jakarta Utara", $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("Cilincing", "narkoba", $bulan, "Jakarta Utara", $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("Cilincing", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            )),
+            array('Kelapa Gading', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "perjudian", $bulan, "Jakarta Utara", $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "pencurian", $bulan, "Jakarta Utara", $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "penggelapan", $bulan, "Jakarta Utara", $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "narkoba", $bulan, "Jakarta Utara", $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            ))
+        );
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data);
+    }
+
+
     public function updateGrafik()
     {
         $tahun = $this->input->post("tahun");
         $bulan = $this->input->post("bulan");
         $data = array(
-            'Jakut' =>  array(
-                [
-                    'name'  => "PENCURIAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Jakarta Utara", "Pencurian"), true)
-                ],
-                [
-                    'name'  => "NARKOBA",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Jakarta Utara", "Narkoba"), true)
-                ],
-                [
-                    'name'  => "PERJUDIAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Jakarta Utara", "perjudian"), true)
-                ],
-                [
-                    'name'  => "PENGGELAPAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Jakarta Utara", "Penggelapan"), true)
-                ], [
-                    'name'  => "KEKERASAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Jakarta Utara", "Kekerasan"), true)
-                ],
-            ),
-            'Karawang' =>  array(
-                [
-                    'name'  => "PENCURIAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Karawang", "Pencurian"), true)
-                ],
-                [
-                    'name'  => "NARKOBA",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Karawang", "Narkoba"), true)
-                ],
-                [
-                    'name'  => "PERJUDIAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Karawang", "Perjudian"), true)
-                ],
-                [
-                    'name'  => "PENGGELAPAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Karawang", "Penggelapan"), true)
-                ], [
-                    'name'  => "KEKERASAN",
-                    'data'  => json_encode($this->crimeSetahun($tahun, "Karawang", "Kekerasan"), true)
-                ],
-            ),
-            'AreaJakut' => array(
-                [
-                    'type' => 'column',
-                    'name' => 'PENJARINGAN',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Penjaringan", "Jakarta Utara", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'CILINCING',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Cilincing", "Jakarta Utara", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'KOJA',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Koja", "Jakarta Utara", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'PADEMANGAN',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Pademangan", "Jakarta Utara", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'TANJUNG PRIOK',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Tanjung Priok", "Jakarta Utara", $tahun), true)
-                ], [
-                    'type' => 'column',
-                    'name' => 'KELAPA GADING',
-                    'data' => json_encode($this->crimeKecamatanSetahun("KELAPA GADING", "Jakarta Utara", $tahun), true)
-                ],
-                [
-                    'type' => 'spline',
-                    'name' => 'TOTAL',
-                    'data' => json_encode($this->crimeAreaSetahun("Jakarta Utara", $tahun), true)
-                ]
-            ),
-            'AreaKarawang' => array(
-                [
-                    'type' => 'column',
-                    'name' => 'TELUK JAMBE BARAT',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Teluk Jambe Barat", "Karawang", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'TELUK JAMBE TIMUR',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Teluk Jambe Timur", "Karawang", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'KLARI',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Klari", "Karawang", $tahun), true)
-                ],
-                [
-                    'type' => 'column',
-                    'name' => 'CIAMPEL',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Ciampel", "Karawang", $tahun), true)
-                ], [
-                    'type' => 'column',
-                    'name' => 'MAJALAYA',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Majalaya", "Karawang", $tahun), true)
-                ], [
-                    'type' => 'column',
-                    'name' => 'KARAWANG TIMUR',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Karawang Timur", "Karawang", $tahun), true)
-                ], [
-                    'type' => 'column',
-                    'name' => 'KARAWANG BARAT',
-                    'data' => json_encode($this->crimeKecamatanSetahun("Karawang Barat", "Karawang", $tahun), true)
-                ],
-                [
-                    'type' => 'spline',
-                    'name' => 'TOTAL',
-                    'data' => json_encode($this->crimeAreaSetahun("Karawang", $tahun), true)
-                ]
-            ),
             'MapingJakut' => array(
                 array('Pademangan', array(
                     'perjudian'     => $this->model->modelCrimeKategoriPerbulan("pademangan", "perjudian", $bulan, "Jakarta Utara", $tahun),
@@ -680,7 +611,8 @@ class Crime extends CI_Controller
 
     public function getList_crime()
     {
-        $res = $this->model->getData("admisec_crime")->result();
+        $res = $this->model->getData("admisec_Tcrime")->result();
+        // $res = $this->model->getData("admisec_crime")->result();
         return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)

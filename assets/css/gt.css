@@ -1,129 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');*/
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap');
 
-.content-wrapper { 
-    background: url("../img/bg_3.jpg"); 
+body { 
+    background: url("../../assets/dist/img/anilytic-bg-2.jpg"); 
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
 }
 
 .breadcrumb  a { color:#b5aaa0 !important }
 
 
-.main-sidebar .sidebar-dark-info .elevation-4 {
-    background: rgb(231, 13, 24) !important; 
-}
-
-.ftr {
-    background: rgb(255 255 255 / 10%) !important;
-}
-
 
 [class*=sidebar-dark-] { 
     /*background: linear-gradient(rgb(148 151 211),rgb(90 90 90)) !important;*/
-    background: rgba(1, 24, 87, 0.897) !important; 
-    /* background: rgba(95, 0, 3, 0.753) !important;  */
+    background: rgb(48 67 108) !important; 
 }
 .navbar .btn-primary, .navbar .btn-info { 
-    /* background: rgb(48 67 108 / 64%) !important;  */
-    background: rgba(255, 11, 23, 0.753) !important; 
+    background: rgb(48 67 108 / 64%) !important; 
     border-color: #fff;
 }
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active 
 /*, .nav-pills .nav-link:not(.active):hover*/
 {
-    background: rgba(240, 52, 62, 0.753) !important;
-    /* background: rgb(48 67 108 / 64%) !important; */
+    background: rgb(48 67 108 / 64%) !important;
     box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
 }
 
 .nav-tabs { border-bottom: 0px solid #dee2e6 !important; }
     .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
         color: #ffffff;
-        /* background-color: rgb(64 70 84 / 56%) !important; */
-        background-color: rgba(240, 52, 62, 0.753) !important;
+        background-color: rgb(64 70 84 / 56%) !important;
         border-color: rgb(0 0 0 / 12%) rgb(0 0 0 / 12%) rgb(255 255 255 / 0%) !important;
     }
     .nav-tabs .nav-link {
-        /* background: rgb(101 111 137) !important; */
         background: rgb(101 111 137) !important;
         color: #fff;
     }
 
 
-    .card3 {
-        /* background-color: rgba(12, 45, 230, 0.068); */
-        background-color: rgba(50, 69, 99, 0.555);
+    .card-ver {
+        height: 110px;
+        /* background: linear-gradient(0deg, rgba(221,70,172,0.7231092266007966) 0%, rgba(85,111,214,0.5970588064327293) 33%); */
+    } 
+    .card-ver .card-body {
+        display: flex;
+        flex-direction: row;
+        /* color: var(--main-text-color); */
+        color: #000000;
     }
-
-    .card4 {
-        background-color: rgba(50, 69, 99, 0.555) ;
-    }
-
-    .card5 {
-        /* background-color: rgba(12, 45, 230, 0.068); */
-        background-color: rgb(50, 69, 99);
-    }
-
-    select {
-        background-color: rgba(12, 45, 230, 0.068) !important;
-        color:#ffffff !important;
-    }
-
-      
-
- 
-    /* border radius */
-
-
-    input , textarea {
-        background-color: rgba(12, 45, 230, 0.068) !important;
-        color:#ffffff !important;
-    }
-
-    select option {
-        color:#110101 !important;
-        background-color: rgba(8, 0, 0, 0);
-    }
-
-    label {
-        color: #FFF !important;
-    }
-
-    .main-footer {
-        background: rgba(1, 24, 87, 0.897) !important;
-        border-top: none;
-        /* color: #ededed; */
-    }
-
-    .table tbody  {
-        background: rgba(46, 35, 71, 0.438) !important;
-        color: #dee2e6  !important;
-    }
-    .table  td {
-        color: #dee2e6 !important;
-    }
-
-
-    .dataTable td {
-        background: rgba(46, 35, 71, 0.438) !important;
-        color: #dee2e6  !important;
-    }
-
-    .dataTable .filters th {
-        background: rgba(46, 35, 71, 0.438) !important;
-        color: #dee2e6  !important;
-    }
-    .dataTables_info {
-        color: #dee2e6  !important;
-    }
-
-    .bdHead {
-        border-top-left-radius: 5px !important;
-    }
-
-    .bdHead2 {
-        border-top-right-radius: 5px !important;
-    }
-
+        .card-ver .title {
+            font-weight: 700;
+        }
+        .card-ver .img {
+            width: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .card-ver img {
+            display: block;
+            max-width: 100%;
+        }

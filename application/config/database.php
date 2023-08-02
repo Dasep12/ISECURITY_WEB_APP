@@ -99,8 +99,8 @@ $db['default'] = array(
 
 $db['srs_bi'] = array(
 	'dsn' 	   => '',
-	// 'hostname' => '103.189.234.208',
-	'hostname' => 'DESKTOP-FQ4EPKC',
+	'hostname' => '103.189.234.208',
+	// 'hostname' => 'DESKTOP-FQ4EPKC',
 	'username' => 'sa',
 	'password' => 'Astra123',
 	'port' 	   => '1433',

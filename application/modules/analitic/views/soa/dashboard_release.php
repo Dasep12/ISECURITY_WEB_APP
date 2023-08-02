@@ -824,7 +824,7 @@
                     traficLine.series[i].remove();
                 }
 
-                document.getElementById("headerDay").innerHTML = "Traffic people per day";
+                document.getElementById("headerDay").innerHTML = "Traffic People";
                 let data = JSON.parse(res);
                 let datas = [];
                 for (let i = 0; i < data.length; i++) {
@@ -865,7 +865,7 @@
                 for (var i = seriesLength - 1; i > -1; i--) {
                     traficLine.series[i].remove();
                 }
-                document.getElementById("headerDay").innerHTML = "Traffic vehicle per day";
+                document.getElementById("headerDay").innerHTML = "Traffic Vehicle";
                 let data = JSON.parse(res);
                 let datas = [];
                 for (let i = 0; i < data.length; i++) {
@@ -909,7 +909,7 @@
                     traficLine.series[i].remove();
                 }
 
-                document.getElementById("headerDay").innerHTML = "Traffic document per day";
+                document.getElementById("headerDay").innerHTML = "Traffic Document";
                 let datas = [];
                 for (let i = 0; i < data.length; i++) {
                     traficLine.addSeries({
@@ -995,7 +995,8 @@
             },
             success: function(e) {
                 let data = JSON.parse(e);
-                let color = ["#c4125f", "#7d5cf2", "#eb5342"];
+                console.log(e)
+                let color = ["#bf061e", "#10d5eb", "#c9c016"];
                 for (let i = 0; i < data.length; i++) {
                     traficAll.series[i].update({
                         name: data[i].label,

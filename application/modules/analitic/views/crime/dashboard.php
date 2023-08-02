@@ -332,25 +332,23 @@
             <div class="col-lg-2">
                 <select name="tahun" id="tahun" class="form-control">
                     <option value="">Pilih Tahun</option>
-                    <option>2022</option>
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                    <option>2026</option>
+                    <?php for ($i = 2022; $i <= 2025; $i++) : ?>
+                        <option <?= $i == date('Y') ? 'selected' : '' ?>><?= $i ?></option>
+                    <?php endfor ?>
                 </select>
             </div>
             <div class="col-lg-2">
                 <select name="bulan" id="bulan" class="form-control">
                     <option value="">Pilih Bulan</option>
-                    <option value="01">Januari</option>
-                    <option value="02">Februari</option>
-                    <option value="03">Maret</option>
-                    <option value="04">April</option>
-                    <option value="05">Mei</option>
-                    <option value="06">Juni</option>
-                    <option value="07">Juli</option>
-                    <option value="08">Agustus</option>
-                    <option value="09">September</option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
                     <option value="10">Oktober</option>
                     <option value="11">November</option>
                     <option value="12">Desember</option>
@@ -832,16 +830,6 @@
     </div>
 
 
-    <!-- <div class="row" style="margin-top:-40px">
-        <div class="col-lg-12">
-            <div class="card cardIn2 ">
-                <div class="card-body">
-                    <div id="trendCrime"></div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
 </section>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -861,109 +849,39 @@
     var thn = <?= date('Y') ?>;
     var blan = <?= date('m') ?>;
 
-    // console.log(thn)
 
-    // function mappingJakut(tahun, bulan) {
-    //     document.getElementById("maps_jakarta").innerHTML = "<div id='map2'></div>";
-    //     var mapAsal = L.map('map2').setView([-6.1387788, 106.829449], 12.4);
-    //     mapAsalLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-
-    //     var icon_standar = L.icon({
-    //         iconUrl: '<?= base_url('assets/img/info/marker3.png') ?>',
-    //         iconSize: [60, 60], // size of the icon
-    //         shadowSize: [50, 64], // size of the shadow
-    //         iconAnchor: [30, 36], // point of the icon which will correspond to marker's location
-    //         shadowAnchor: [4, 62], // the same for the shadow
-    //     });
-
-    //     var icon_bahaya = L.icon({
-    //         iconUrl: '<?= base_url('assets/img/info/marker2.png') ?>',
-    //         iconSize: [60, 60], // size of the icon
-    //         shadowSize: [50, 64], // size of the shadow
-    //         iconAnchor: [30, 36], // point of the icon which will correspond to marker's location
-    //         shadowAnchor: [4, 62], // the same for the shadow
-    //     });
-
-    //     var icon_sangat_bahaya = L.icon({
-    //         iconUrl: '<?= base_url('assets/img/info/marker4.png') ?>',
-    //         iconSize: [60, 60], // size of the icon
-    //         shadowSize: [50, 64], // size of the shadow
-    //         iconAnchor: [30, 36], // point of the icon which will correspond to marker's location
-    //         shadowAnchor: [4, 62], // the same for the shadow
-    //     });
-
-    //     L.tileLayer(
-    //         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //             attribution: '&copy; ' + mapAsalLink + ' Contributors',
-    //             maxZoom: 18,
-    //         }).addTo(mapAsal)
-    //     $.getJSON("<?= site_url('analitic/crime/Crime/mapJakut?bulan='); ?>" + bulan + "&tahun=" + tahun)
-    //         .then(function(data) {
-    //             L.geoJson(data, {
-    //                 pointToLayer: function(feature, latlng) {
-    //                     var res = feature.properties.res;
-    //                     var marker = L.marker(latlng, {
-    //                         'icon': res <= 5 ? icon_standar : (res <= 10 ? icon_bahaya : icon_sangat_bahaya)
-    //                     });
-    //                     marker.bindTooltip(feature.properties.popupContent, {
-    //                         permanent: true,
-    //                         direction: 'top',
-    //                         offset: L.point({
-    //                             x: 0,
-    //                             y: -30
-    //                         })
-    //                     }).openTooltip();
-    //                     return marker;
-    //                 }
-    //             }).addTo(mapAsal);
-    //         })
-    //         .fail(function(err) {
-    //             console.log(err.responseText)
-    //         });
-
-    //     var polygon = L.polygon([
-    //         [-6.1160022, 106.7670129],
-    //         [-6.166766, 106.8848369],
-    //         [-6.1113905, 106.9398002]
-    //     ]).addTo(mapAsal);
-    //     polygon.setStyle({
-    //         fillColor: 'red',
-    //         lineColor: 'red'
-    //     })
-
-    // }
 
     function loadMapJakut(thn, blan) {
         $.ajax({
             url: "<?= base_url('analitic/crime/Crime/mapJakut') ?>",
             method: "POST",
             data: {
-                tahun: thn,
-                bulan: blan
+                tahun: "2023",
+                bulan: ""
             },
             success: function(e) {
-                console.log(e);
-                var pademangan = e[0].properties.res;
-                var cilincing = e[1].properties.res;
-                var penjaringan = e[2].properties.res;
-                var priok = e[3].properties.res;
-                var koja = e[4].properties.res;
-                var gading = e[5].properties.res;
-                var dangerIcon = "<?= base_url('assets/img/info/marker2.png') ?>";
+                let data = JSON.parse(e);
+                var pademangan = data[0].total;
+                var cilincing = data[1].total;
+                var penjaringan = data[2].total;
+                var priok = data[3].total;
+                var koja = data[4].total;
+                var gading = data[5].total;
+                var dangerIcon = "<?= base_url('assets/img/info/marker5.png') ?>";
                 var mediumIcon = "<?= base_url('assets/img/info/marker3.png') ?>";
-                var veryDangerIcon = "<?= base_url('assets/img/info/marker4.png') ?>";
+                var veryDangerIcon = "<?= base_url('assets/img/info/marker2.png') ?>";
                 document.getElementById("total_penjaringan").innerHTML = '(' + penjaringan + ')';
                 document.getElementById("total_pademangan").innerHTML = '(' + pademangan + ')';
                 document.getElementById("total_priok").innerHTML = '(' + priok + ')';
                 document.getElementById("total_koja").innerHTML = '(' + koja + ')';
                 document.getElementById("total_gading").innerHTML = '(' + gading + ')';
                 document.getElementById("total_cilincing").innerHTML = '(' + cilincing + ')';
-                var iconPenjaringan = penjaringan <= 5 ? mediumIcon : (penjaringan <= 10 ? dangerIcon : veryDangerIcon);
-                var iconPademangan = pademangan <= 5 ? mediumIcon : (pademangan <= 10 ? dangerIcon : veryDangerIcon);
-                var iconPriok = priok <= 5 ? mediumIcon : (priok <= 10 ? dangerIcon : veryDangerIcon);
-                var iconKoja = koja <= 5 ? mediumIcon : (koja <= 10 ? dangerIcon : veryDangerIcon);
-                var iconGading = gading <= 5 ? mediumIcon : (gading <= 10 ? dangerIcon : veryDangerIcon);
-                var iconCilincing = cilincing <= 5 ? mediumIcon : (cilincing <= 10 ? dangerIcon : veryDangerIcon);
+                var iconPenjaringan = penjaringan <= 3 ? mediumIcon : (penjaringan <= 7 ? dangerIcon : veryDangerIcon);
+                var iconPademangan = pademangan <= 3 ? mediumIcon : (pademangan <= 7 ? dangerIcon : veryDangerIcon);
+                var iconPriok = priok <= 3 ? mediumIcon : (priok <= 7 ? dangerIcon : veryDangerIcon);
+                var iconKoja = koja <= 3 ? mediumIcon : (koja <= 7 ? dangerIcon : veryDangerIcon);
+                var iconGading = gading <= 3 ? mediumIcon : (gading <= 7 ? dangerIcon : veryDangerIcon);
+                var iconCilincing = cilincing <= 3 ? mediumIcon : (cilincing <= 7 ? dangerIcon : veryDangerIcon);
                 $('#penjaringan_image').attr('src', iconPenjaringan);
                 $('#pademangan_image').attr('src', iconPademangan);
                 $('#koja_image').attr('src', iconKoja);
@@ -978,80 +896,6 @@
 
 
 
-    // function mappingKarawang(tahun, bulan) {
-
-    //     // var map = L.map('map_karawang').setView([-6.3505035, 107.2483852], 11.5);
-    //     // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    //     document.getElementById("map_karawang").innerHTML = "<div id='map'></div>";
-    //     var mapAsal = L.map('map').setView([-6.3505035, 107.2483852], 11.5);
-    //     mapAsalLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-
-    //     var icon_standar = L.icon({
-    //         iconUrl: '<?= base_url('assets/img/info/marker3.png') ?>',
-    //         iconSize: [60, 60], // size of the icon
-    //         shadowSize: [50, 64], // size of the shadow
-    //         iconAnchor: [30, 36], // point of the icon which will correspond to marker's location
-    //         shadowAnchor: [4, 62], // the same for the shadow
-    //     });
-
-    //     var icon_bahaya = L.icon({
-    //         iconUrl: '<?= base_url('assets/img/info/marker2.png') ?>',
-    //         iconSize: [60, 60], // size of the icon
-    //         shadowSize: [50, 64], // size of the shadow
-    //         iconAnchor: [30, 36], // point of the icon which will correspond to marker's location
-    //         shadowAnchor: [4, 62], // the same for the shadow
-    //     });
-
-    //     var icon_sangat_bahaya = L.icon({
-    //         iconUrl: '<?= base_url('assets/img/info/marker4.png') ?>',
-    //         iconSize: [60, 60], // size of the icon
-    //         shadowSize: [50, 64], // size of the shadow
-    //         iconAnchor: [30, 36], // point of the icon which will correspond to marker's location
-    //         shadowAnchor: [4, 62], // the same for the shadow
-    //     });
-
-    //     L.tileLayer(
-    //         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //             attribution: '&copy; ' + mapAsalLink + ' Contributors',
-    //             maxZoom: 18,
-    //         }).addTo(mapAsal)
-    //     $.getJSON("<?= site_url('analitic/crime/Crime/mapKarawang?bulan='); ?>" + bulan + "&tahun=" + tahun)
-    //         .then(function(data) {
-    //             L.geoJson(data, {
-    //                 pointToLayer: function(feature, latlng) {
-    //                     var res = feature.properties.res;
-    //                     var marker = L.marker(latlng, {
-    //                         'icon': res <= 5 ? icon_standar : (res <= 10 ? icon_bahaya : icon_sangat_bahaya)
-    //                     });
-    //                     marker.bindTooltip(feature.properties.popupContent, {
-    //                         permanent: true,
-    //                         direction: 'top',
-    //                         offset: L.point({
-    //                             x: 0,
-    //                             y: -30
-    //                         })
-    //                     }).openTooltip();
-    //                     return marker;
-    //                 }
-    //             }).addTo(mapAsal);
-    //         })
-    //         .fail(function(err) {
-    //             console.log(err.responseText)
-    //         });
-
-    //     var polygon = L.polygon([
-    //         [-6.2732436, 107.2426157],
-    //         [-6.387137, 107.1218503],
-    //         [-6.4809085, 107.2328302],
-    //         [-6.318322, 107.3987053],
-    //         // [-6.1113905, 106.9398002]
-    //     ]).addTo(mapAsal);
-    //     polygon.setStyle({
-    //         fillColor: 'red',
-    //         lineColor: 'red'
-    //     })
-    // }
-
     function loadMapKarawang(thn, bln) {
         $.ajax({
             url: "<?= base_url('analitic/crime/Crime/mapKarawang') ?>",
@@ -1061,17 +905,17 @@
                 bulan: bln
             },
             success: function(e) {
-                console.log(e);
-                var teljambar = e[0].properties.res;
-                var teljamtim = e[1].properties.res;
-                var klari = e[2].properties.res;
-                var ciampel = e[3].properties.res;
-                var majalaya = e[4].properties.res;
-                var karaba = e[5].properties.res;
-                var karatim = e[6].properties.res;
-                var dangerIcon = "<?= base_url('assets/img/info/marker2.png') ?>";
+                let data = e
+                var teljambar = data[0].total;
+                var teljamtim = data[1].total;
+                var klari = data[2].total;
+                var ciampel = data[3].total;
+                var majalaya = data[4].total;
+                var karaba = data[5].total;
+                var karatim = data[6].total;
+                var dangerIcon = "<?= base_url('assets/img/info/marker5.png') ?>";
                 var mediumIcon = "<?= base_url('assets/img/info/marker3.png') ?>";
-                var veryDangerIcon = "<?= base_url('assets/img/info/marker4.png') ?>";
+                var veryDangerIcon = "<?= base_url('assets/img/info/marker2.png') ?>";
                 document.getElementById("total_teljamba").innerHTML = '(' + teljambar + ')';
                 document.getElementById("total_teljamti").innerHTML = '(' + teljamtim + ')';
                 document.getElementById("total_klari").innerHTML = '(' + klari + ')';
@@ -1079,13 +923,13 @@
                 document.getElementById("total_majalaya").innerHTML = '(' + majalaya + ')';
                 document.getElementById("total_karaba").innerHTML = '(' + karaba + ')';
                 document.getElementById("total_karatim").innerHTML = '(' + karatim + ')';
-                var iconTeljambar = teljambar <= 5 ? mediumIcon : (teljambar <= 10 ? dangerIcon : veryDangerIcon);
-                var iconTeljamtim = teljamtim <= 5 ? mediumIcon : (teljamtim <= 10 ? dangerIcon : veryDangerIcon);
-                var iconKlari = klari <= 5 ? mediumIcon : (klari <= 10 ? dangerIcon : veryDangerIcon);
-                var iconCiampel = ciampel <= 5 ? mediumIcon : (ciampel <= 10 ? dangerIcon : veryDangerIcon);
-                var iconMajalaya = majalaya <= 5 ? mediumIcon : (majalaya <= 10 ? dangerIcon : veryDangerIcon);
-                var iconKaraba = karaba <= 5 ? mediumIcon : (karaba <= 10 ? dangerIcon : veryDangerIcon);
-                var iconKaratim = karatim <= 5 ? mediumIcon : (karatim <= 10 ? dangerIcon : veryDangerIcon);
+                var iconTeljambar = teljambar <= 3 ? mediumIcon : (teljambar <= 7 ? dangerIcon : veryDangerIcon);
+                var iconTeljamtim = teljamtim <= 3 ? mediumIcon : (teljamtim <= 7 ? dangerIcon : veryDangerIcon);
+                var iconKlari = klari <= 3 ? mediumIcon : (klari <= 7 ? dangerIcon : veryDangerIcon);
+                var iconCiampel = ciampel <= 3 ? mediumIcon : (ciampel <= 7 ? dangerIcon : veryDangerIcon);
+                var iconMajalaya = majalaya <= 3 ? mediumIcon : (majalaya <= 7 ? dangerIcon : veryDangerIcon);
+                var iconKaraba = karaba <= 3 ? mediumIcon : (karaba <= 7 ? dangerIcon : veryDangerIcon);
+                var iconKaratim = karatim <= 3 ? mediumIcon : (karatim <= 7 ? dangerIcon : veryDangerIcon);
                 $('#teljamba_image').attr('src', iconTeljambar);
                 $('#teljamti_image').attr('src', iconTeljamtim);
                 $('#klari_image').attr('src', iconKlari);
@@ -1097,12 +941,9 @@
 
         })
     }
-    loadMapKarawang(thn, blan);
+    loadMapKarawang(thn, 3);
 
 
-    // mappingKarawang(thn, blan);
-
-    // mappingJakut(thn, blan)
 
 
 
@@ -1153,97 +994,6 @@
         return bln;
     }
 
-    // function filterCrimeKategori(bulan) {
-    //     var id = bulan;
-    //     var tahun = $("#tahun").val();
-    //     $.ajax({
-    //         url: "<?= base_url('analitic/crime/Crime/load_jakut') ?>",
-    //         method: "POST",
-    //         data: 'bulan=' + id + "&tahun=" + bulan,
-    //         beforeSend: function() {
-    //             $("#myDropdown").removeClass("show")
-    //         },
-    //         complete: function() {
-    //             // console.log('end')
-    //         },
-    //         success: function(e) {
-    //             document.getElementById("monthly_jakut").innerHTML = bulanConvert(bulan);
-    //             var data = JSON.parse(e)
-    //             var pademangan = data[0];
-    //             var koja = data[1];
-    //             var tanjung_priok = data[2];
-    //             var penjaringan = data[3];
-    //             var cilincing = data[4];
-    //             var kelapa_gading = data[5];
-    //             const kecamatan = ['penjaringan', 'koja', 'tanjung_priok', 'pademangan', 'cilincing', 'kelapa_gading'];
-    //             const params = [penjaringan, koja, tanjung_priok, pademangan, cilincing, kelapa_gading];
-    //             const kategori = ['perjudian']
-
-    //             // console.log(params[0][1].perjudian);
-    //             for (var i = 0; i < kecamatan.length; i++) {
-    //                 // console.log(kecamatan[i] + '=' + params[i][1].narkoba + '\n');
-    //                 document.getElementById(kecamatan[i] + '_perjudian').innerHTML = params[i][1].perjudian;
-    //                 document.getElementById(kecamatan[i] + '_pencurian').innerHTML = params[i][1].pencurian;
-    //                 document.getElementById(kecamatan[i] + '_penggelapan').innerHTML = params[i][1].penggelapan;
-    //                 document.getElementById(kecamatan[i] + '_narkoba').innerHTML = params[i][1].narkoba;
-    //                 document.getElementById(kecamatan[i] + '_kekerasan').innerHTML = params[i][1].kekerasan;
-
-
-    //                 document.getElementById(kecamatan[i] + "_perjudian").style.width = params[i][1].perjudian < 5 ? 5 + '%' : params[i][1].perjudian + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_pencurian").style.width = params[i][1].pencurian < 5 ? 5 + '%' : params[i][1].pencurian + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_penggelapan").style.width = params[i][1].penggelapan < 5 ? 5 + '%' : params[i][1].penggelapan + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_kekerasan").style.width = params[i][1].kekerasan < 5 ? 5 + '%' : params[i][1].kekerasan + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_narkoba").style.width = params[i][1].narkoba < 5 ? 5 + '%' : params[i][1].narkoba + 5 + '%'
-    //             }
-    //             mappingJakut(tahun, bulan)
-    //         }
-    //     })
-    // }
-
-    // function filterCrimeKategoriKarawang(bulan) {
-    //     var id = bulan;
-    //     var tahun = $("#tahun").val();
-    //     $.ajax({
-    //         url: "<?= base_url('analitic/crime') ?>/Crime/load_karawang",
-    //         method: "POST",
-    //         data: 'bulan=' + id + "&tahun=" + tahun,
-    //         beforeSend: function() {
-    //             $("#myDropdown2").removeClass("show");
-    //         },
-    //         complete: function() {},
-    //         success: function(e) {
-    //             document.getElementById("monthly_karawang").innerHTML = bulanConvert(bulan);
-    //             var data = JSON.parse(e)
-    //             var teluk_jambe_barat = data[0];
-    //             var teluk_jambe_timur = data[1];
-    //             var klari = data[2];
-    //             var ciampel = data[3];
-    //             var majalaya = data[4];
-    //             var karawang_barat = data[5];
-    //             var karawang_timur = data[6];
-    //             const kecamatan = ['teluk_jambe_barat', 'teluk_jambe_timur', 'klari', 'ciampel', 'majalaya', 'karawang_barat', 'karawang_timur'];
-    //             const params = [teluk_jambe_barat, teluk_jambe_timur, klari, ciampel, majalaya, karawang_barat, karawang_timur];
-
-    //             // console.log(params[0][1].perjudian);
-    //             for (var i = 0; i < kecamatan.length; i++) {
-    //                 // console.log(kecamatan[i] + '=' + params[i][1].narkoba + '\n');
-    //                 document.getElementById(kecamatan[i] + '_perjudian').innerHTML = params[i][1].perjudian;
-    //                 document.getElementById(kecamatan[i] + '_pencurian').innerHTML = params[i][1].pencurian;
-    //                 document.getElementById(kecamatan[i] + '_penggelapan').innerHTML = params[i][1].penggelapan;
-    //                 document.getElementById(kecamatan[i] + '_narkoba').innerHTML = params[i][1].narkoba;
-    //                 document.getElementById(kecamatan[i] + '_kekerasan').innerHTML = params[i][1].kekerasan;
-
-
-    //                 document.getElementById(kecamatan[i] + "_perjudian").style.width = params[i][1].perjudian < 5 ? 5 + '%' : params[i][1].perjudian + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_pencurian").style.width = params[i][1].pencurian < 5 ? 5 + '%' : params[i][1].pencurian + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_penggelapan").style.width = params[i][1].penggelapan < 5 ? 5 + '%' : params[i][1].penggelapan + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_kekerasan").style.width = params[i][1].kekerasan < 5 ? 5 + '%' : params[i][1].kekerasan + 5 + '%'
-    //                 document.getElementById(kecamatan[i] + "_narkoba").style.width = params[i][1].narkoba < 5 ? 5 + '%' : params[i][1].narkoba + 5 + '%'
-    //             }
-    //             mappingKarawang(tahun, bulan)
-    //         }
-    //     })
-    // }
 
     $(document).ready(function() {
         // karawang setahun
@@ -1309,24 +1059,54 @@
                     }
                 }
             },
+            exporting: {
+                enabled: false
+            },
             series: [{
                 name: 'KEKERASAN',
-                data: <?= $kekerasan_karawang ?>
+                data: []
             }, {
                 name: 'NARKOBA',
-                data: <?= $narkoba_karawang ?>
+                data: []
             }, {
                 name: 'PERJUDIAN',
-                data: <?= $perjudian_karawang ?>
+                data: []
             }, {
                 name: 'PENCURIAN',
-                data: <?= $pencurian_karawang ?>
+                data: []
             }, {
                 name: 'PENGGELAPAN',
-                data: <?= $penggelapan_karawang ?>
+                data: []
             }]
         }
         kar = Highcharts.chart(karawangSetahun);
+
+        function FkarawangSetahun(year, month) {
+            $.ajax({
+                url: "<?= base_url('analitic/crime/Crime/graphicKarawangSetahun') ?>",
+                method: "POST",
+                data: {
+                    year: year,
+                    month: month
+                },
+                success: function(e) {
+                    var karawang = $('#karawangSetahun').highcharts();
+                    let data = JSON.parse(e);
+
+                    karawang.subtitle.update({
+                        text: 'Periode Tahun ' + year
+                    });
+                    for (let i = 0; i < data.length; i++) {
+                        karawang.series[i].update({
+                            name: data[i].label,
+                            data: data[i].data
+                        });
+                    }
+                    karawang.redraw();
+                }
+            });
+        }
+        FkarawangSetahun(thn, blan)
         // 
 
         // jakut setahun
@@ -1393,24 +1173,54 @@
                     }
                 }
             },
+            exporting: {
+                enabled: false
+            },
             series: [{
                 name: 'KEKERASAN',
-                data: <?= $kekerasan_jakut ?>
+                data: []
             }, {
                 name: 'NARKOBA',
-                data: <?= $narkoba_jakut ?>
+                data: []
             }, {
                 name: 'PERJUDIAN',
-                data: <?= $perjudian_jakut ?>
+                data: []
             }, {
                 name: 'PENCURIAN',
-                data: <?= $pencurian_jakut ?>
+                data: []
             }, {
                 name: 'PENGGELAPAN',
-                data: <?= $penggelapan_jakut ?>
+                data: []
             }]
         }
         jak = Highcharts.chart(jakartaSetahuan);
+
+        function FjakartaSetahuan(year, month) {
+            $.ajax({
+                url: "<?= base_url('analitic/crime/Crime/graphicJakartaSetahun') ?>",
+                method: "POST",
+                data: {
+                    year: year,
+                    month: month
+                },
+                success: function(e) {
+                    var jakut = $('#jakartaUtaraSetahun').highcharts();
+                    let data = JSON.parse(e);
+
+                    jakut.subtitle.update({
+                        text: 'Periode Tahun ' + year
+                    });
+                    for (let i = 0; i < data.length; i++) {
+                        jakut.series[i].update({
+                            name: data[i].label,
+                            data: data[i].data
+                        });
+                    }
+                    jakut.redraw();
+                }
+            });
+        }
+        FjakartaSetahuan(thn, blan)
         // 
 
         var CrimeperAreaJakut
@@ -1428,7 +1238,7 @@
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
             },
             yAxis: {
-                max: 150,
+                // max: 150,
                 title: {
                     text: ''
                 }
@@ -1460,44 +1270,76 @@
                     }
                 },
             },
+            exporting: {
+                enabled: false
+            },
             series: [{
                     type: 'column',
                     name: 'PENJARINGAN',
-                    data: <?= $penjaringan_setahun ?>
+                    data: []
                 }, {
                     type: 'column',
                     name: 'CILINCING',
-                    data: <?= $cilincing_setahun ?>
+                    data: []
                 }, {
                     type: 'column',
                     name: 'KOJA',
-                    data: <?= $koja_setahun ?>
+                    data: []
                 }, {
                     type: 'column',
                     name: 'PADEMANGAN',
-                    data: <?= $pademangan_setahun ?>
+                    data: []
                 }, {
                     type: 'column',
                     name: 'TANJUNG PRIOK',
-                    data: <?= $priok_setahun ?>
+                    data: []
                 }, {
                     type: 'column',
                     name: 'KELAPA GADING',
-                    data: <?= $gading_setahun ?>
+                    data: []
                 },
-                {
-                    type: 'spline',
-                    name: 'TOTAL',
-                    data: <?= $jakut_setahun ?>,
-                    marker: {
-                        lineWidth: 2,
-                        lineColor: Highcharts.getOptions().colors[3],
-                        fillColor: 'white'
-                    }
-                }
+                // {
+                //     type: 'spline',
+                //     name: 'TOTAL',
+                //     data: [],
+                //     marker: {
+                //         lineWidth: 2,
+                //         lineColor: Highcharts.getOptions().colors[3],
+                //         fillColor: 'white'
+                //     }
+                // }
             ]
         }
         crimeAreaJakut = Highcharts.chart('CrimeperAreaJakut', CrimeperAreaJakut);
+
+        function FcrimeAreaJakut(year, month) {
+            $.ajax({
+                url: "<?= base_url('analitic/crime/Crime/graphicKecamatanJakutSetahun') ?>",
+                method: "POST",
+                data: {
+                    year: year,
+                    month: month
+                },
+                success: function(e) {
+                    var kecJakut = $('#CrimeperAreaJakut').highcharts();
+                    let data = JSON.parse(e);
+                    kecJakut.subtitle.update({
+                        text: 'Periode Tahun ' + year
+                    });
+                    for (let i = 0; i < data[1].length; i++) {
+                        kecJakut.series[i].update({
+                            type: 'column',
+                            name: data[1][i].label,
+                            data: data[1][i].data
+                        });
+                    }
+                    kecJakut.redraw();
+                }
+            });
+        }
+        FcrimeAreaJakut(thn, blan)
+
+
 
         var CrimeperAreaKarawang
         var crimeAreaKarawang
@@ -1514,7 +1356,7 @@
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
             },
             yAxis: {
-                max: 150,
+                // max: 150,
                 title: {
                     text: ''
                 }
@@ -1540,55 +1382,82 @@
                     }
                 }
             },
+            exporting: {
+                enabled: false
+            },
             series: [{
-                type: 'column',
-                name: 'TELUK JAMBE BARAT',
-                data: <?= $teljabar_setahun ?>
-            }, {
-                type: 'column',
-                name: 'TELUK JAMBE TIMUR',
-                data: <?= $teljatim_setahun ?>
-            }, {
-                type: 'column',
-                name: 'KLARI',
-                data: <?= $klari_setahun ?>
-            }, {
-                type: 'column',
-                name: 'CIAMPEL',
-                data: <?= $ciampel_setahun ?>
-            }, {
-                type: 'column',
-                name: 'MAJALAYA',
-                data: <?= $majalaya_setahun ?>
-            }, {
-                type: 'column',
-                name: 'KARAWANG TIMUR',
-                data: <?= $karatim_setahun ?>
-            }, {
-                type: 'column',
-                name: 'KARAWANG BARAT',
-                data: <?= $karaba_setahun ?>
-            }, {
-                type: 'spline',
-                name: 'TOTAL',
-                data: <?= $karawang_setahun ?>,
-                marker: {
-                    lineWidth: 2,
-                    lineColor: Highcharts.getOptions().colors[3],
-                    fillColor: 'white'
-                }
-            }]
+                    type: 'column',
+                    name: 'TELUK JAMBE BARAT',
+                    data: []
+                }, {
+                    type: 'column',
+                    name: 'TELUK JAMBE TIMUR',
+                    data: []
+                }, {
+                    type: 'column',
+                    name: 'KLARI',
+                    data: []
+                }, {
+                    type: 'column',
+                    name: 'CIAMPEL',
+                    data: []
+                }, {
+                    type: 'column',
+                    name: 'MAJALAYA',
+                    data: []
+                }, {
+                    type: 'column',
+                    name: 'KARAWANG TIMUR',
+                    data: []
+                }, {
+                    type: 'column',
+                    name: 'KARAWANG BARAT',
+                    data: []
+                },
+                //  {
+                //     type: 'spline',
+                //     name: 'TOTAL',
+                //     data: [],
+                //     marker: {
+                //         lineWidth: 2,
+                //         lineColor: Highcharts.getOptions().colors[3],
+                //         fillColor: 'white'
+                //     }
+                // }
+            ]
         }
         crimeAreaKarawang = Highcharts.chart('CrimeperAreaKarawang', CrimeperAreaKarawang);
 
-        $("#tahun,#bulan").change(function() {
-            var karawang = $('#karawangSetahun').highcharts();
-            var jakut = $('#jakartaUtaraSetahun').highcharts();
-            var jakut = $('#jakartaUtaraSetahun').highcharts();
-            var jakutKecSet = $('#CrimeperAreaJakut').highcharts();
-            var karawangKecSet = $('#CrimeperAreaKarawang').highcharts();
-            var tahun = $("#tahun").val();
-            var bulan = $("#bulan").val();
+        function FcrimeAreaKarawang(year, month) {
+            $.ajax({
+                url: "<?= base_url('analitic/crime/Crime/graphicKecamatanKarawangSetahun') ?>",
+                method: "POST",
+                data: {
+                    year: year,
+                    month: month
+                },
+                success: function(e) {
+                    var kecKarawang = $('#CrimeperAreaKarawang').highcharts();
+                    let data = JSON.parse(e);
+                    // console.log(data);
+                    kecKarawang.subtitle.update({
+                        text: 'Periode Tahun ' + year
+                    });
+                    for (let i = 0; i < data[1].length; i++) {
+                        kecKarawang.series[i].update({
+                            type: 'column',
+                            name: data[1][i].label,
+                            data: data[1][i].data
+                        });
+                    }
+                    kecKarawang.redraw();
+                }
+            });
+        }
+        FcrimeAreaKarawang(thn, blan);
+
+
+        function updateGraphic(tahun, bulan) {
             $.ajax({
                 url: "<?= base_url('analitic/crime/Crime/updateGrafik') ?>",
                 type: 'post',
@@ -1604,52 +1473,7 @@
                 },
                 success: function(e) {
                     const data = JSON.parse(e);
-                    console.log(data);
-                    karawang.subtitle.update({
-                        text: 'Periode Tahun ' + tahun
-                    });
-
-                    jakut.subtitle.update({
-                        text: 'Periode Tahun ' + tahun
-                    });
-
-                    jakutKecSet.subtitle.update({
-                        text: 'Periode Tahun ' + tahun
-                    });
-
-                    karawangKecSet.subtitle.update({
-                        text: 'Periode Tahun ' + tahun
-                    });
-
-                    for (let i = 0; i < data.AreaKarawang.length; i++) {
-                        karawangKecSet.series[i].update({
-                            type: data.AreaKarawang[i].type,
-                            name: data.AreaKarawang[i].name,
-                            data: JSON.parse(data.AreaKarawang[i].data)
-                        })
-                    }
-
-                    for (let i = 0; i < data.AreaJakut.length; i++) {
-                        jakutKecSet.series[i].update({
-                            type: data.AreaJakut[i].type,
-                            name: data.AreaJakut[i].name,
-                            data: JSON.parse(data.AreaJakut[i].data)
-                        })
-                    }
-                    for (let i = 0; i < data.Jakut.length; i++) {
-                        jakut.series[i].update({
-                            name: data.Jakut[i].name,
-                            data: JSON.parse(data.Jakut[i].data)
-                        });
-                    }
-
-                    for (let i = 0; i < data.Karawang.length; i++) {
-                        karawang.series[i].update({
-                            name: data.Karawang[i].name,
-                            data: JSON.parse(data.Karawang[i].data)
-                        });
-                    }
-
+                    // console.log(data);
 
                     const kecamatan = ['pademangan', 'koja', 'tanjung_priok', 'penjaringan', 'cilincing', 'kelapa_gading'];
                     const kecamatan2 = ['teluk_jambe_barat', 'teluk_jambe_timur', 'klari', 'ciampel', 'majalaya', 'karawang_barat', 'karawang_timur'];
@@ -1671,6 +1495,7 @@
 
                     for (var i = 0; i < 6; i++) {
 
+
                         document.getElementById(kecamatan2[i] + '_perjudian').innerHTML = data.MapingKarawang[i][1].perjudian;
                         document.getElementById(kecamatan2[i] + '_pencurian').innerHTML = data.MapingKarawang[i][1].pencurian;
                         document.getElementById(kecamatan2[i] + '_penggelapan').innerHTML = data.MapingKarawang[i][1].penggelapan;
@@ -1684,19 +1509,73 @@
                         document.getElementById(kecamatan2[i] + "_penggelapan").style.width = data.MapingKarawang[i][1].penggelapan < 5 ? 5 + '%' : data.MapingKarawang[i][1].penggelapan + 5 + '%'
                     }
 
-                    // mappingJakut(tahun, bulan)
-                    loadMapJakut(tahun, bulan);
-                    loadMapKarawang(tahun, bulan);
-                    // mappingKarawang(tahun, bulan);
+
                     document.getElementById("monthly_jakut").innerHTML = bulanConvert(bulan);
                     document.getElementById("year_jakut").innerHTML = tahun;
                 }
             })
+        }
+        updateGraphic(thn, blan)
 
-            karawang.redraw();
-            jakut.redraw();
-            jakutKecSet.redraw();
-            karawangKecSet.redraw();
+
+
+        // update kategori mapping jakarta utara
+        function FmapingKategoriJakut(year, month) {
+            $.ajax({
+                url: "<?= base_url('analitic/crime/Crime/mapingKategoriJakut') ?>",
+                method: "POST",
+                data: {
+                    tahun: year,
+                    bulan: month
+                },
+                success: function(e) {
+                    console.log(e)
+                    let data = e;
+                    const kecamatan = ['pademangan', 'koja', 'tanjung_priok', 'penjaringan', 'cilincing', 'kelapa_gading'];
+
+                    for (let i = 0; i < data.length; i++) {
+                        document.getElementById(kecamatan[i] + '_perjudian').innerHTML = data[i][1].perjudian;
+                        document.getElementById(kecamatan[i] + '_pencurian').innerHTML = data[i][1].pencurian;
+                        document.getElementById(kecamatan[i] + '_penggelapan').innerHTML = data[i][1].penggelapan;
+                        document.getElementById(kecamatan[i] + '_narkoba').innerHTML = data[i][1].narkoba;
+                        document.getElementById(kecamatan[i] + '_kekerasan').innerHTML = data[i][1].kekerasan;
+
+                        document.getElementById(kecamatan[i] + "_perjudian").style.width = data[i][1].perjudian < 5 ? 5 + '%' : data[i][1].perjudian + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_pencurian").style.width = data[i][1].pencurian < 5 ? 5 + '%' : data[i][1].pencurian + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_penggelapan").style.width = data[i][1].penggelapan < 5 ? 5 + '%' : data[i][1].penggelapan + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_narkoba").style.width = data[i][1].narkoba < 5 ? 5 + '%' : data[i][1].narkoba + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_penggelapan").style.width = data[i][1].penggelapan < 5 ? 5 + '%' : data[i][1].penggelapan + 5 + '%'
+                    }
+                }
+            });
+        }
+
+        FmapingKategoriJakut(thn, "")
+
+        $("#tahun,#bulan").change(function() {
+            var tahun = $("#tahun").val();
+            var bulan = $("#bulan").val();
+
+            // Jakarta setahun
+            FjakartaSetahuan(tahun, bulan)
+
+            // Karawang setahun
+            FkarawangSetahun(tahun, bulan)
+
+            // Kecamatan Jakut Setahun
+            FcrimeAreaJakut(tahun, bulan)
+
+            // Kecamatan Karawang setahun
+            FcrimeAreaKarawang(tahun, bulan)
+
+            // update graphic
+            updateGraphic(tahun, bulan)
+
+            // update kategori mapping 
+            FmapingKategoriJakut(thn, blan)
+
+            loadMapJakut(tahun, bulan);
+            loadMapKarawang(tahun, bulan);
         });
 
 

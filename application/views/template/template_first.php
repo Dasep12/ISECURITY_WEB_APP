@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ISECURITY</title>
+    <title>Security Big Data Analytic</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -45,8 +45,9 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets') ?>/dist/css/jquery-tagsinput.min.css" />
 
     <!-- TEMPLATE SRS CUSTOM -->
-    <link rel="stylesheet" href="<?= base_url('assets') ?>/css/gt.css?<?= date('Y-m-d H:i:s') ?>">
+    <!-- <link rel="stylesheet" href="<?= base_url('assets') ?>/css/gt.css?<?= date('Y-m-d H:i:s') ?>"> -->
     <!-- <link rel="stylesheet" type="text/css" href="<?= base_url('assets') ?>/dist/newStyle.css" /> -->
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/css/srs.css?<?= date('Y-m-d H:i:s') ?>">
 
 </head>
 
@@ -172,7 +173,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="<?= site_url('analitic/information/dashboard') ?>" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Information
@@ -198,7 +199,7 @@
                                 <a href="<?= base_url('analitic/information/Anggota/dashboard') ?>" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
-                                        Analytic Anggota
+                                        Analytic Guard
                                         <i class="right fas fa-angle-right"></i>
                                     </p>
                                 </a>
@@ -208,7 +209,7 @@
 
                         <!-- user_role() == 'ADMIN' is_app('SGT') -->
                         <?php if (is_super_admin() || is_app('SGT')) { ?>
-                            <li class="nav-header">Aplikasi</li>
+                            <li class="nav-header">Aplication</li>
                             <li class="nav-item">
                                 <a href="<?= base_url('Dashboard') ?>" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
