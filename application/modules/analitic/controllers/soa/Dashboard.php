@@ -62,7 +62,6 @@ class Dashboard extends CI_Controller
     public function people()
     {
         $peopleTotal = $this->M_dashboard->peopleTotal()->result();
-
         echo json_encode($peopleTotal, true);
     }
 
@@ -221,8 +220,6 @@ class Dashboard extends CI_Controller
         }
         echo json_encode($result);
     }
-
-
 
     // graphic people
     public function piePeople()

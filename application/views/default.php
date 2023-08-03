@@ -16,9 +16,36 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
+            <div class="col-lg-12 filter sticky-top-OFF">
+                <div class="card cardIn2">
+                    <div class="card-body">
+                        <form id="form-filter" class="form-horizontal">
+                            <div class="form-row">
+                                <div class="form-group col-2">
+                                    <label for="area">Area</label>
+                                    <?= $select_area_filter; ?>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label for="yearFilter">Year</label>
+                                    <?= $select_year_filter; ?>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label for="monthFilter">Month</label>
+                                    <?= $select_month_filter; ?>
+                                </div>
+
+                                <div class="form-group col d-flex align-items-end justify-content-end">
+                                    <span class="h2 ff-fugazone title-dashboard">Security BigData Analytic</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-12">
-
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card cardIn2">
@@ -308,8 +335,11 @@
 <script type="text/javascript">
     var field = [
         area = $("#areaFilter").val(),
+        areas = $("#areaFilter").val(),
         year = $("#yearFilter").val(),
+        years = $("#yearFilter").val(),
         month = $("#monthFilter").val(),
+        months = $("#monthFilter").val(),
         peopleTotal = $("#countPeople"),
         vehicleTotal = $("#countVehicle"),
         materialTotal = $("#countDocument"),
@@ -317,151 +347,152 @@
         currMonth = '<?= date('m') ?>',
     ]
 
+
+    // DOUGHNAT PERMONTH TOTAL //
+    var srsPerMonthDoughId = document.getElementById("srsPerMonthDough").getContext('2d');
+    const centerText = {
+        afterDatasetsDraw(chart, args, pluginOptions) {
+            var {
+                ctx,
+                data
+            } = chart;
+            var count = data.datasets[0].dataDUmmy;
+            const text = count.reduce((a, b) => a + b) + "\n";
+            ctx.save();
+            const x = (chart.getDatasetMeta(0).data[0].x)
+            const y = (chart.getDatasetMeta(0).data[0].y)
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 18px sans-serif';
+            ctx.fillStyle = '#FFF';
+            ctx.fillText(text, x, y)
+        }
+    }
+    const doughnutLabelsLine = {
+        id: 'doughnutLabelsLine',
+        afterDraw(chart, args, options) {
+            const {
+                ctx,
+                chartArea: {
+                    top,
+                    bottom,
+                    left,
+                    right,
+                    width,
+                    height
+                }
+            } = chart;
+            chart.data.datasets.forEach((dataset, i) => {
+                chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
+                    const {
+                        x,
+                        y
+                    } = datapoint.tooltipPosition();
+
+                    const halfwidth = width / 2;
+                    const halfheight = height / 2;
+                    const xLine = x >= halfwidth ? x + -10 : x - 15;
+                    const yLine = y >= halfheight ? y + -4 : y - 4;
+                    const extraLine = x >= halfwidth ? -5 : 30;
+
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x, y);
+                    ctx.lineTo(x, y);
+                    ctx.strokeStyle = srsPerMonthDoughChart.data.datasets[0].backgroundColor;
+                    ctx.stroke();
+
+                    // text
+                    const textWidth = ctx.measureText(chart.data.labels[index]).width;
+                    const textPosition = x >= halfwidth ? 'left' : 'right';
+                    ctx.font = 'bold 10px Arial';
+                    ctx.textBaseLine = 'middle';
+                    ctx.textAlign = textPosition;
+                    ctx.fillStyle = '#FFF';
+                    ctx.fillText(`${chart.data.labels[index]} (${srsPerMonthDoughChart.data.datasets[0].dataDUmmy[index]})`, xLine + extraLine, yLine);
+                })
+            })
+        }
+    }
+    var n = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    var m = currMonth;
+    var srsPerMonthDoughChart = new Chart(srsPerMonthDoughId, {
+        type: 'doughnut',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+            datasets: [{
+                data: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+                dataDUmmy: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                backgroundColor: [
+                    n[0] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[1] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[2] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[3] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[4] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[5] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[6] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[7] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[8] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[9] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[10] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                    n[11] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+                ],
+                borderColor: ['#FFF'],
+                cutout: '50%',
+                borderRadius: 5,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: 20
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                    labels: {
+                        color: "#FFF"
+                    }
+                },
+                tooltip: {
+                    enabled: false
+                },
+                datalabels: {
+                    anchor: 'end',
+                    color: '#FFF',
+                }
+            },
+
+        },
+        plugins: [centerText, doughnutLabelsLine]
+    })
+    var ySelected = currYear;
+    $("select[name=year_filter").on('change', function() {
+        years2 = $("select[name=year_filter] option:selected").val();
+        srsPerMonthDoughChart.data.datasets[0].backgroundColor = [
+            n[0] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[1] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[2] == m && years2 == ySelected ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[3] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[4] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[5] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[6] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[7] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[8] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[9] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[10] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+            n[11] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
+        ];
+        srsPerMonthDoughChart.update();
+    })
+    Chart.defaults.color = '#FFF';
+
     $(document).ready(function() {
 
         SoaFtraficAll(field)
         vehicle(field);
         material(field);
         people(field);
-
-        // DOUGHNAT PERMONTH TOTAL //
-        var srsPerMonthDoughId = document.getElementById("srsPerMonthDough").getContext('2d');
-        const centerText = {
-            afterDatasetsDraw(chart, args, pluginOptions) {
-                var {
-                    ctx,
-                    data
-                } = chart;
-                var count = data.datasets[0].dataDUmmy;
-                const text = count.reduce((a, b) => a + b) + "\n";
-                ctx.save();
-                const x = (chart.getDatasetMeta(0).data[0].x)
-                const y = (chart.getDatasetMeta(0).data[0].y)
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 18px sans-serif';
-                ctx.fillStyle = '#FFF';
-                ctx.fillText(text, x, y)
-            }
-        }
-        const doughnutLabelsLine = {
-            id: 'doughnutLabelsLine',
-            afterDraw(chart, args, options) {
-                const {
-                    ctx,
-                    chartArea: {
-                        top,
-                        bottom,
-                        left,
-                        right,
-                        width,
-                        height
-                    }
-                } = chart;
-                chart.data.datasets.forEach((dataset, i) => {
-                    chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
-                        const {
-                            x,
-                            y
-                        } = datapoint.tooltipPosition();
-
-                        const halfwidth = width / 2;
-                        const halfheight = height / 2;
-                        const xLine = x >= halfwidth ? x + -10 : x - 15;
-                        const yLine = y >= halfheight ? y + -4 : y - 4;
-                        const extraLine = x >= halfwidth ? -5 : 30;
-
-                        ctx.beginPath();
-                        ctx.moveTo(x, y);
-                        ctx.lineTo(x, y);
-                        ctx.lineTo(x, y);
-                        ctx.strokeStyle = srsPerMonthDoughChart.data.datasets[0].backgroundColor;
-                        ctx.stroke();
-
-                        // text
-                        const textWidth = ctx.measureText(chart.data.labels[index]).width;
-                        const textPosition = x >= halfwidth ? 'left' : 'right';
-                        ctx.font = 'bold 10px Arial';
-                        ctx.textBaseLine = 'middle';
-                        ctx.textAlign = textPosition;
-                        ctx.fillStyle = '#FFF';
-                        ctx.fillText(`${chart.data.labels[index]} (${srsPerMonthDoughChart.data.datasets[0].dataDUmmy[index]})`, xLine + extraLine, yLine);
-                    })
-                })
-            }
-        }
-        var n = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-        var m = currMonth;
-        var srsPerMonthDoughChart = new Chart(srsPerMonthDoughId, {
-            type: 'doughnut',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-                datasets: [{
-                    data: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
-                    dataDUmmy: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    backgroundColor: [
-                        n[0] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[1] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[2] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[3] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[4] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[5] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[6] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[7] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[8] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[9] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[10] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                        n[11] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                    ],
-                    borderColor: ['#FFF'],
-                    cutout: '50%',
-                    borderRadius: 5,
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: 20
-                },
-                plugins: {
-                    legend: {
-                        display: false,
-                        labels: {
-                            color: "#FFF"
-                        }
-                    },
-                    tooltip: {
-                        enabled: false
-                    },
-                    datalabels: {
-                        anchor: 'end',
-                        color: '#FFF',
-                    }
-                },
-
-            },
-            plugins: [centerText, doughnutLabelsLine]
-        })
-        var ySelected = currYear;
-        $("select[name=year_filter").on('change', function() {
-            years2 = $("select[name=year_filter] option:selected").val();
-            srsPerMonthDoughChart.data.datasets[0].backgroundColor = [
-                n[0] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[1] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[2] == m && years2 == ySelected ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[3] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[4] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[5] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[6] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[7] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[8] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[9] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[10] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-                n[11] == m ? 'rgb(255,51,51)' : 'rgb(51,51,153)',
-            ];
-            srsPerMonthDoughChart.update();
-        })
-        Chart.defaults.color = '#FFF';
 
         srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
         srsPerPlantDoughs(srsPerPlantDoughChart)
@@ -1100,8 +1131,6 @@
                 soiChart.data.datasets[0].data = dataSrs;
                 soiChart.update();
 
-                console.log(dataX)
-
                 // INDEX BG SOI //
 
                 if ((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2)) {
@@ -1463,8 +1492,8 @@
             url: "<?= base_url('analitic/soa/dashboard/grapichSetahun') ?>",
             method: "POST",
             data: {
-                year: 2023,
-                plant: area
+                year: years,
+                area_fill: areas
             },
             cache: false,
             beforeSend: function() {
@@ -1484,6 +1513,8 @@
                         lineWidth: 2.5
                     });
                 }
+                SoatraficAll.redraw();
+
             }
         })
     }
@@ -1493,9 +1524,9 @@
             url: '<?= site_url('analitic/soa/dashboard/people'); ?>',
             type: 'POST',
             data: {
-                area_fil: area,
-                year_fil: 2023,
-                month_fil: month,
+                area_fills: areas,
+                year_fil: years,
+                month_fil: months,
             },
             cache: false,
             beforeSend: function() {
@@ -1517,9 +1548,9 @@
             url: '<?= site_url('analitic/soa/dashboard/vehicle'); ?>',
             type: 'POST',
             data: {
-                area_fil: area,
-                year_fil: 2023,
-                month_fil: month,
+                area_fills: areas,
+                year_fil: years,
+                month_fil: months,
             },
             cache: false,
             beforeSend: function() {
@@ -1541,9 +1572,9 @@
             url: '<?= site_url('analitic/soa/dashboard/material'); ?>',
             type: 'POST',
             data: {
-                area_fil: area,
-                year_fil: 2023,
-                month_fil: month,
+                area_fills: areas,
+                year_fil: years,
+                month_fil: months,
             },
             cache: false,
             beforeSend: function() {
@@ -1559,4 +1590,153 @@
             }
         });
     }
+
+    // ALL CHART WHEN UPDATE FILTER //
+    $("#areaFilter, #yearFilter, #monthFilter").change(function(e) {
+        var area = $("#areaFilter").val()
+        var year = $("#yearFilter").val()
+        var month = $("#monthFilter").val()
+        var field = [
+            areas = $("#areaFilter").val(),
+            years = $("#yearFilter").val(),
+            months = $("#monthFilter").val()
+        ];
+
+        // SOA
+        SoaFtraficAll(field)
+        people(field)
+        vehicle(field)
+        material(field)
+
+        // SOI Deskripsi
+        if (year == '2022' && month.length == 0) {
+            $('#isoDesc').show()
+        } else {
+            $('#isoDesc').hide()
+        }
+        $.ajax({
+            url: '<?= site_url('analitic/srs/dashboard/grap_srs'); ?>',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                is_make_code: 1, // menggunakan kode sebagai ID
+            },
+            cache: false,
+            beforeSend: function() {
+                // document.getElementById("loader").style.display = "block";
+            },
+            complete: function() {
+                // document.getElementById("loader").style.display = "none";
+            },
+            success: function(res) {
+                var json = JSON.parse(res)
+
+                // SOI //
+                var dataSrs = [{
+                    r: 8,
+                    x: parseFloat(json.data_soi[0].avg_soi),
+                    y: parseFloat(json.data_index[0].max_iso)
+                }];
+
+                soiChart.data.datasets[0].data = dataSrs;
+                soiChart.update();
+
+                // INDEX BG SOI //
+                const dataX = json.data_soi[0].avg_soi;
+                const dataY = json.data_index[0].max_iso;
+
+                if ((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2)) {
+                    $('#indexSoi').attr('style', 'background-color: rgb(233 233 9 / 69%)') // yellow
+                }
+
+                if (dataX >= 4 && dataY <= 2) {
+                    $('#indexSoi').attr('style', 'background-color: rgb(0 128 9 / 69%)') // green
+                }
+
+                if (dataX <= 4 && dataY >= 2) {
+                    $('#indexSoi').attr('style', 'background-color: rgb(255 0 9 / 69%)') // red
+                }
+                // INDEX BG SOI //
+
+                // SOI AVG PILAR //
+                $('#avgPeople, #avgSystem, #avgDevice, #avgNetwork').text('')
+                $('#avgPeople').text(json.grap_soi_avgpilar[0].avg_people)
+                $('#avgSystem').text(json.grap_soi_avgpilar[0].avg_system)
+                $('#avgDevice').text(json.grap_soi_avgpilar[0].avg_device)
+                $('#avgNetwork').text(json.grap_soi_avgpilar[0].avg_network)
+                // SOI AVG PILAR //
+                // SOI //
+
+                // RISK SOURCE //
+                dataRiskSource = json.data_risk_source;
+                setRiskSource = [{
+                    label: dataRiskSource.map(function(v) {
+                        return v.label
+                    }),
+                    data: dataRiskSource.map(function(v) {
+                        return v.data
+                    })
+                }];
+                rsoChart.data.datasets[0].data = setRiskSource[0].data;
+                rsoChart.data.labels = setRiskSource[0].label
+                rsoChart.update();
+                // RISK SOURCE //
+
+                // RISK //
+                dataRisk = json.data_risk;
+                setRisk = [{
+                    label: dataRisk.map(function(v) {
+                        return v.label
+                    }),
+                    data: dataRisk.map(function(v) {
+                        return v.data
+                    })
+                }];
+                riskChart.data.labels = setRisk[0].label
+                riskChart.data.datasets[0].data = setRisk[0].data
+                riskChart.update();
+                // RISK //
+
+                // TARGET ASSETS //
+                dataAssets = json.data_target_assets;
+                datasetsAssets = [{
+                    label: dataAssets.map(function(v) {
+                        return v.label
+                    }),
+                    data: dataAssets.map(function(v) {
+                        return v.data
+                    })
+                }];
+                assetChart.data.datasets[0].data = datasetsAssets[0].data;
+                assetChart.data.labels = datasetsAssets[0].label
+                assetChart.update();
+                // TARGET ASSETS //
+
+                // GRAFIS ALL PLANT //
+                // resAreaPolar = json.data_trans_area;
+                // dataAreaPolar = [{
+                //     label: resAreaPolar.map(function(v){return v.label}),
+                //     data: resAreaPolar.map(function(v){return v.total})
+                // }];
+                // dougnutChartPlant.data.labels = dataAreaPolar[0].label;
+                // dougnutChartPlant.data.datasets[0].data = dataAreaPolar[0].data;
+                // dougnutChartPlant.update();
+                // dougnutChartPlant.data.datasets[0].data = json.data_trans_area;
+                // dougnutChartPlant.update();
+                // GRAFIS ALL PLANT //
+
+                // GRAFIS LINE ALL MONTH //
+                srsPerMonthLineChart.data.datasets[0].data = json.data_trans_month;
+                srsPerMonthLineChart.update();
+                // GRAFIS LINE ALL MONTH //
+
+                // GRAFIS DOUGHNUT PER MONTH //
+                srsPerMonthDoughChart.data.datasets[0].dataDUmmy = json.data_trans_month;
+                srsPerMonthDoughChart.update();
+                // GRAFIS DOUGHNUT PER MONTH //
+            }
+        });
+    });
 </script>

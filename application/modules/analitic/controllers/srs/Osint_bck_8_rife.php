@@ -56,7 +56,6 @@ class Osint extends CI_Controller
         $regional = $this->models->getCategory(10)->result_array();
         $legalitas = $this->models->getCategory(11)->result_array();
         $format = $this->models->getCategory(12)->result_array();
-        $hatespeech = $this->models->getCategory(5)->result_array();
 
         $opt_regional = array('' => '-- Select --');
         foreach ($regional as $key => $reg) {
@@ -73,11 +72,6 @@ class Osint extends CI_Controller
             $opt_format[$for['sub_id'].':'.$for['level_id'].':'.$for['level']] = ucwords($for['name']);
         }
 
-        $opt_hatespeech = array('' => '-- Select --');
-        foreach ($hatespeech as $key => $hat) {
-            $opt_hatespeech[$hat['sub_id'].':'.$hat['level_id'].':'.$hat['level']] = ucwords($hat['name']);
-        }
-
         $data = [
             'link' => $this->uri->segment(3),
             'sub_link' => $this->uri->segment(4),
@@ -90,10 +84,10 @@ class Osint extends CI_Controller
             'sdm'      => $this->models->levelVurne(7),
             'reput'      => $this->models->levelVurne(8),
             'media'      => $this->models->getCategory(4),
-            'hatespeech' => form_dropdown('hatespeech', $opt_hatespeech, '','id="hatespeech" class="form-control" required'),
-            'regional' => form_dropdown('regional', $opt_regional,'','id="regional" class="form-control" required'),
-            'legalitas' => form_dropdown('legalitas', $opt_legalitas,'','id="legalitas" class="form-control" required'),
-            'format' => form_dropdown('format', $opt_format,'','id="format" class="form-control" required'),
+            'hatespeech'      => $this->models->getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 9, "status" => 1]),
+            'regional'      => form_dropdown('regional', $opt_regional,'','id="regional" class="form-control" required'),
+            'legalitas'      => form_dropdown('legalitas', $opt_legalitas,'','id="legalitas" class="form-control" required'),
+            'format'      => form_dropdown('format', $opt_format,'','id="format" class="form-control" required'),
         ];
 
         $this->template->load("template/analityc/template_srs", "srs/form_osint", $data);
@@ -124,7 +118,7 @@ class Osint extends CI_Controller
             $row[] = $field->jenis_media;
             $row[] = $field->sentiment;
             $row[] = date('d F Y ', strtotime($field->event_date));
-            $row[] = $field->total_level;
+            $row[] = $field->risk_level;
             $edt_btn = is_super_admin() ? '<a class="btn btn-sm btn-info" href="' . site_url('analitic/srs/osint/edit?id=' . $field->id) . '">
                         <i class="fa fa-edit"></i>
                     </a> ' : '';
@@ -344,7 +338,7 @@ class Osint extends CI_Controller
 
         $data_edit = $this->models->get_edit()->result();
 
-        $hatespeech = $this->models->getCategory(5)->result_array();
+        $hatespeech = $this->models->getCategory(9)->result_array();
         $regional = $this->models->getCategory(10)->result_array();
         $legalitas = $this->models->getCategory(11)->result_array();
         $format = $this->models->getCategory(12)->result_array();
@@ -356,9 +350,14 @@ class Osint extends CI_Controller
         // var_dump($mediaSub1);
         // die;
 
+        $opt_hatespeech = array('' => '-- Select --');
+        foreach ($hatespeech as $key => $reg) {
+            $opt_hatespeech[$reg['sub_id'].':'.$reg['level_id'].':'.$reg['level']] = ucwords($reg['name']);
+        }
+
         $opt_regional = array('' => '-- Select --');
         foreach ($regional as $key => $reg) {
-            $opt_regional[$reg['sub_id']] = ucwords($reg['name']);
+            $opt_regional[$reg['sub_id'].':'.$reg['level_id'].':'.$reg['level']] = ucwords($reg['name']);
         }
 
         $opt_legalitas = array('' => '-- Select --');
@@ -368,7 +367,7 @@ class Osint extends CI_Controller
 
         $opt_format = array('' => '-- Select --');
         foreach ($format as $key => $for) {
-            $opt_format[$for['sub_id']] = ucwords($for['name']);
+            $opt_format[$for['sub_id'].':'.$for['level_id'].':'.$for['level']] = ucwords($for['name']);
         }
 
         $opt_media = array('' => '-- Select --');
@@ -383,12 +382,7 @@ class Osint extends CI_Controller
 
         $opt_legalitasSub1 = array('' => '-- Select --');
         foreach ($legalitasSub1 as $key => $les1) {
-            $opt_legalitasSub1[$les1['id']] = ucwords($les1['name']);
-        }
-
-        $opt_hatespeech = array('' => '-- Select --');
-        foreach ($hatespeech as $key => $hat) {
-            $opt_hatespeech[$hat['sub_id'].':'.$hat['level_id'].':'.$hat['level']] = ucwords($hat['name']);
+            $opt_legalitasSub1[$les1['id'].':'.$les1['level_id'].':'.$les1['level']] = ucwords($les1['name']);
         }
 
         $data = [
@@ -406,14 +400,14 @@ class Osint extends CI_Controller
             'sdm'      => $this->models->levelVurne(7),
             'reput'      => $this->models->levelVurne(8),
             'file_edit'  => $this->models->getDataWhere("admisecosint_transaction_file", ['trans_id' => $id, 'status' => 1]),
-            'regional' => form_dropdown('regional', $opt_regional, $data_edit[0]->regional_id, 'id="regional" class="form-control" required'),
+
+            'hatespeech' => $this->models->getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 9, "status" => 1]),
+            'regional' => form_dropdown('regional', $opt_regional, $data_edit[0]->regional_id.':'.$data_edit[0]->regional_level_id.':'.$data_edit[0]->regional_level,'id="regional" class="form-control" required'),
             'legalitas' => form_dropdown('legalitas', $opt_legalitas, $data_edit[0]->legalitas_id,'id="legalitas" class="form-control" required'),
-            'legalitasSub1' => form_dropdown('legalitas_sub1', $opt_legalitasSub1, $data_edit[0]->legalitas_sub1_id, 'id="legalitasSub1" class="form-control" required'),
-            'format' => form_dropdown('format', $opt_format, $data_edit[0]->format_id,'id="format" class="form-control" required'),
-            'hatespeech' => form_dropdown('hatespeech', $opt_hatespeech, $data_edit[0]->hatespeech_type_id.':'.$data_edit[0]->risk_level_id.':'.$data_edit[0]->risk_level,'id="hatespeech" class="form-control" required'),
+            'legalitasSub1' => form_dropdown('legalitas_sub1', $opt_legalitasSub1, $data_edit[0]->legalitas_sub1_id.':'.$data_edit[0]->legalitas_level_id.':'.$data_edit[0]->legalitas_level,'id="legalitasSub1" class="form-control" required'),
+            'format' => form_dropdown('format', $opt_format, $data_edit[0]->format_id.':'.$data_edit[0]->format_level_id.':'.$data_edit[0]->format_level,'id="format" class="form-control" required'),
 
         ];
-
         $this->template->load("template/analityc/template_srs", "srs/form_osint_edit", $data);
     }
 
@@ -465,51 +459,77 @@ class Osint extends CI_Controller
                                     </tr>
                                     <tr>
                                         <th>Risk Source</th>
-                                        <td colspan="4">' . $data->risk_source_sub . '</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Media</th>
-                                        <td>' . $data->media . '</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Regional</th>
-                                        <td>' . $data->regional_name . '</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Legalitas</th>
-                                        <td>' . $data->legalitas_name . ': '.$data->legalitas_sub1_name.'</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Format</th>
-                                        <td>' . $data->format_name . '</td>
+                                        <td colspan="4">' . $data->risk_source . '</td>
                                     </tr>
                                     <tr>
                                         <th>Negative Sentiment</th>
                                         <td colspan="4">' . $data->negative_sentiment . '</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">
-                                            <table class="table table-borderless mb-0 text-center">
-                                                <td>
-                                                    <table class="table table-bordered mb-0 text-center">
-                                                        <tr>
-                                                            <th>Risk Level :</th>
-                                                            <td>' . $data->risk_level . '</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                                <td>
-                                                    <table class="table table-bordered mb-0 text-center">
-                                                        <tr>
-                                                            <th>Impact Level :</th>
-                                                            <td>' . $data->impact_level . '</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
+                                        <th>Category Matriks</th>
+                                        <td>
+                                            <table class="table table-bordered text-center">
+                                                <tr>
+                                                    <th width="60%">Media</th>
+                                                    <th>Level</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>' . $data->media . '</td>
+                                                    <td>' . $data->media_level . '</td>
+                                                </tr>
+                                            </table>
+
+                                            <table class="table table-bordered text-center">
+                                                <tr>
+                                                    <th width="60%">Legalitas</th>
+                                                    <th>Level</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>' . $data->legalitas_name . '</td>
+                                                    <td>' . $data->legalitas_level . '</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table class="table table-bordered text-center">
+                                                <tr>
+                                                    <th>Regional</th>
+                                                    <th>Level</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>' . $data->regional_name . '</td>
+                                                    <td>' . $data->regional_level . '</td>
+                                                </tr>
+                                            </table>
+
+                                            <table class="table table-bordered text-center">
+                                                <tr>
+                                                    <th>Format</th>
+                                                    <th>Level</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>' . $data->format_name . '</td>
+                                                    <td>' . $data->format_level . '</td>
+                                                </tr>
                                             </table>
                                         </td>
                                     </tr>
-                        <tr>
+                                    <tr>
+                                        <th>Vulnerability Lost</th>
+                                        <td colspan="4">
+                                            <table class="table table-bordered text-center" style="width: 51%">
+                                                <tr>
+                                                    <th>SDM Sector Effect</th>
+                                                    <th>Reputation</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>' . $data->sdm_level . '</td>
+                                                    <td>' . $data->reputasi_level . '</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                <tr>
                             <th>Attachment</th>
                             <td colspan="4">
                                 <table class="table table-bordered text-center">

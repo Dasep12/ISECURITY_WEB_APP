@@ -770,11 +770,11 @@ class Internal_source extends CI_Controller
 
             if($res == '00')
             {
-                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menyetujui data', 5);
+                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menghapus data', 5);
             }
             else
             {
-                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyetujui data', 5);
+                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menghapus data', 5);
             }
         }
         

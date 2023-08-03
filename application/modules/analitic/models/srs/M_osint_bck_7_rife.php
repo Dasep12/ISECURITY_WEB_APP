@@ -83,6 +83,7 @@ class M_osint extends CI_Model
         $subriskSource = $this->input->post('subriskSource', true);
         $subriskSource1 = $this->input->post('subriskSource1', true);
         $riskTreat = $this->input->post('riskTreat', true);
+        $risklevel = $this->input->post('risk_level', true);
         $categoryLevel = $this->input->post('category_level', true);
         $activity_name = $this->input->post('activity_name', true);
         $vulne = $this->input->post('vulne', true);
@@ -91,10 +92,7 @@ class M_osint extends CI_Model
         $url1 = $this->input->post('url1', true);
         $url2 = $this->input->post('url2', true);
 
-        // NEGATIVE SENTIMENT
         $hatespeech = $this->input->post('hatespeech', true);
-        $riskLevel = explode(":", $hatespeech)[1];
-        $hatespeech = explode(":", $hatespeech)[0];
 
         $mediaIssue = $this->input->post('mediaIssue', true);
         $mediaIssueLevel = explode(":", $mediaIssue)[1];
@@ -102,13 +100,16 @@ class M_osint extends CI_Model
         $SubmediaIssue = $this->input->post('SubmediaIssue', true);
 
         $regional = $this->input->post('regional', true);
+        $regionalLevel = explode(":", $regional)[1];
         $regional = explode(":", $regional)[0];
 
         $legalitas = $this->input->post('legalitas', true);
         $legalitasSub1 = $this->input->post('legalitas_sub1', true);
+        $legalitasLevel = explode(":", $legalitasSub1)[1];
         $legalitasSub1 = explode(":", $legalitasSub1)[0];
 
         $format = $this->input->post('format', true);
+        $formatLevel = explode(":", $format)[1];
         $format = explode(":", $format)[0];
 
         $sdmSector = $this->input->post('sdm', true);
@@ -116,8 +117,6 @@ class M_osint extends CI_Model
         $reput = $this->input->post('reput', true);
         $reput = explode(":", $reput)[0];
         $impactLevel = max($sdmSector, $reput);
-
-        $totalLevel = $this->input->post('total_level', true);
 
         $desc = addslashes($this->input->post('description', true));
         $desc = preg_replace("/'/", "\&#39;", $desc);
@@ -139,6 +138,7 @@ class M_osint extends CI_Model
             sub_risk1_source ,
             media_id,
             sub_media_id ,
+            media_level_id ,
             risk_id, 
             created_at ,
             status,
@@ -153,12 +153,15 @@ class M_osint extends CI_Model
             url1,
             url2,
             regional_id,
+            regional_level_id,
             hatespeech_type_id,
             legalitas_id,
             legalitas_sub1_id,
+            legalitas_level_id,
             format_id,
-            risk_level_id,
-            total_level
+            format_level_id,
+            category_level,
+            risk_level
             ) 
             VALUES (
                 NULLIF('$plant', '') ,
@@ -174,6 +177,7 @@ class M_osint extends CI_Model
                 NULLIF('$subriskSource1', '') ,
                 NULLIF('$mediaIssue', '') ,
                 NULLIF('$SubmediaIssue', '') ,
+                NULLIF('$mediaIssueLevel', '') ,
                 NULLIF('$riskTreat', '') ,
                 '$curr_date' ,
                 1 ,
@@ -188,12 +192,15 @@ class M_osint extends CI_Model
                 NULLIF('$url1', ''),
                 NULLIF('$url2', ''),
                 '$regional',
+                '$regionalLevel',
                 '$hatespeech',
                 '$legalitas',
                 '$legalitasSub1',
+                '$legalitasLevel',
                 '$format',
-                '$riskLevel',
-                '$totalLevel'
+                '$formatLevel',
+                '$categoryLevel',
+                '$risklevel'
             )";
 
         // echo '<pre>';
@@ -293,10 +300,7 @@ class M_osint extends CI_Model
         $SubmediaIssue1 = $this->input->post('SubmediaIssue1', true);
         $SubmediaIssue2 = $this->input->post('SubmediaIssue2', true);
 
-        // NEGATIVE SENTIMENT
         $hatespeech = $this->input->post('hatespeech', true);
-        $riskLevel = explode(":", $hatespeech)[1];
-        $hatespeech = explode(":", $hatespeech)[0];
 
         $sdmSector = $this->input->post('sdm', true);
         $sdmSector = explode(":", $sdmSector)[0];
@@ -305,16 +309,20 @@ class M_osint extends CI_Model
         $impactLevel = max($sdmSector, $reput);
 
         $regional = $this->input->post('regional', true);
+        $regionalLevel = explode(":", $regional)[1];
         $regional = explode(":", $regional)[0];
 
         $legalitas = $this->input->post('legalitas', true);
         $legalitasSub1 = $this->input->post('legalitas_sub1', true);
+        $legalitasLevel = explode(":", $legalitasSub1)[1];
         $legalitasSub1 = explode(":", $legalitasSub1)[0];
 
         $format = $this->input->post('format', true);
+        $formatLevel = explode(":", $format)[1];
         $format = explode(":", $format)[0];
 
-        $totalLevel = $this->input->post('total_level', true);
+        $categoryLevel = $this->input->post('category_level', true);
+        $riskLevel = $this->input->post('risk_level', true);
 
         $data = [
             'plant_id' => empty($plant) ? NULL : $plant,
@@ -345,13 +353,17 @@ class M_osint extends CI_Model
             'url1' => empty($url1) ? NULL  : $url1,
             'url2' => empty($url2) ? NULL  : $url2,
             'regional_id' => $regional,
+            'regional_level_id' => $regionalLevel,
             'hatespeech_type_id' => $hatespeech,
             'legalitas_id' => $legalitas,
             'legalitas_sub1_id' => empty($legalitasSub1) ? NULL  : $legalitasSub1,
+            'legalitas_level_id' => $legalitasLevel,
             'format_id' => $format,
+            'format_level_id' => $formatLevel,
+            'media_level_id' => $mediaIssueLevel,
+            'category_level' => $categoryLevel,
             'impact_level_id' => $impactLevel,
-            'risk_level_id' => $riskLevel,
-            'total_level' => $totalLevel,
+            'risk_level' => $riskLevel,
         ];
 
         // echo '<pre>';
@@ -508,13 +520,13 @@ class M_osint extends CI_Model
     //set nama tabel yang akan kita tampilkan datanya
     var $table = 'admisecosint_transaction';
     //set kolom order, kolom pertama saya null untuk kolom edit dan hapus
-    var $column_order = array(null, 't.id, t.activity_name as act , asu.title as plant ,ashd.name as media ,ashd1.name as sub_media, ashd2.name as jenis_media, ashd3.name as risk,CAST(t.date as DATE) as event_date ,t.total_level , t.status');
+    var $column_order = array(null, 't.id, t.activity_name as act , asu.title as plant,ashd.name as media,ashd1.name as sub_media, ashd2.name as jenis_media, ashd3.name as risk,CAST(t.date as DATE) as event_date,t.impact_level , t.status');
     var $column_search = array('t.activity_name');
     // default order 
     var $order = array('id' => 'asc');
     private function _get_datatables_query()
     {
-        $this->osidb->select('t.id, t.activity_name as act , asu.title as plant,ashd.name as media,ashd1.name as sub_media, ashd2.name as jenis_media, ashd3.name as risk,CAST(t.date as DATE) as event_date , t.impact_level_id , t.total_level , sng.name sentiment , t.status');
+        $this->osidb->select('t.id, t.activity_name as act , asu.title as plant,ashd.name as media,ashd1.name as sub_media, ashd2.name as jenis_media, ashd3.name as risk,CAST(t.date as DATE) as event_date , t.impact_level_id , t.risk_level , sng.name sentiment , t.status');
         $this->osidb->from($this->table . ' t');
         $this->osidb->join('admiseciso_area_sub asu', 'asu.id=t.plant_id', 'inner');
         $this->osidb->join('admisecosint_sub_header_data ashd', 'ashd.sub_id = t.media_id', 'inner');
@@ -582,13 +594,15 @@ class M_osint extends CI_Model
     {
         $id = $this->input->get("id");
 
-        $this->osidb->select("tr.id,tr.activity_name , tr.date , tr.area_id , tr.sub_area2_id , tr.sub_target_issue1_id , tr.target_issue_id , tr.sub_target_issue3_id , tr.sub_risk_source , tr.risk_source , tr.sub_risk1_source , tr.employe_plant , tr.sub_target_issue2_id , tr.sub_area1_id , tr.plant_id , tr.description , tr.sub_media_id , tr.url1 , tr.url2 , asu.title as plant , lev.level as sdm_level , lev2.level as reputasi_level , tr.created_by , ashd.name as media , tr.media_id , tr.media_level_id , tr.sub1_media_id , melvl.level media_level , ashd1.name as jenis_media , tr.regional_id , tr.regional_level_id ,tr.legalitas_id , tr.legalitas_sub1_id , tr.legalitas_level_id ,tr.format_id , tr.format_level_id ,tr.sdm_sector_level_id , tr.reputasi_level_id ,tr.risk_level_id ,rlvl.level risk_level ,tr.impact_level_id ,implvl.level impact_level, tr.hatespeech_type_id, tr.category_level ,tr.total_level");
+        $this->osidb->select("tr.id,tr.activity_name , tr.date , tr.area_id , tr.sub_area2_id , tr.sub_target_issue1_id , tr.target_issue_id , tr.sub_target_issue3_id , tr.sub_risk_source , tr.risk_source , tr.sub_risk1_source , tr.employe_plant , tr.sub_target_issue2_id , tr.sub_area1_id , tr.plant_id , tr.description , tr.sub_media_id , tr.url1 , tr.url2 , asu.title as plant , lev.level as sdm_level , lev2.level as reputasi_level , tr.created_by , ashd.name as media , tr.media_id , tr.media_level_id , tr.sub1_media_id , melvl.level media_level , ashd1.name as jenis_media , tr.regional_id , tr.regional_level_id , reglvl.level regional_level , tr.legalitas_id , tr.legalitas_sub1_id , tr.legalitas_level_id , leglvl.level legalitas_level , tr.format_id , tr.format_level_id , frmlvl.level format_level , tr.sdm_sector_level_id , tr.reputasi_level_id , tr.risk_level ,  tr.impact_level_id, implvl.level impact_level, tr.hatespeech_type_id, tr.category_level");
         $this->osidb->from('admisecosint_transaction as tr');
         $this->osidb->join('admiseciso_area_sub as asu', 'tr.plant_id=asu.id', 'left');
         $this->osidb->join('admisecosint_sub_header_data as suh', 'tr.sdm_sector_level_id=suh.sub_id', 'left');
         $this->osidb->join('admisecosint_risk_level as melvl', 'tr.media_level_id=melvl.id', 'left');
         $this->osidb->join('admisecosint_risk_level as lev', 'suh.level_id=lev.id', 'left');
-        $this->osidb->join('admisecosint_risk_level as rlvl', 'rlvl.id=tr.risk_level_id', 'left');
+        $this->osidb->join('admisecosint_risk_level as reglvl', 'tr.regional_level_id=reglvl.id', 'left');
+        $this->osidb->join('admisecosint_risk_level as leglvl', 'tr.legalitas_level_id=leglvl.id', 'left');
+        $this->osidb->join('admisecosint_risk_level as frmlvl', 'tr.format_level_id=frmlvl.id', 'left');
         $this->osidb->join('admisecosint_sub_header_data as suh2', 'tr.reputasi_level_id=suh2.sub_id', 'left');
         $this->osidb->join('admisecosint_risk_level as lev2', 'suh2.level_id=lev2.id', 'left');
         $this->osidb->join('admisecosint_risk_level as implvl', 'implvl.id=(select level_id from admisecosint_sub_header_data where sub_id=tr.impact_level_id)', 'left');
@@ -602,7 +616,7 @@ class M_osint extends CI_Model
     {
         $id = $this->input->post("id");
         // $id = 69;
-        $this->osidb->select('tr.id,tr.activity_name , tr.date , asu.title as plant , lev.level as sdm_level , lev2.level as reputasi_level , tr.created_by , ashd.name as media , ashd1.name as jenis_media ,url1 ,url2, trg.name target_issue ,rso.name risk_source ,rsos.name risk_source_sub ,ngs.name negative_sentiment ,rgn.name regional_name ,lgt.name legalitas_name ,lgts.name legalitas_sub1_name ,frm.name format_name ,implvl.level impact_level, tr.risk_level');
+        $this->osidb->select('tr.id,tr.activity_name , tr.date , asu.title as plant , lev.level as sdm_level , lev2.level as reputasi_level , tr.created_by , ashd.name as media , ashd1.name as jenis_media ,url1 ,url2, trg.name target_issue ,rso.name risk_source ,ngs.name negative_sentiment ,mlv.level media_level ,rgn.name regional_name ,rgl.level regional_level ,lgt.name legalitas_name ,lgl.level legalitas_level ,frm.name format_name ,frl.level format_level');
         $this->osidb->from('admisecosint_transaction as tr');
         $this->osidb->join('admiseciso_area_sub as asu', 'tr.plant_id=asu.id', 'left');
         $this->osidb->join('admisecosint_sub_header_data as suh', 'tr.sdm_sector_level_id=suh.sub_id', 'left');
@@ -613,13 +627,14 @@ class M_osint extends CI_Model
         $this->osidb->join('admisecosint_sub2_header_data ashd1', 'ashd1.id = tr.sub1_media_id', 'left');
         $this->osidb->join('admisecosint_sub_header_data trg', 'trg.sub_id = tr.target_issue_id', 'left');
         $this->osidb->join('admisecosint_sub_header_data rso', 'rso.sub_id = tr.risk_source', 'left');
-        $this->osidb->join('admisecosint_sub1_header_data rsos', 'rsos.id = tr.sub_risk_source', 'left');
         $this->osidb->join('admisecosint_sub_header_data ngs', 'ngs.sub_id = tr.hatespeech_type_id', 'left');
+        $this->osidb->join('admisecosint_risk_level mlv', 'mlv.id=tr.media_level_id', 'left');
         $this->osidb->join('admisecosint_sub_header_data rgn', 'rgn.sub_id=tr.regional_id', 'left');
+        $this->osidb->join('admisecosint_risk_level rgl', 'rgl.id=tr.regional_level_id', 'left');
         $this->osidb->join('admisecosint_sub_header_data lgt', 'lgt.sub_id=tr.legalitas_id', 'left');
-        $this->osidb->join('admisecosint_sub1_header_data lgts', 'lgts.id=tr.legalitas_sub1_id', 'left');
+        $this->osidb->join('admisecosint_risk_level lgl', 'lgl.id=tr.regional_level_id', 'left');
         $this->osidb->join('admisecosint_sub_header_data frm', 'frm.sub_id=tr.format_id', 'left');
-        $this->osidb->join('admisecosint_risk_level implvl', 'implvl.id=(select level_id from admisecosint_sub_header_data where sub_id=tr.impact_level_id)', 'left');
+        $this->osidb->join('admisecosint_risk_level frl', 'frl.id=tr.format_level_id', 'left');
         $this->osidb->where('tr.id', $id);
         return $this->osidb->get();
     }

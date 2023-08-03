@@ -465,7 +465,7 @@ class Osint extends CI_Controller
                                     </tr>
                                     <tr>
                                         <th>Risk Source</th>
-                                        <td colspan="4">' . $data->risk_source_sub . '</td>
+                                        <td colspan="4">' . $data->risk_source . '</td>
                                     </tr>
                                     <tr>
                                         <th>Media</th>
@@ -477,7 +477,7 @@ class Osint extends CI_Controller
                                     </tr>
                                     <tr>
                                         <th>Legalitas</th>
-                                        <td>' . $data->legalitas_name . ': '.$data->legalitas_sub1_name.'</td>
+                                        <td>' . $data->legalitas_name . '</td>
                                     </tr>
                                     <tr>
                                         <th>Format</th>
@@ -488,28 +488,21 @@ class Osint extends CI_Controller
                                         <td colspan="4">' . $data->negative_sentiment . '</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">
-                                            <table class="table table-borderless mb-0 text-center">
-                                                <td>
-                                                    <table class="table table-bordered mb-0 text-center">
-                                                        <tr>
-                                                            <th>Risk Level :</th>
-                                                            <td>' . $data->risk_level . '</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                                <td>
-                                                    <table class="table table-bordered mb-0 text-center">
-                                                        <tr>
-                                                            <th>Impact Level :</th>
-                                                            <td>' . $data->impact_level . '</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
+                                        <th>Vulnerability Lost</th>
+                                        <td colspan="4">
+                                            <table class="table table-bordered text-center" style="width: 60%">
+                                                <tr>
+                                                    <th>SDM Sector Effect</th>
+                                                    <th>Reputation</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>' . $data->sdm_level . '</td>
+                                                    <td>' . $data->reputasi_level . '</td>
+                                                </tr>
                                             </table>
                                         </td>
                                     </tr>
-                        <tr>
+                                <tr>
                             <th>Attachment</th>
                             <td colspan="4">
                                 <table class="table table-bordered text-center">

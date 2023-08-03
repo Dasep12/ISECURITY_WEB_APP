@@ -71,7 +71,7 @@ class Internal_source extends CI_Controller
             $opt_rso[$rso->id] = $rso->title;
         }
 
-        $opt_ris = array('' => '-- Choose --');
+        $opt_ris = array();
         foreach ($data_ris as $key => $ris) {
             $opt_ris[$ris->id.':'.$ris->level] = $ris->title;
         }
@@ -520,7 +520,7 @@ class Internal_source extends CI_Controller
                                 </tr>
                                 <tr>
                                     <th>Risk Level</th>
-                                    <td colspan="4" class="font-weight-bold">'.$res_sub[0]->risk_level.'</td>
+                                    <td colspan="4" class="font-weight-bold">'.$res_sub[0]->impact_level.'</td>
                                 </tr>
                                 <tr>
                                     <th>Vulnerability Lost</th>
@@ -689,7 +689,7 @@ class Internal_source extends CI_Controller
 
                                 <tr>
                                     <th>Chronology</th>
-                                    <td colspan="4" class="font-weight-bold">'.html_entity_decode($res_sub[0]->chronology).'</td>
+                                    <td colspan="4" class="font-weight-bold">'.$res_sub[0]->chronology.'</td>
                                 </tr>
                             </tbody>
                         </table>';
@@ -770,11 +770,11 @@ class Internal_source extends CI_Controller
 
             if($res == '00')
             {
-                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menyetujui data', 5);
+                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menghapus data', 5);
             }
             else
             {
-                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyetujui data', 5);
+                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menghapus data', 5);
             }
         }
         
@@ -1082,12 +1082,11 @@ class Internal_source extends CI_Controller
 
         $data = '<div id="searchResult" class="col-12 mt-5"><div class="row">';
         foreach ($res as $key => $val) {
-            $data .= '<div class="col-12 p-3">
-                        <a href="#" target="_blank" data-id="'.$val->id.'" data-toggle="modal" data-target="#detailSearchModal" class="text-white">
+            $data .= '<a href="#" target="_blank" data-id="'.$val->id.'" data-toggle="modal" data-target="#detailSearchModal"><div class="col-12 p-3 text-white">
                         <h5>'.$val->event_name.'</h5>
                         <small>'.date('Y-m-d H:i',strtotime($val->event_date)).'</small>
-                        <p>'.html_entity_decode($val->chronology).'...</p></a>
-                    </div>';
+                        <p>'.$val->chronology.'...</p>
+                    </div></a>';
         }
         $data .= '</div><div>';
 

@@ -169,7 +169,7 @@ class M_dashboard_osint extends CI_Model
 
             $q .= " ) as total 
             from admisecosint_sub_header_data shd
-            where  shd.header_data_id  = 5
+            where  shd.header_data_id  = 9
             order by total desc 
         ";
         
@@ -255,7 +255,7 @@ class M_dashboard_osint extends CI_Model
     {
         return $this->osidb->query("
             SELECT shd.title  , (select count(at2.media_id) from admisecosint_transaction at2 
-                where at2.plant_id = shd.id and year(at2.date)= $year ) as total 
+                where at2.area_id = shd.id and year(at2.date)= $year ) as total 
             FROM admiseciso_area_sub shd
             WHERE shd.area_categ_id = 1 and shd.status=1
         ");

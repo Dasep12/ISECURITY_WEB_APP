@@ -39,8 +39,17 @@ class M_dashboard extends CI_Model
     public function peopleTotal()
     {
         $area = $this->input->post('area_fil', true);
+        $areas = $this->input->post('area_fills', true);
         $month = $this->input->post('month_fil', true);
         $year = $this->input->post('year_fil', true);
+
+        if ($areas != null || $areas != "") {
+            $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $areas])->row();
+            $area = $idArea->id;
+        } else {
+            $area = $area;
+        }
+
 
         $q = "SELECT FORMAT(COALESCE(SUM(b.attendance),0), 'N0') AS total_people
         FROM soa_bi.dbo.admisecdrep_transaction as a
@@ -60,8 +69,16 @@ class M_dashboard extends CI_Model
     public function vehicleTotal()
     {
         $area = $this->input->post('area_fil', true);
+        $areas = $this->input->post('area_fills', true);
         $month = $this->input->post('month_fil', true);
         $year = $this->input->post('year_fil', true);
+
+        if ($areas != null || $areas != "") {
+            $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $areas])->row();
+            $area = $idArea->id;
+        } else {
+            $area = $area;
+        }
 
         $q = "SELECT FORMAT(COALESCE(SUM(atv.amount),0), 'N0') AS total
                 FROM soa_bi.dbo.admisecdrep_transaction as a
@@ -73,6 +90,34 @@ class M_dashboard extends CI_Model
         if (!empty($year)) $q .= " AND YEAR(a.report_date)='$year'";
 
         $res_q = $this->srsdb->query($q);
+        return $res_q;
+    }
+
+    public function materialTotal()
+    {
+        $area = $this->input->post('area_fil', true);
+        $areas = $this->input->post('area_fills', true);
+        $month = $this->input->post('month_fil', true);
+        $year = $this->input->post('year_fil', true);
+
+        if ($areas != null || $areas != "") {
+            $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $areas])->row();
+            $area = $idArea->id;
+        } else {
+            $area = $area;
+        }
+
+        $q = "SELECT FORMAT(COALESCE(SUM(atm.document_in),0), 'N0') AS total
+                FROM soa_bi.dbo.admisecdrep_transaction atr
+                LEFT JOIN soa_bi.dbo.admisecdrep_transaction_material atm ON atm.trans_id=atr.id
+            WHERE atr.disable=0 and atm.category_id in (12,1035,1036)";
+
+        if (!empty($year)) $q .= " AND YEAR(atr.report_date)='$year'";
+        if (!empty($month)) $q .= " AND MONTH(atr.report_date)='$month'";
+        if (!empty($area)) $q .= " AND atr.area_id='$area'";
+
+        $res_q = $this->srsdb->query($q);
+
         return $res_q;
     }
 
@@ -227,25 +272,7 @@ class M_dashboard extends CI_Model
         return $res_q;
     }
 
-    public function materialTotal()
-    {
-        $area = $this->input->post('area_fil', true);
-        $month = $this->input->post('month_fil', true);
-        $year = $this->input->post('year_fil', true);
 
-        $q = "SELECT FORMAT(COALESCE(SUM(atm.document_in),0), 'N0') AS total
-                FROM soa_bi.dbo.admisecdrep_transaction atr
-                LEFT JOIN soa_bi.dbo.admisecdrep_transaction_material atm ON atm.trans_id=atr.id
-            WHERE atr.disable=0 and atm.category_id in (12,1035,1036)";
-
-        if (!empty($year)) $q .= " AND YEAR(atr.report_date)='$year'";
-        if (!empty($month)) $q .= " AND MONTH(atr.report_date)='$month'";
-        if (!empty($area)) $q .= " AND atr.area_id='$area'";
-
-        $res_q = $this->srsdb->query($q);
-
-        return $res_q;
-    }
 
     public function pieVehicle($id)
     {
@@ -331,9 +358,13 @@ class M_dashboard extends CI_Model
     {
         $year = $this->input->post("year");
         $area = $this->input->post("plant");
+        $area_kode = $this->input->post("area_fill");
         $wherePlant = "";
-        if ($area) {
+        if ($area != "" || $area != null) {
             $wherePlant .= " AND a.area_id='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $area_kode])->row();
+            $wherePlant .= " AND a.area_id='$idArea->id'";
         }
 
         $res = $this->soadb->query(";WITH months(MonthNumber) AS
@@ -369,9 +400,13 @@ class M_dashboard extends CI_Model
     {
         $year = $this->input->post("year");
         $area = $this->input->post("plant");
+        $area_kode = $this->input->post("area_fill");
         $wherePlant = "";
         if ($area) {
             $wherePlant .= " AND atr.area_id='$area'";
+        } else if ($area_kode) {
+            $idArea  = $this->soadb->query("SELECT id , code_sub FROM admisecdrep_sub WHERE code_sub = '" . $area_kode . "' ")->row();
+            $wherePlant .= "AND atr.area_id='$idArea->id'";
         }
         $res = $this->soadb->query(";WITH months(MonthNumber) AS
         (
@@ -404,9 +439,13 @@ class M_dashboard extends CI_Model
     {
         $year = $this->input->post("year");
         $area = $this->input->post("plant");
+        $area_kode = $this->input->post("area_fill");
         $wherePlant = "";
         if ($area) {
             $wherePlant .= " AND a.area_id='$area'";
+        } else if ($area_kode) {
+            $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $area_kode])->row();
+            $wherePlant .= " AND a.area_id='$idArea->id'";
         }
         $res = $this->soadb->query(";WITH months(MonthNumber) AS
         (

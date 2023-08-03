@@ -148,11 +148,4 @@ class Dashboard_osint extends CI_Controller
         $data = $this->models->getArea($year)->result();
         echo json_encode($data);
     }
-
-    public function totalLevelAvg()
-    {
-        $data = $this->models->totalLevelAvg()->result();
-
-        echo json_encode($data);
-    }
 }

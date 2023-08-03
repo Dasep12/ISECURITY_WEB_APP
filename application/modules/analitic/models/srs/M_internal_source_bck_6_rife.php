@@ -41,7 +41,7 @@ class M_internal_source extends CI_Model
         {
             $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
             INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-            INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            INNER JOIN srs_bi.dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
             WHERE aau.npk=$npk)";
         }
         $res_q = $this->srsdb->query($q);
@@ -228,7 +228,7 @@ class M_internal_source extends CI_Model
             $this->srsdb->where('a.area_id IN (SELECT aas.id
                 FROM isecurity.dbo.admisec_area_users aau 
                 INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                INNER JOIN srs_bi.dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
              WHERE aau.npk='.$npk.')', NULL, FALSE);
         }
         if(is_author())
@@ -344,7 +344,7 @@ class M_internal_source extends CI_Model
                         from isecurity.dbo.admisec_area_users aau 
                         inner join isecurity.dbo.admisecsgp_mstusr amu ON amu.npk=aau.npk 
                         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah
+                        inner join srs_bi.dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah
                         group by aas.id, amu.name, amu.npk
                     ) husr ON husr.id=a.area_id
                 WHERE a.id='$id'
