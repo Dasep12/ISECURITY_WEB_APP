@@ -856,8 +856,8 @@
             url: "<?= base_url('analitic/crime/Crime/mapJakut') ?>",
             method: "POST",
             data: {
-                tahun: "2023",
-                bulan: ""
+                tahun: thn,
+                bulan: blan
             },
             success: function(e) {
                 let data = JSON.parse(e);
@@ -892,7 +892,7 @@
 
         })
     }
-    loadMapJakut(thn, blan);
+    loadMapJakut(thn, "");
 
 
 
@@ -906,6 +906,7 @@
             },
             success: function(e) {
                 let data = e
+                console.log(e);
                 var teljambar = data[0].total;
                 var teljamtim = data[1].total;
                 var klari = data[2].total;
@@ -941,7 +942,7 @@
 
         })
     }
-    loadMapKarawang(thn, 3);
+    loadMapKarawang(thn, "");
 
 
 
@@ -1473,49 +1474,12 @@
                 },
                 success: function(e) {
                     const data = JSON.parse(e);
-                    // console.log(data);
-
-                    const kecamatan = ['pademangan', 'koja', 'tanjung_priok', 'penjaringan', 'cilincing', 'kelapa_gading'];
-                    const kecamatan2 = ['teluk_jambe_barat', 'teluk_jambe_timur', 'klari', 'ciampel', 'majalaya', 'karawang_barat', 'karawang_timur'];
-
-                    for (var i = 0; i < 6; i++) {
-
-                        document.getElementById(kecamatan[i] + '_perjudian').innerHTML = data.MapingJakut[i][1].perjudian;
-                        document.getElementById(kecamatan[i] + '_pencurian').innerHTML = data.MapingJakut[i][1].pencurian;
-                        document.getElementById(kecamatan[i] + '_penggelapan').innerHTML = data.MapingJakut[i][1].penggelapan;
-                        document.getElementById(kecamatan[i] + '_narkoba').innerHTML = data.MapingJakut[i][1].narkoba;
-                        document.getElementById(kecamatan[i] + '_kekerasan').innerHTML = data.MapingJakut[i][1].kekerasan;
-
-                        document.getElementById(kecamatan[i] + "_perjudian").style.width = data.MapingJakut[i][1].perjudian < 5 ? 5 + '%' : data.MapingJakut[i][1].perjudian + 5 + '%'
-                        document.getElementById(kecamatan[i] + "_pencurian").style.width = data.MapingJakut[i][1].pencurian < 5 ? 5 + '%' : data.MapingJakut[i][1].pencurian + 5 + '%'
-                        document.getElementById(kecamatan[i] + "_penggelapan").style.width = data.MapingJakut[i][1].penggelapan < 5 ? 5 + '%' : data.MapingJakut[i][1].penggelapan + 5 + '%'
-                        document.getElementById(kecamatan[i] + "_narkoba").style.width = data.MapingJakut[i][1].narkoba < 5 ? 5 + '%' : data.MapingJakut[i][1].narkoba + 5 + '%'
-                        document.getElementById(kecamatan[i] + "_penggelapan").style.width = data.MapingJakut[i][1].penggelapan < 5 ? 5 + '%' : data.MapingJakut[i][1].penggelapan + 5 + '%'
-                    }
-
-                    for (var i = 0; i < 6; i++) {
-
-
-                        document.getElementById(kecamatan2[i] + '_perjudian').innerHTML = data.MapingKarawang[i][1].perjudian;
-                        document.getElementById(kecamatan2[i] + '_pencurian').innerHTML = data.MapingKarawang[i][1].pencurian;
-                        document.getElementById(kecamatan2[i] + '_penggelapan').innerHTML = data.MapingKarawang[i][1].penggelapan;
-                        document.getElementById(kecamatan2[i] + '_narkoba').innerHTML = data.MapingKarawang[i][1].narkoba;
-                        document.getElementById(kecamatan2[i] + '_kekerasan').innerHTML = data.MapingKarawang[i][1].kekerasan;
-
-                        document.getElementById(kecamatan2[i] + "_perjudian").style.width = data.MapingKarawang[i][1].perjudian < 5 ? 5 + '%' : data.MapingKarawang[i][1].perjudian + 5 + '%'
-                        document.getElementById(kecamatan2[i] + "_pencurian").style.width = data.MapingKarawang[i][1].pencurian < 5 ? 5 + '%' : data.MapingKarawang[i][1].pencurian + 5 + '%'
-                        document.getElementById(kecamatan2[i] + "_penggelapan").style.width = data.MapingKarawang[i][1].penggelapan < 5 ? 5 + '%' : data.MapingKarawang[i][1].penggelapan + 5 + '%'
-                        document.getElementById(kecamatan2[i] + "_narkoba").style.width = data.MapingKarawang[i][1].narkoba < 5 ? 5 + '%' : data.MapingKarawang[i][1].narkoba + 5 + '%'
-                        document.getElementById(kecamatan2[i] + "_penggelapan").style.width = data.MapingKarawang[i][1].penggelapan < 5 ? 5 + '%' : data.MapingKarawang[i][1].penggelapan + 5 + '%'
-                    }
-
-
                     document.getElementById("monthly_jakut").innerHTML = bulanConvert(bulan);
                     document.getElementById("year_jakut").innerHTML = tahun;
                 }
             })
         }
-        updateGraphic(thn, blan)
+        // updateGraphic(thn, blan)
 
 
 
@@ -1529,7 +1493,6 @@
                     bulan: month
                 },
                 success: function(e) {
-                    console.log(e)
                     let data = e;
                     const kecamatan = ['pademangan', 'koja', 'tanjung_priok', 'penjaringan', 'cilincing', 'kelapa_gading'];
 
@@ -1549,8 +1512,40 @@
                 }
             });
         }
-
         FmapingKategoriJakut(thn, "")
+
+
+        // update kategori mapping karawang
+        function FmapingKategoriKarawang(year, month) {
+            $.ajax({
+                url: "<?= base_url('analitic/crime/Crime/mapingKategoriKarawang') ?>",
+                method: "POST",
+                data: {
+                    tahun: year,
+                    bulan: month
+                },
+                success: function(e) {
+                    let data = e;
+                    const kecamatan = ['teluk_jambe_barat', 'teluk_jambe_timur', 'klari', 'ciampel', 'majalaya', 'karawang_barat', 'karawang_timur'];
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        document.getElementById(kecamatan[i] + '_perjudian').innerHTML = data[i][1].perjudian;
+                        document.getElementById(kecamatan[i] + '_pencurian').innerHTML = data[i][1].pencurian;
+                        document.getElementById(kecamatan[i] + '_penggelapan').innerHTML = data[i][1].penggelapan;
+                        document.getElementById(kecamatan[i] + '_narkoba').innerHTML = data[i][1].narkoba;
+                        document.getElementById(kecamatan[i] + '_kekerasan').innerHTML = data[i][1].kekerasan;
+
+                        document.getElementById(kecamatan[i] + "_perjudian").style.width = data[i][1].perjudian < 5 ? 5 + '%' : data[i][1].perjudian + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_pencurian").style.width = data[i][1].pencurian < 5 ? 5 + '%' : data[i][1].pencurian + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_penggelapan").style.width = data[i][1].penggelapan < 5 ? 5 + '%' : data[i][1].penggelapan + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_narkoba").style.width = data[i][1].narkoba < 5 ? 5 + '%' : data[i][1].narkoba + 5 + '%'
+                        document.getElementById(kecamatan[i] + "_penggelapan").style.width = data[i][1].penggelapan < 5 ? 5 + '%' : data[i][1].penggelapan + 5 + '%'
+                    }
+                }
+            });
+        }
+        FmapingKategoriKarawang(thn, "")
 
         $("#tahun,#bulan").change(function() {
             var tahun = $("#tahun").val();
@@ -1568,11 +1563,12 @@
             // Kecamatan Karawang setahun
             FcrimeAreaKarawang(tahun, bulan)
 
-            // update graphic
+            // // update graphic
             updateGraphic(tahun, bulan)
 
             // update kategori mapping 
-            FmapingKategoriJakut(thn, blan)
+            FmapingKategoriJakut(tahun, bulan)
+            FmapingKategoriKarawang(tahun, bulan)
 
             loadMapJakut(tahun, bulan);
             loadMapKarawang(tahun, bulan);

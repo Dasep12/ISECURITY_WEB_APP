@@ -42,6 +42,13 @@ class M_dashboard extends CI_Model
 
     public function crimeKategoriSetahun($year, $kota, $kat)
     {
+
+        $kec = "";
+        if ($kota == "Jakarta Utara") {
+            $kec .= "AND kec in ('Penjaringan', 'Tanjung Priok', 'Cilincing', 'Kelapa Gading', 'Pademangan', 'Koja') ";
+        } else {
+            $kec .= "AND kec in ('Teluk Jambe Barat', 'Teluk Jambe Timur', 'Klari', 'Ciampel', 'Majalaya', 'Karawang Barat', 'Karawang Timur') ";
+        }
         $q = " WITH months(MonthNum) AS
         (
             SELECT 1
@@ -50,7 +57,9 @@ class M_dashboard extends CI_Model
                 FROM months
             WHERE MonthNum < 12
         )
-        SELECT m.MonthNum month_num, (select count(c.id) from  dbo.admisec_Tcrime c where c.kategori = '" . $kat . "' and c.kota ='" . $kota . "' and month(c.tanggal) = m.MonthNum and YEAR(c.tanggal)='" . $year . "' ) as total
+        SELECT m.MonthNum month_num, (select count(c.id) from  dbo.admisec_Tcrime c where c.kategori = '" . $kat . "' and c.kota ='" . $kota . "' 
+        " . $kec . "
+        and month(c.tanggal) = m.MonthNum and YEAR(c.tanggal)='" . $year . "' ) as total
         FROM months m
         LEFT OUTER JOIN dbo.admisec_Tcrime AS t ON MONTH(t.tanggal)=m.MonthNum AND 
         YEAR(t.tanggal)='" . $year . "'
@@ -131,8 +140,6 @@ class M_dashboard extends CI_Model
 
     public function totalCrimePerKecamatan($kec, $bulan, $tahun)
     {
-
-        $date = $tahun . '-' . $bulan;
         $month = "";
         if (!empty($bulan)) {
             $month .= "AND MONTH(tanggal) = '$bulan' ";

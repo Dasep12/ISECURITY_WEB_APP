@@ -34,7 +34,6 @@ class Dashboard extends CI_Controller
         }
 
         // FILTER TAHUN
-        // $firstYear = (int)date('Y') - 3; // - 84
         $firstYear = 2022;
         $lastYear = $firstYear + 5; // + 2
         $opt_yea = array('' => '-- Choose --');

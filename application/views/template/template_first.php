@@ -151,7 +151,7 @@
 
                         <!-- <li class="nav-header">Data Analytic</li> -->
 
-                        <?php if (is_super_admin() || is_app('SRS')) { ?>
+                        <?php if (is_super_admin() || is_app('SRS')  ) { ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('analitic/srs/Dashboard') ?>" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>

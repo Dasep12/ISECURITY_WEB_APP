@@ -17,7 +17,7 @@ class Daily_report extends CI_Controller
         $this->access_module = is_module($this->module_code);
         $this->soadb = $this->load->database('soa_bi', TRUE);
 
-        $this->load->model(['soa/M_soa']);
+        $this->load->model(['soa/M_soa', 'srs/M_soi']);
         $this->load->library('form_validation');
     }
 
@@ -55,51 +55,37 @@ class Daily_report extends CI_Controller
 
     public function list_table()
     {
-        $role = $this->session->userdata('role');
-        $npk = $this->session->userdata('npk');
-        $access_modul = $this->Roles_m->access_modul($npk, 'SRSISO')->row();
+        $list = $this->M_soa->get_datatables();
+        $draw = intval($this->input->post("draw"));
+        $start = intval($this->input->post("start"));
+        $length = intval($this->input->post("length"));
+        $data = [];
 
-        $list = $this->M_soi->get_datatables();
-        $data = array();
-        $no = $_POST['start'];
-        foreach ($list as $field) {
-            $no++;
-            $row = array();
-            $month = date("F", mktime(0, 0, 0, $field->month, 10));
-            $row[] = $no;
-            $row[] = $field->area;
-            $row[] = $field->year;
-            $row[] = $month;
-            $row[] = $field->people;
-            $row[] = $field->system;
-            $row[] = $field->device;
-            $row[] = $field->network;
-            $edt_btn = (is_super_admin()) || (isset($this->access_module->edt) && $this->access_module->edt == '1') ? '<a class="btn btn-sm btn-info" href="' . site_url('analitic/srs/soi/edit/' . $field->id) . '">
-                        <i class="fa fa-edit"></i>
-                    </a> ' : '';
-            $del_btn = (is_super_admin()) || (isset($this->access_module->dlt) && $this->access_module->dlt == '1') ? '<button data-id="' . $field->id . '" data-title="' . $field->area . " - " . $month . ' ' . $field->year . '" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">
-                        <i class="fa fa-trash"></i>
-                    </button> ' : '';
-            $appr_btn = (is_super_admin()) || (isset($this->access_module->apr) && $this->access_module->apr == '1') ? $field->status == 1 ? '<button class="btn btn-sm btn-success" >
-                        <i class="fa fa-check"></i>
-                    </button> ' : '<button data-id="' . $field->id . '" data-title="' . $field->area . " - " . $month . ' ' . $field->year . '" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
-                        Approve
-                    </button> ' : '';
-            $row[] = $appr_btn . $edt_btn . '<button data-id="' . $field->id . '" class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#detailModal">
-                        Detail
-                    </button>' . $del_btn;
-
-            $data[] = $row;
+        $no = 1;
+        foreach ($list->result() as $r) {
+            $data[] = array(
+                $no++,
+                $r->area,
+                $r->tanggal,
+                $r->total_vehicle,
+                $r->total_people,
+                $r->total_document,
+                $r->area_id
+            );
         }
-
-        $output = array(
-            "draw" => $_POST['draw'],
-            "recordsTotal" => $this->M_soi->count_all(),
-            "recordsFiltered" => $this->M_soi->count_filtered(),
-            "data" => $data,
+        $result = array(
+            "draw" => $draw,
+            "recordsTotal" => $list->num_rows(),
+            "recordsFiltered" => $list->num_rows(),
+            "data" => $data
         );
-        //output dalam format JSON
-        echo json_encode($output);
+
+
+        // echo json_encode($result);
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($result));
     }
 
     public function edit()
@@ -185,80 +171,12 @@ class Daily_report extends CI_Controller
 
     public function detail()
     {
-        $this->form_validation->set_rules('id', 'ID', 'trim|required');
 
-        if ($this->form_validation->run() == FALSE) {
-            echo null;
-        } else {
-            $res_sub = $this->M_soi->detail()->result();
-
-            if ($res_sub) {
-                $opt = '<table class="table table-bordered">
-                            <tbody>
-                                <tr>
-                                    <th>Area</th>
-                                    <td>' . $res_sub[0]->area . '</td>
-                                </tr>
-                                <tr>
-                                    <th>Year</th>
-                                    <td>' . $res_sub[0]->year . '</td>
-                                </tr>
-                                <tr>
-                                    <th>Month</th>
-                                    <td>' . date("F", mktime(0, 0, 0, $res_sub[0]->month, 10)) . '</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <table class="table table-bordered">
-                                            <tr class="text-center">
-                                                <th colspan="2">People</th>
-                                                <th colspan="2">System</th>
-                                                <th>Device</th>
-                                                <th>Network</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Knowlage</th>
-                                                <th class="text-center font-weight-normal">' . $res_sub[0]->knowlage . '</th>
-                                                <th>ASMS Value</th>
-                                                <th class="text-center font-weight-normal">' . $res_sub[0]->asms_value . '</th>
-                                                <th rowspan="3"></th>
-                                                <th rowspan="3"></th>
-                                            </tr>
-                                            <tr>
-                                                <th>Attitude</th>
-                                                <th class="text-center font-weight-normal">' . $res_sub[0]->attitude . '</th>
-                                                <th>Perform Guard Tour</th>
-                                                <th class="text-center font-weight-normal">' . $res_sub[0]->perform_gt . '</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Skill</th>
-                                                <th class="text-center font-weight-normal">' . $res_sub[0]->skill . '</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <th colspan="2" >' . $res_sub[0]->people . '</th>
-                                                <th colspan="2">' . $res_sub[0]->system . '</th>
-                                                <th>' . $res_sub[0]->device . '</th>
-                                                <th>' . $res_sub[0]->network . '</th>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Note</th>
-                                    <td>
-                                        <textarea class="form-control" disabled>' . $res_sub[0]->note . '</textarea>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>';
-
-                echo $opt;
-            } else {
-                echo null;
-            }
-        }
+        $data = [
+            'area' => $this->M_soa->get_detail(),
+            'date'  => $this->input->post("tanggal")
+        ];
+        $this->load->view("soa/detail_soa", $data);
     }
 
     public function save()
@@ -294,21 +212,7 @@ class Daily_report extends CI_Controller
 
     public function delete()
     {
-        $this->form_validation->set_rules('id', 'ID', 'trim|required');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> ID tidak ditemukan', 5);
-        } else {
-            $res = $this->M_soi->delete();
-
-            if ($res == '00') {
-                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menghapus data', 5);
-            } else {
-                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menghapus data', 5);
-            }
-        }
-
-        redirect('analitic/srs/soi');
+        $res = $this->M_soa->delete();
+        echo $res;
     }
 }

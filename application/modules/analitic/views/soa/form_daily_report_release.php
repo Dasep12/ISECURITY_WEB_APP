@@ -16,6 +16,7 @@
 
 <section class="content">
     <div class="container-fluid">
+        <div class="row information" id="information"></div>
         <div class="row">
             <?php
             if ($this->session->tempdata('success')) {
@@ -264,6 +265,16 @@
                                             </div>
                                         </div>
                                     </fieldset>
+
+                                    <fieldset class="border p-4 mt-2 mb-4">
+                                        <legend class="w-auto h5">Chronology</legend>
+                                        <div class="form-row">
+                                            <div class="form-group col-7">
+                                                <label for="chronology">Chronology</label>
+                                                <textarea id="chronology" class="form-control" name="chronology" rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                     <div class="form-row mt-2 mb-4 justify-content-end">
                                         <button class="btn btn-primary px-4" type="submit">SAVE</button>
                                     </div>
@@ -284,6 +295,10 @@
                                                     <label for="areaFilter">Area</label>
                                                     <?= $select_area_filter; ?>
                                                 </div>
+                                                <div class="form-group col-3">
+                                                    <label for="">Tanggal</label>
+                                                    <input type="text" id="datePickerFilter" class="form-control" name="date_filter" autocomplete="off" required>
+                                                </div>
                                             </div>
 
                                             <div class="form-row">
@@ -297,21 +312,19 @@
                                 </div>
 
                                 <div class="table-responsive mt-5">
-                                    <table id="tableIso" style="width:100%" class="table table-striped table-sm text-center">
+                                    <table id="tableSoa" style="width:100%" class="table table-striped table-sm">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Area</th>
-                                                <th>Year</th>
-                                                <th>Month</th>
+                                                <th>Plant</th>
+                                                <th>Date</th>
+                                                <th>Vehicle</th>
                                                 <th>People</th>
-                                                <th>System</th>
-                                                <th>Device</th>
-                                                <th>Network</th>
+                                                <th>Document</th>
                                                 <th style="width:200px">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody></tbody>
+                                        <tbody id="tableDataSoa"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -329,14 +342,19 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <!-- <h5 class="modal-title" id="detailModalLabel"></h5> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body" id="detailSoaModal">
+            </div>
+            <div class="row justify-content-center mb-2">
+                <div class="spinner-border text-danger" id="loadSoaDetail" style="display: none;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn-sm btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -347,13 +365,6 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <?= form_open('analitic/srs/soi/approve'); ?>
-            <!-- <div class="modal-header border-0">
-            <h5 class="modal-title" id="deleteModalLabel">Are you sure to Delete?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div> -->
-
             <div class="modal-body">
                 <h5>Are you sure to Approve?</h5>
             </div>
@@ -373,24 +384,23 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <?= form_open('analitic/srs/soi/delete'); ?>
-            <!-- <div class="modal-header border-0">
-            <h5 class="modal-title" id="deleteModalLabel">Are you sure to Delete?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div> -->
+            <form id="deleteData" action="">
+                <div class="modal-body">
+                    <h5>Are you sure to delete?</h5>
+                    <input id="idArea" type="text" name="idArea" hidden>
+                    <input id="idDate" type="text" name="idDate" hidden>
+                    <div class="row justify-content-center mb-2">
+                        <div class="spinner-border text-danger" id="loadSoaDetail" style="display: none;" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="modal-body">
-                <h5>Are you sure to Delete?</h5>
-            </div>
-
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <input id="idDelete" type="text" name="id" hidden>
-                <button type="submit" class="btn btn-danger px-4">Yes</button>
-            </div>
-            <?= form_close(); ?>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger px-4">Yes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -399,6 +409,8 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        moment.locale('id');
+
         $('.mask-decimal').mask("#.##", {
             reverse: true
         }).attr('maxlength', 3);
@@ -429,28 +441,153 @@
         });
 
 
-        //datatables
-        table = $('#tableIso').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ordering": true,
-            "order": [],
-            "autoWidth": false,
 
-            "ajax": {
-                "url": "<?= site_url('analitic/srs/soi/list_table'); ?>",
+        moment.locale('id');
+        var start = moment().subtract(1, 'days');
+        var end = moment();
+        $('#datePickerFilter').daterangepicker({
+            autoUpdateInput: false,
+            timePicker: false,
+            timePicker24Hour: false,
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            locale: {
+                "format": "YYYY-MM-DD",
+                "format": "LL",
+                "separator": " - ",
+                "applyLabel": "Apply",
+                "cancelLabel": "Cancel",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Min",
+                    "Sen",
+                    "Sel",
+                    "Rab",
+                    "Kam",
+                    "Jum",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Januari",
+                    "Februari",
+                    "Maret",
+                    "April",
+                    "Mei",
+                    "Juni",
+                    "Juli",
+                    "Agustus",
+                    "September",
+                    "Oktober",
+                    "November",
+                    "Desember"
+                ],
+                "firstDay": 1
+            },
+        });
+        let s = "";
+        let e = ""
+
+        $('input[name="date_filter"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            s = picker.startDate.format('YYYY-MM-DD');
+            e = picker.endDate.format('YYYY-MM-DD');
+        });
+
+
+        table = $('#tableSoa').DataTable({
+            paging: true,
+            // scrollX: true,
+            searching: false,
+            ordering: false,
+            autoWidth: true,
+            processing: true,
+            language: {
+                'loadingRecords': '&nbsp;',
+                'processing': 'Loading...'
+            },
+            serverSide: false,
+            orderCellsTop: true,
+            fixedHeader: true,
+            ajax: {
+                url: "<?= site_url('analitic/soa/Daily_report/list_table'); ?>",
                 "type": "POST",
-                "data": function(data) {
-                    data.areafilter = $('#areaFilter').val();
-                    data.yearfilter = $('#yearFilter').val();
-                    data.monthfilter = $('#monthFilter').val();
+                "data": function() {
+                    var params = {
+                        'areafilter': $('#areaFilter').val(),
+                        'start': s,
+                        'end': e
+                    }
+                    return params;
                 }
             },
-            "columnDefs": [{
-                "targets": [0],
-                "orderable": false
-            }],
+            pageLength: 10,
+            columns: [{
+                    data: 0
+                }, {
+                    data: 1
+                }, {
+                    data: 2
+                }, {
+                    data: 3
+                }, {
+                    data: 4
+                }, {
+                    data: 5
+                },
+                {
+                    data: '',
+                    render: function(data, type, row) {
+
+                        // '<a href="#" class="btn btn-sm btn-success text-white"><i class="fas fa-edit"></i></a> ' +
+                        // '<a href="#" class="btn btn-sm btn-danger text-white"><i class="fas fa-trash text-white"></i></a> ' +
+
+                        return '<button data-toggle="modal" data-target="#detailModal" data-date="' + row[2] + '" data-area_id ="' + row[6] + '" class="btn btn-sm btn-primary text-white"><i class="fas fa-eye" "></i></button>'
+                        <?php if (is_super_admin()) { ?> + ' <button data-date="' + row[2] + '" data-area_id ="' + row[6] + '" data-toggle="modal" data-target="#deleteModal" class="btn btn-sm btn-danger text-white"><i class="fas fa-trash text-white"></i></button> '
+                        <?php }
+                        '' ?>
+                    }
+                },
+            ],
         });
+
+        $('#deleteData').on('submit', function(event) {
+            event.preventDefault();
+            let area = $("#idArea").val();
+            let date = $("#idDate").val();
+            $.ajax({
+                url: "<?= base_url('analitic/soa/Daily_report/delete') ?>",
+                method: "POST",
+                data: {
+                    area: area,
+                    date: date
+                },
+                success: function(e) {
+                    if (e == 1) {
+                        table.ajax.reload();
+                        $('#deleteModal').modal('hide');
+                        document.getElementById("information").innerHTML = '<div class="col-12">' +
+                            '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                            '<strong>Success! </strong> Data Terhapus' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> </div> </div>';
+                    } else {
+                        $('#deleteModal').modal('hide');
+                        document.getElementById("information").innerHTML = '<div class="col-12">' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<strong>Failed ! </strong> Data Gagal Terhapus' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> </div> </div>';
+                    }
+                }
+            })
+        })
+
 
         $('#btn-filter').click(function() {
             table.ajax.reload(); //just reload table
@@ -458,102 +595,47 @@
 
         $('#btn-reset').click(function() {
             $('#form-filter')[0].reset();
+            s = "";
+            e = "";
             table.ajax.reload(); //just reload table
         });
 
-        // mengambil julmah rata Guard Tour
-        $("#area, #years, #month").change(function(e) {
-            var area = $("#area").val()
-            var year = $("#years").val()
-            var month = $("#month").val()
-            var asm = $('#asms').val();
 
-            if (area.length != 0 && year.length != 0 && month.length) {
-                $.ajax({
-                    url: '<?= site_url('analitic/srs/soi/get_performance_gt'); ?>',
-                    type: 'POST',
-                    data: {
-                        area: area,
-                        year: year,
-                        month: month,
-                    },
-                    cache: false,
-                    beforeSend: function() {
-                        // document.getElementById("loader").style.display = "block";
-                    },
-                    complete: function() {
-                        // document.getElementById("loader").style.display = "none";
-                    },
-                    success: function(res) {
-                        var json = JSON.parse(res)
-
-                        // jika plant 4
-                        if (area === '4') {
-                            var pefGt = Math.round(json.performance_gt / 2)
-                        } else {
-                            var pefGt = Math.round(json.performance_gt / 20)
-                        }
-
-                        var arrAvg = [(pefGt / 20)]
-
-                        if (asm.length != 0) {
-                            arrAvg.push((asm / 20));
-                        }
-
-                        var total = arrAvg.map(function(n) {
-                            return n * 100;
-                        }).reduce(function(a, b) {
-                            return a + (b || 0);
-                        });
-
-                        const resAvg = Math.round((total / arrAvg.length)) / 100;
-
-                        $('#guardtour').val(pefGt)
-                        $('#system').val(resAvg)
-                    }
-                });
-            }
-        });
 
         $('#detailModal').on('shown.bs.modal', function(e) {
             const target = $(e.relatedTarget);
             const modal = $(this);
-            const id = target.data('id')
-            const row = $(target).closest("tr");
-            const title = row.find("td:nth-child(2)");
-
-            // console.log(title)
-            // modal.find('#detailModalLabel').text(tds.text());
-
+            const date = target.data('date')
+            const area = target.data('area_id')
             $.ajax({
-                url: '<?= site_url('analitic/srs/soi/detail'); ?>',
-                type: 'POST',
+                url: "<?= base_url("analitic/soa/Daily_report/detail") ?>",
+                method: "POST",
                 data: {
-                    id: id,
+                    tanggal: date,
+                    area: area,
+                },
+                beforeSend: function() {
+                    document.getElementById("loadSoaDetail").style.display = "block";
+                    document.getElementById("detailSoaModal").innerHTML = "";
+                },
+                complete: function() {
+                    document.getElementById("loadSoaDetail").style.display = "none";
                 },
                 cache: false,
-                beforeSend: function() {
-                    $(".lds-ring").show();
-                },
-                success: function(data) {
-                    $(".lds-ring").hide();
-                    $('#detailModal .modal-body').html(data); //menampilkan data ke dalam modal
+                success: function(e) {
+                    document.getElementById("detailSoaModal").innerHTML = e;
                 }
-            });
+            })
         });
 
         $('#deleteModal').on('shown.bs.modal', function(e) {
-            $('#deleteModal .modal-body .title-approve').remove()
-
             const target = $(e.relatedTarget);
             const modal = $(this);
-            const id = target.data('id')
-            const title = target.data('title')
+            const date = target.data('date')
+            const area = target.data('area_id')
+            $('#idDate').val(date)
+            $('#idArea').val(area)
 
-            $('#idDelete').val(id)
-            $('#deleteModal .modal-body h5').after(`
-            <span class="font-weight-bold title-approve">${title}</span> 
-        `)
         })
 
         $('#approveModal').on('shown.bs.modal', function(e) {

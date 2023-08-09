@@ -507,6 +507,7 @@
 				}
 			}
 		});
+		
 		new $.fn.dataTable.Buttons(tablePatroli, {
 			buttons: [{
 					text: '<i class="fa fa-files-o"></i> XLSX',

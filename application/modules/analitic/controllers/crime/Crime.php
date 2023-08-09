@@ -384,12 +384,12 @@ class Crime extends CI_Controller
         $bulan = $this->input->post("bulan");
         $tahun = $this->input->post("tahun");
         $data = array(
-            ['name' => 'Teluk Jambe Barat', 'total' => $this->model->totalCrimePerKecamatan("teluk jambe barat", $bulan, $tahun)],
+            ['name' => 'Teluk Jambe Barat', 'total' => $this->model->totalCrimePerKecamatan("Teluk Jambe Barat", $bulan, $tahun)],
             ['name' => 'Teluk Jambe Timur', 'total' => $this->model->totalCrimePerKecamatan("Teluk Jambe Timur", $bulan, $tahun)],
             ['name' => 'Klari', 'total' => $this->model->totalCrimePerKecamatan("Klari", $bulan, $tahun)],
             ['name' => 'Ciampel', 'total' => $this->model->totalCrimePerKecamatan("Ciampel", $bulan, $tahun)],
             ['name' => 'Majalaya', 'total' => $this->model->totalCrimePerKecamatan("majalaya", $bulan, $tahun)],
-            ['name' => 'Karawang Barat', 'total' => $this->model->totalCrimePerKecamatan("karawang barat", $bulan, $tahun)],
+            ['name' => 'Karawang Barat', 'total' => $this->model->totalCrimePerKecamatan("Karawang Barat", $bulan, $tahun)],
             ['name' => 'Karawang Timur', 'total' => $this->model->totalCrimePerKecamatan("karawang timur", $bulan, $tahun)],
         );
         header('Content-Type: application/json; charset=utf-8');
@@ -497,6 +497,66 @@ class Crime extends CI_Controller
                 'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "penggelapan", $bulan, "Jakarta Utara", $tahun),
                 'narkoba'       => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "narkoba", $bulan, "Jakarta Utara", $tahun),
                 'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("Kelapa Gading", "kekerasan", $bulan, "Jakarta Utara", $tahun),
+            ))
+        );
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data);
+    }
+
+    public function mapingKategoriKarawang()
+    {
+        $tahun = $this->input->post("tahun");
+        $bulan = $this->input->post("bulan");
+        $data = array(
+            array('Teluk Jambe Barat', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("teluk jambe barat", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("teluk jambe barat", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("teluk jambe barat", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("teluk jambe barat", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("teluk jambe barat", "kekerasan", $bulan, 'karawang', $tahun),
+            )),
+            array('Teluk Jambe Timur', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("teluk jambe timur", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("teluk jambe timur", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("teluk jambe timur", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("teluk jambe timur", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("teluk jambe timur", "kekerasan", $bulan, 'karawang', $tahun),
+            )),
+            array('Klari', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("klari", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("klari", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("klari", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("klari", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("klari", "kekerasan", $bulan, 'karawang', $tahun),
+            )),
+            array('Ciampel', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("ciampel", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("ciampel", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("ciampel", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("ciampel", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("ciampel", "kekerasan", $bulan, 'karawang', $tahun),
+            )),
+            array('Majalaya', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("majalaya", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("majalaya", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("majalaya", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("majalaya", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("majalaya", "kekerasan", $bulan, 'karawang', $tahun),
+            )),
+            array('Karawang Barat', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("karawang barat", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("karawang barat", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("karawang barat", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("karawang barat", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("karawang barat", "kekerasan", $bulan, 'karawang', $tahun),
+            )),
+            array('Karawang Timur', array(
+                'perjudian'     => $this->model->modelCrimeKategoriPerbulan("karawang timur", "perjudian", $bulan, 'karawang', $tahun),
+                'pencurian'     => $this->model->modelCrimeKategoriPerbulan("karawang timur", "pencurian", $bulan, 'karawang', $tahun),
+                'penggelapan'   => $this->model->modelCrimeKategoriPerbulan("karawang timur", "penggelapan", $bulan, 'karawang', $tahun),
+                'narkoba'       => $this->model->modelCrimeKategoriPerbulan("karawang timur", "narkoba", $bulan, 'karawang', $tahun),
+                'kekerasan'     => $this->model->modelCrimeKategoriPerbulan("karawang timur", "kekerasan", $bulan, 'karawang', $tahun),
             ))
         );
 

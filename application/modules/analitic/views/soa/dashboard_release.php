@@ -9,11 +9,7 @@
             <div class="col-sm-6">
             </div>
             <div class="col-sm-6">
-                <!-- <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="<?= base_url('Mst_Event') ?>">Master</a></li>
-                    <li class="breadcrumb-item"><a href="<?= base_url('Mst_Event') ?>">Event</a></li>
-                    <li class="breadcrumb-item"><a href="">Edit Event</a></li>
-                </ol> -->
+
             </div>
         </div>
     </div>
@@ -266,7 +262,7 @@
             ];
 
             people(field);
-            peopleCategory(field);
+            // peopleCategory(field);
             vehicle(field);
             material(field);
             FvehiclePie(field);
@@ -319,7 +315,7 @@
         })
 
         people(field);
-        peopleCategory(field);
+        // peopleCategory(field);
         vehicle(field);
         material(field);
         FvehiclePie(field);
@@ -404,38 +400,9 @@
         });
     }
 
-    function peopleCategory(field) {
-        $.ajax({
-            url: '<?= site_url('analitic/soa/dashboard/peopleCategory'); ?>',
-            type: 'POST',
-            data: {
-                area_fil: area,
-                year_fil: year,
-                month_fil: month,
-            },
-            cache: false,
-            beforeSend: function() {
-                // $(".lds-ring").show();
-                // document.getElementById("loader").style.display = "block";
-            },
-            complete: function() {
-                // document.getElementById("loader").style.display = "none";
-            },
-            success: function(res) {
-                var json = JSON.parse(res)
-                employeeTotal.text(json[0].total_kehadiran)
-                visitorTotal.text(json[1].total_kehadiran)
-                bpTotal.text(json[2].total_kehadiran)
-                contractorTotal.text(json[3].total_kehadiran)
-            }
-        });
-    }
-
-
-
-    // function peoplePerDays(peopleCategoryDayChart, field) {
+    // function peopleCategory(field) {
     //     $.ajax({
-    //         url: '<?= site_url('analitic/soa/dashboard/peopleCategoryDayTotal'); ?>',
+    //         url: '<?= site_url('analitic/soa/dashboard/peopleCategory'); ?>',
     //         type: 'POST',
     //         data: {
     //             area_fil: area,
@@ -452,22 +419,15 @@
     //         },
     //         success: function(res) {
     //             var json = JSON.parse(res)
-
-    //             peopleCategoryDayChart.data.datasets = json;
-    //             peopleCategoryDayChart.update()
-
-    //             // datas = json;
-    //             // setDatas = [{
-    //             //     label: datas.map(function(v){return v.day_num}),
-    //             //     data: datas.map(function(v){return v.total})
-    //             // }];
-
-    //             // peoplePerDayChart.data.datasets[0].data = setDatas[0].data;
-    //             // peoplePerDayChart.update();
-
+    //             employeeTotal.text(json[0].total_kehadiran)
+    //             visitorTotal.text(json[1].total_kehadiran)
+    //             bpTotal.text(json[2].total_kehadiran)
+    //             contractorTotal.text(json[3].total_kehadiran)
     //         }
     //     });
     // }
+
+
 
     var vehiclePie = Highcharts.chart('vehicle', {
         chart: {
@@ -995,7 +955,6 @@
             },
             success: function(e) {
                 let data = JSON.parse(e);
-                console.log(e)
                 let color = ["#bf061e", "#10d5eb", "#c9c016"];
                 for (let i = 0; i < data.length; i++) {
                     traficAll.series[i].update({
