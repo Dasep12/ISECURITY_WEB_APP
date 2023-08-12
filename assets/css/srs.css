@@ -212,12 +212,23 @@ form .form-control, .select2-selection {
 .dataTables_info { color: #ffffff }
 
 .modal-content, #detailGrap .modal-content, #detailGrapSmall .modal-content {
-    background-color: rgb(40 64 118 / 88%) !important;
+    background-color: rgb(40 64 118 / 98%) !important;
     color: #fff;
 } 
 
 .close, #detailGrap .close, #detailGrapSmall .close {
     color: #fff;
+}
+
+.loader-full {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(0 0 0 / 18%)
 }
 
 .main-footer {
@@ -311,4 +322,21 @@ div.dataTables_wrapper div.dataTables_processing {
     background-color: #e3e3e3;
     border-color: #ffffff;
     color: #000000;
+}
+
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+    .title-dashboard {
+        font-size: 1.5rem;
+        padding-top: 2rem
+    }
+
+    #lineSoiAvgMonth {
+        margin-top: 20px;
+        height: 300px !important;
+    }
 }

@@ -143,6 +143,7 @@
                                                             <button class="nav-link" id="v-pills-visitor-tab" data-toggle="pill" data-target="#v-pills-visitor" type="button" role="tab" aria-controls="v-pills-visitor" aria-selected="false">Visitor</button>
                                                             <button class="nav-link" id="v-pills-bp-tab" data-toggle="pill" data-target="#v-pills-bp" type="button" role="tab" aria-controls="v-pills-bp" aria-selected="false">Business Partner</button>
                                                             <button class="nav-link" id="v-pills-contractor-tab" data-toggle="pill" data-target="#v-pills-contractor" type="button" role="tab" aria-controls="v-pills-contractor" aria-selected="false">Contractor</button>
+                                                            <button class="nav-link" id="v-pills-pool-tab" data-toggle="pill" data-target="#v-pills-pool" type="button" role="tab" aria-controls="v-pills-pool" aria-selected="false">Pool</button>
                                                         </div>
                                                     </div>
 
@@ -259,6 +260,37 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="tab-pane fade" id="v-pills-pool" role="tabpanel" aria-labelledby="v-pills-pool-tab">
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-3">
+                                                                        <label for="car_pool" class="font-weight-normal">Car</label>
+
+                                                                        <div class="input-group">
+                                                                            <input id="car_pool" class="form-control mask-int" name="car_pool" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-3">
+                                                                        <label for="Motorcycle_pool" class="font-weight-normal">Motorcycle</label>
+
+                                                                        <div class="input-group">
+                                                                            <input id="motorcycle_pool" class="form-control mask-int" name="motorcycle_pool" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-3">
+                                                                        <label for="bicycle_pool" class="font-weight-normal">Bicycle</label>
+                                                                        <div class="input-group">
+                                                                            <input id="bicycle_pool" class="form-control mask-int" name="bicycle_pool" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-3">
+                                                                        <label for="truck_pool" class="font-weight-normal">Truck</label>
+                                                                        <div class="input-group">
+                                                                            <input id="truck_pool" class="form-control mask-int" name="truck_pool" autocomplete="off" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -312,7 +344,8 @@
                                 </div>
 
                                 <div class="table-responsive mt-5">
-                                    <table id="tableSoa" style="width:100%" class="table table-striped table-sm">
+
+                                    <table id="tableSoa" style="width:100%" class="table table-striped table-bordered table-sm">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -321,7 +354,7 @@
                                                 <th>Vehicle</th>
                                                 <th>People</th>
                                                 <th>Document</th>
-                                                <th style="width:200px">Action</th>
+                                                <th style="width:250px">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tableDataSoa"></tbody>
@@ -550,7 +583,11 @@
                         // '<a href="#" class="btn btn-sm btn-danger text-white"><i class="fas fa-trash text-white"></i></a> ' +
 
                         return '<button data-toggle="modal" data-target="#detailModal" data-date="' + row[2] + '" data-area_id ="' + row[6] + '" class="btn btn-sm btn-primary text-white"><i class="fas fa-eye" "></i></button>'
-                        <?php if (is_super_admin()) { ?> + ' <button data-date="' + row[2] + '" data-area_id ="' + row[6] + '" data-toggle="modal" data-target="#deleteModal" class="btn btn-sm btn-danger text-white"><i class="fas fa-trash text-white"></i></button> '
+                        <?php if (is_super_admin()) { ?> + ' <button data-date="' + row[2] + '" data-area_id ="' + row[6] + '" data-toggle="modal" data-target="#deleteModal" class="btn btn-sm btn-danger text-white"><i class="fas fa-trash text-white"></i></button> ' +
+                                '<button type="button" class="btn btn-info btn-sm dropdown-toggle edit-icon" data-toggle="dropdown"><i class= "fas fa-edit"></i></button><div class ="dropdown-menu" role= "menu" ><a class ="dropdown-item" href ="<?= base_url('analitic/soa/daily_report/edit?shift=1&date=') ?>' + row[2] + '&area=' + row[6] +
+                                '"> Shift 1 </a><a class = "dropdown-item" href ="<?= base_url('analitic/soa/daily_report/edit?shift=2&date=') ?>' + row[2] + '&area=' + row[6] +
+                                '"> Shift 2 </a><a class = "dropdown-item" href ="<?= base_url('analitic/soa/daily_report/edit?shift=3&date=') ?>' + row[2] + '&area=' + row[6] +
+                                '"> Shift 3 </a></div>'
                         <?php }
                         '' ?>
                     }

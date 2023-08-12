@@ -90,62 +90,31 @@ class Daily_report extends CI_Controller
 
     public function edit()
     {
-        $id = $this->uri->segment(5);
+        $date = $this->input->get("date");
+        $shift = $this->input->get("shift");
+        $area = $this->input->get("area");
+        $trans = $this->soadb->query("SELECT *  from admisecdrep_transaction at2  where at2.shift  = '$shift' and at2.report_date = '" . $date . "' and at2.area_id  = '$area' ")->row();
 
-        if ($id == '') {
-            $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> ID tidak ditemukan', 5);
-            redirect('analitic/srs/soi');
-        } else {
-            $get_edit = $this->M_soi->edit($id)->result();
-            $data_area = $this->M_soi->area()->result();
-
-            if ($get_edit !== NULL) {
-                $data_edit = $get_edit[0];
-
-                $opt_are = array('' => '-- Area --');
-                foreach ($data_area as $key => $are) {
-                    $opt_are[$are->id] = $are->title;
-                }
-
-                $opt_lev = array('' => '-- Level --');
-                for ($i = 1; $i <= 5; $i++) {
-                    $opt_lev[$i] = $i;
-                }
-
-                $opt_lev_com = array('' => '-- Level --');
-                for ($i = 1; $i <= 10; $i++) {
-                    $opt_lev_com[$i] = $i;
-                }
-
-                $opt_mon = array('' => '-- Month --');
-                for ($i = 1; $i <= 12; $i++) {
-                    $opt_mon[$i] = date("F", mktime(0, 0, 0, $i, 10));
-                }
-
-                $firstYear = (int)date('Y') - 4; // - 84
-                $lastYear = $firstYear + 4; // + 2
-                $opt_yea = array('' => '-- Year --');
-                for ($i = $firstYear; $i <= $lastYear; $i++) {
-                    $opt_yea[$i] = $i;
-                }
-
-                // var_dump($data_edit);die();
-
-                $data = [
-                    'link' => $this->uri->segment(3),
-                    'sub_link' => $this->uri->segment(4),
-                    'select_area' => form_dropdown('area', $opt_are, $data_edit->area_id, 'id="area" class="form-control" required'),
-                    'select_years' => form_dropdown('year', $opt_yea, $data_edit->year, 'id="years" class="form-control" required'),
-                    'select_month' => form_dropdown('month', $opt_mon, $data_edit->month, 'id="month" class="form-control" required'),
-                    'data_edit' => $data_edit
-                ];
-
-                $this->template->load("template/analityc/template_srs", "srs/form_soi_edit_v", $data);
-            } else {
-                $this->session->set_tempdata('fail', '<i class="icon fas fa-exclamation-triangle"></i> Data tidak ditemukan', 5);
-                redirect('analitic/srs/soi');
-            }
+        $opt_shift = array('' => '-- Shift --');
+        for ($i = 1; $i <= 3; $i++) {
+            $opt_shift[$i] = $i;
         }
+        $data_area = $this->M_soa->area()->result();
+
+        $opt_are = array('' => '-- Area --');
+        foreach ($data_area as $key => $are) {
+            $opt_are[$are->id] = $are->title;
+        }
+
+        $data = [
+            'link' => $this->uri->segment(3),
+            'sub_link' => $this->uri->segment(4),
+            'headerTrans' => $trans,
+            'select_area' => $data_area,
+            'select_shift' => [1, 2, 3],
+        ];
+
+        $this->template->load("template/analityc/template_soa", "soa/form_edit_daily_report_release", $data);
     }
 
     public function update()
@@ -184,6 +153,8 @@ class Daily_report extends CI_Controller
         $save = $this->M_soa->save();
         if ($save == "01") {
             $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menyimpan data', 5);
+        } else if ($save == "02") {
+            $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyimpan, karena sudah pernah input dengan data yang sama', 5);
         } else {
             $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyimpan data', 5);
         }

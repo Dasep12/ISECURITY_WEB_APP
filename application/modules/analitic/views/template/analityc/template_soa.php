@@ -59,6 +59,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <style>
         /* Absolute Center Spinner */
         .loading {
@@ -330,6 +331,8 @@
 
     <!-- Bootstrap 4 -->
     <script src="<?= base_url('assets') ?>/dist/js/bootstrap.min.js"></script>
+
+
     <!-- <script src="<?= base_url('assets') ?>/dist/js/bootstrap.bundle.min.js"></script> -->
     <!-- AdminLTE App -->
     <script src="<?= base_url('assets') ?>/dist/js/adminlte.min.js"></script>

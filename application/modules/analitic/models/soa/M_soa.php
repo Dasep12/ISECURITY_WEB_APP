@@ -77,123 +77,132 @@ class M_soa extends CI_Model
         );
 
 
-        $this->soadb->trans_begin();
-        $this->soadb->insert("admisecdrep_transaction", $header_transaksi);
-        if ($this->soadb->affected_rows() > 0) {
-            $last_id = $this->soadb->insert_id();
-            $data_people = array(
-                array(
-                    'people_id' => 6, 'attendance' => $employee, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'people_id' => 7, 'attendance' => $visitor, 'trans_id' => $last_id,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'people_id' => 8, 'attendance' => $business_partner, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'people_id' => 9, 'attendance' => $contractor, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-            );
+        $searchExisting = $this->soadb->query("SELECT *  from admisecdrep_transaction at2  where at2.shift  = '$shift' and at2.report_date = '" . $reportDate . "' and at2.area_id  = '$area' ");
 
-            $data_document = array(
-                array(
-                    'category_id' =>  12, 'document_in' => $pkb, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'category_id' =>  1035, 'document_in' => $pko, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'category_id' =>  1036, 'document_in' => $surat_jalan, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-            );
-
-            $data_vehicle  = array(
-                // employeee
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-
-                // visitor 
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-
-                // bp 
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-
-                // contractor
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-                array(
-                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $this->session->userdata("npk")
-                ),
-            );
-
-            $this->soadb->insert_batch("admisecdrep_transaction_people", $data_people);
+        if ($searchExisting->num_rows() > 0) {
+            return "02";
+        } else {
+            $this->soadb->trans_begin();
+            $this->soadb->insert("admisecdrep_transaction", $header_transaksi);
             if ($this->soadb->affected_rows() > 0) {
-                $this->soadb->insert_batch("admisecdrep_transaction_material", $data_document);
+                $last_id = $this->soadb->insert_id();
+                $data_people = array(
+                    array(
+                        'people_id' => 6, 'attendance' => $employee, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'people_id' => 7, 'attendance' => $visitor, 'trans_id' => $last_id,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'people_id' => 8, 'attendance' => $business_partner, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'people_id' => 9, 'attendance' => $contractor, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                );
+
+                $data_document = array(
+                    array(
+                        'category_id' =>  12, 'document_in' => $pkb, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'category_id' =>  1035, 'document_in' => $pko, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'category_id' =>  1036, 'document_in' => $surat_jalan, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                );
+
+                $data_vehicle  = array(
+                    // employeee
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+
+                    // visitor 
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+
+                    // bp 
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+
+                    // contractor
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                );
+
+                $this->soadb->insert_batch("admisecdrep_transaction_people", $data_people);
                 if ($this->soadb->affected_rows() > 0) {
-                    $this->soadb->insert_batch("admisecdrep_transaction_vehicle", $data_vehicle);
+                    $this->soadb->insert_batch("admisecdrep_transaction_material", $data_document);
                     if ($this->soadb->affected_rows() > 0) {
-                        $this->soadb->trans_commit();
-                        return "01";
+                        $this->soadb->insert_batch("admisecdrep_transaction_vehicle", $data_vehicle);
+                        if ($this->soadb->affected_rows() > 0) {
+                            $this->soadb->trans_commit();
+                            return "01";
+                        } else {
+                            $this->soadb->trans_rollback();
+                            return "00";
+                        }
                     } else {
                         $this->soadb->trans_rollback();
                         return "00";
@@ -206,9 +215,6 @@ class M_soa extends CI_Model
                 $this->soadb->trans_rollback();
                 return "00";
             }
-        } else {
-            $this->soadb->trans_rollback();
-            return "00";
         }
     }
 
@@ -346,5 +352,11 @@ class M_soa extends CI_Model
         )X on as2.id  = X.category_id 
         where as2.id  in  (12,1036,1035) ");
         return $res;
+    }
+
+
+
+    public function listDetail()
+    {
     }
 }

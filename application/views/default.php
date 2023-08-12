@@ -1,3 +1,24 @@
+<style>
+    .card-horizontal {
+        display: flex;
+        flex: 1 1 auto;
+    }
+
+    .box-soa {
+        height: 110px !important;
+    }
+
+    .box-soa .h4 {
+        text-transform: uppercase !important;
+        font-size: 20px !important;
+        font-weight: 700;
+    }
+
+    .box-soa .card-text {
+        text-transform: uppercase !important;
+        font-size: 20px !important;
+    }
+</style>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -21,22 +42,22 @@
                     <div class="card-body">
                         <form id="form-filter" class="form-horizontal">
                             <div class="form-row">
-                                <div class="form-group col-2">
+                                <div class="form-group col-12 col-md-2">
                                     <label for="area">Area</label>
                                     <?= $select_area_filter; ?>
                                 </div>
 
-                                <div class="form-group col-2">
+                                <div class="form-group col-12 col-md-2">
                                     <label for="yearFilter">Year</label>
                                     <?= $select_year_filter; ?>
                                 </div>
 
-                                <div class="form-group col-2">
+                                <div class="form-group col-12 col-md-2">
                                     <label for="monthFilter">Month</label>
                                     <?= $select_month_filter; ?>
                                 </div>
 
-                                <div class="form-group col d-flex align-items-end justify-content-end">
+                                <div class="form-group col-12 col-md d-flex align-items-md-end justify-content-md-end justify-content-center">
                                     <span class="h2 ff-fugazone title-dashboard">Security BigData Analytic</span>
                                 </div>
                             </div>
@@ -51,7 +72,7 @@
                         <div class="card cardIn2">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-7">
+                                    <div class="col-lg-7 mb-3 mb-md-0">
                                         <canvas id="grapSoi"></canvas>
                                     </div>
 
@@ -141,12 +162,12 @@
                         <div class="card cardIn2">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-5 pt-4 text-center">
+                                    <div class="col-md-5 pt-md-4 text-center">
                                         <div class="row">
                                             <div class="col-12 mb-3">
-                                                <h2 class="text-white">Security Operational Index</h2>
+                                                <h2 class="text-white title-dashboard">Security Operational Index</h2>
                                             </div>
-                                            <div class="col-lg-6 p-3">
+                                            <div class="col-10 mx-auto mx-md-0 col-md-6">
                                                 <div class="info-box" style="background:rgb(255 255 255 / 13%)">
                                                     <span style="background:rgba(0, 176, 80, 1)" class="info-box-icon elevation-1">
                                                         <img style="height:60%" src="./assets/images/icon/people-white.png">
@@ -162,7 +183,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-6 p-3">
+                                            <div class="col-10 mx-auto mx-md-0 col-lg-6">
                                                 <div class="info-box" style="background:rgb(255 255 255 / 13%)">
                                                     <span style="background:rgba(0, 176, 240, 1)" class="info-box-icon elevation-1">
                                                         <img style="height:60%" src="./assets/images/icon/system-white.png">
@@ -178,7 +199,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-6 p-3">
+                                            <div class="col-10 mx-auto mx-md-0 col-lg-6">
                                                 <div class="info-box" style="background:rgb(255 255 255 / 13%)">
                                                     <span style="background:rgba(255, 0, 0, 1)" class="info-box-icon elevation-1">
                                                         <img style="height:60%" src="./assets/images/icon/device-white.png">
@@ -194,7 +215,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-6 p-3">
+                                            <div class="col-10 mx-auto mx-md-0 col-lg-6">
                                                 <div class="info-box" style="background:rgb(255 255 255 / 13%)">
                                                     <span style="background:rgba(112, 48, 160, 1)" class="info-box-icon elevation-1">
                                                         <img style="height:60%" src="./assets/images/icon/network-white.png">
@@ -223,67 +244,40 @@
 
                 <!--   -->
                 <div class="row">
-
-                    <div class="col-lg-12">
+                    <div class="col-lg-9">
                         <div class="card" style="height: 370px;">
-                            <div class="card-body text-center">
-                                <div class="row">
-
-                                    <div class="col-lg-9">
-                                        <div id="soa_allMonth"></div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
-                                            <span class="info-box-icon ">
-                                                <img src="<?= base_url() ?>/assets/images/icon/soa/ancestors.png">
-                                            </span>
-                                            <div class="info-box-content  text-white">
-                                                <h4 class="info-box-text">
-                                                    PEOPLE
-                                                </h4>
-                                                <h3 id="countPeople" class="info-box-number">
-                                                    0
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
-                                            <span class="info-box-icon ">
-                                                <img src="<?= base_url() ?>assets/images/icon/soa/pollution.png">
-                                            </span>
-                                            <div class="info-box-content  text-white">
-                                                <h4 class="info-box-text">
-                                                    VEHICLE
-                                                </h4>
-                                                <h3 id="countVehicle" class="info-box-number">
-                                                    0
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
-                                            <span class="info-box-icon ">
-                                                <img src="<?= base_url() ?>assets/images/icon/soa/folder.png">
-                                            </span>
-                                            <div class="info-box-content  text-white">
-                                                <h4 class="info-box-text">
-                                                    DOCUMENT
-                                                </h4>
-                                                <h3 id="countDocument" class="info-box-number">
-                                                    0
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div id="soa_allMonth"></div>
                                 </div>
-
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card flex-row justify-content-center box-soa">
+                            <img style="height: 70px;width:70px" class="card-img-left example-card-img-responsive mt-3 ml-2" src="<?= base_url() ?>/assets/images/icon/soa/ancestors.png" />
+                            <div class="card-body text-white text-center">
+                                <h4 class="h4">Vehicle</h4>
+                                <p class="card-text" id="countVehicle">0</p>
+                            </div>
+                        </div>
+                        <div class="card flex-row box-soa">
+                            <img style="height: 70px;width:70px" class="card-img-left example-card-img-responsive mt-3 ml-2" src="<?= base_url() ?>assets/images/icon/soa/pollution.png" />
+                            <div class="card-body text-white text-center">
+                                <h4 class="h4">People</h4>
+                                <p class="card-text" id="countPeople">0</p>
+                            </div>
+                        </div>
+                        <div class="card flex-row box-soa">
+                            <img style="height: 70px;width:70px" class="card-img-left example-card-img-responsive mt-3 ml-2" src="<?= base_url() ?>assets/images/icon/soa/folder.png" />
+                            <div class="card-body text-white text-center">
+                                <h4 class="h4">Document</h4>
+                                <p class="card-text" id="countDocument">0</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </div>
-    </div>
-    </div>
 </section>
 
 <div class="modal fade" id="detailGrapSmall" tabindex="-1" role="dialog" aria-labelledby="detailGrapSmallLabel" aria-hidden="true">
@@ -1352,6 +1346,8 @@
                 ],
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         min: 0,
@@ -1411,19 +1407,56 @@
                 success: function(res) {
                     var json = JSON.parse(res)
 
+                    console.log(json)
+
                     soiAvgMonthChart.data.datasets = json;
                     soiAvgMonthChart.update()
                 }
             });
         }
         // SOI AVERAGE MONTH LINE  //
+
+        soiAvgPillar(field)
+
+        function soiAvgPillar(field) {
+            $.ajax({
+                url: '<?= site_url('analitic/srs/dashboard_soi/soi_avg_pilar'); ?>',
+                type: 'POST',
+                data: {
+                    area_filter: area,
+                    year_filter: year,
+                    month_filter: month,
+                },
+                cache: false,
+                beforeSend: function() {
+                    // $(".lds-ring").show();
+                    // document.getElementById("loader").style.display = "block";
+                },
+                complete: function() {
+                    // document.getElementById("loader").style.display = "none";
+                },
+                success: function(res) {
+                    var json = JSON.parse(res)
+
+                    console.log(json)
+
+                    // SOI AVG PILAR //
+                    $('#avgPeople, #avgSystem, #avgDevice, #avgNetwork').text('')
+                    $('#avgPeople').text(json[0].avg_people)
+                    $('#avgSystem').text(json[0].avg_system)
+                    $('#avgDevice').text(json[0].avg_device)
+                    $('#avgNetwork').text(json[0].avg_network)
+                    // SOI AVG PILAR //
+                }
+            });
+        }
     }
 
     var SoatraficAll = Highcharts.chart('soa_allMonth', {
         chart: {
             type: 'spline',
             backgroundColor: 'transparent',
-            height: 320,
+            height: 360,
         },
         title: {
             text: 'Security Operational Analytic',
@@ -1458,6 +1491,9 @@
                 color: '#FFF',
                 fontWeight: 'bold'
             }
+        },
+        credits: {
+            enabled: false
         },
         plotOptions: {
             series: {
