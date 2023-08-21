@@ -119,22 +119,35 @@ class Daily_report extends CI_Controller
 
     public function update()
     {
-        $this->form_validation->set_rules('id', 'ID', 'trim|required');
-        // $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $transId = $this->input->post("id_trans");
+        $datas = ['status' => 0];
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> ID tidak ditemukan', 5);
-            redirect($_SERVER['HTTP_REFERER']);
-        } else {
-            $res = $this->M_soi->update();
+        $updatePeople = $this->M_soa->update("admisecdrep_transaction_people", ['trans_id' => $transId], $datas);
+        $updateVehicle = $this->M_soa->update("admisecdrep_transaction_vehicle", ['trans_id' => $transId], $datas);
+        $updateDocument = $this->M_soa->update("admisecdrep_transaction_material", ['trans_id' => $transId], $datas);
+        if ($updatePeople && $updateVehicle && $updateDocument) {
+            $reportDate = $this->input->post("report_date");
+            $shift = $this->input->post("shift");
+            $area = $this->input->post("area_filter");
+            $chronology = $this->input->post("chronology");
 
-            if ($res == '00') {
-                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil menyimpan data', 5);
+
+            $header_transaksi = array(
+                'created_on'    => date("Y-m-d H:i:s"),
+                'created_by'    => $this->session->userdata("npk"),
+                'report_date'   => $reportDate,
+                'shift'         => $shift,
+                'area_id'       => $area,
+                'chronology'    => $chronology
+            );
+            $updateDocument = $this->M_soa->update("admisecdrep_transaction", ['id' => $transId], $header_transaksi);
+            $save = $this->M_soa->update2($transId);
+            if ($save == "01") {
+                $this->session->set_tempdata('success', '<i class="icon fas fa-check"></i> Berhasil update data', 5);
             } else {
-                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyimpan data', 5);
+                $this->session->set_tempdata('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal update data', 5);
             }
-
-            redirect('analitic/srs/soi');
+            redirect('analitic/soa/daily_report');
         }
     }
 

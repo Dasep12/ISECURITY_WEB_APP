@@ -47,11 +47,11 @@
                         <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Edit Data</button>
                     </div>
                 </nav>
-
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <div class="card">
-                            <?= form_open_multipart('analitic/soa/daily_report/updateee'); ?>
+                            <?= form_open_multipart('analitic/soa/daily_report/update'); ?>
+                            <input type="text" hidden name="id_trans" value="<?= $headerTrans->id ?>">
                             <div class="card-body px-lg-4">
                                 <div class="form-row mt-2 mb-4">
                                     <div class="form-group col-3">
@@ -85,7 +85,7 @@
                                             <label for="employee" class="font-weight-normal">Employee Attendance</label>
                                             <div class="input-group">
                                                 <?php
-                                                $employeData = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='6' ");
+                                                $employeData = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='6' and status = 1 ");
                                                 $countemploye = 0;
                                                 if ($employeData) {
                                                     $d =   $employeData->row();
@@ -102,7 +102,7 @@
                                             <label for="contractor" class="font-weight-normal">Contractor Attendance</label>
                                             <div class="input-group">
                                                 <?php
-                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='9' ");
+                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='9' and status = 1  ");
                                                 $count = 0;
                                                 if ($Data) {
                                                     $d =   $Data->row();
@@ -119,7 +119,7 @@
                                             <label for="visitor" class="font-weight-normal">Visitor Attendance</label>
                                             <div class="input-group">
                                                 <?php
-                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='7' ");
+                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='7' and status = 1  ");
                                                 $count = 0;
                                                 if ($Data->num_rows() > 0) {
                                                     $d =   $Data->row();
@@ -136,7 +136,7 @@
                                             <label for="businessPartner" class="font-weight-normal">Business Partner Attendance</label>
                                             <div class="input-group">
                                                 <?php
-                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='8' ");
+                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_people WHERE trans_id ='$headerTrans->id' AND people_id='8' and status = 1 ");
                                                 $count = 0;
                                                 if ($Data->num_rows() > 0) {
                                                     $d =   $Data->row();
@@ -158,7 +158,7 @@
                                             <label for="employee" class="font-weight-normal">PKB</label>
                                             <div class="input-group">
                                                 <?php
-                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_material WHERE trans_id ='$headerTrans->id' AND category_id='12' ");
+                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_material WHERE trans_id ='$headerTrans->id' AND category_id='12' and status = 1  ");
                                                 $count = 0;
                                                 if ($Data->num_rows() > 0) {
                                                     $d =   $Data->row();
@@ -174,7 +174,7 @@
                                             <label for="employee" class="font-weight-normal">PKO</label>
                                             <div class="input-group">
                                                 <?php
-                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_material WHERE trans_id ='$headerTrans->id' AND category_id='1035' ");
+                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_material WHERE trans_id ='$headerTrans->id' AND category_id='1035' and status = 1 ");
                                                 $count = 0;
                                                 if ($Data->num_rows() > 0) {
                                                     $d =   $Data->row();
@@ -190,7 +190,7 @@
                                             <label for="employee" class="font-weight-normal">Surat Jalan</label>
                                             <div class="input-group">
                                                 <?php
-                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_material WHERE trans_id ='$headerTrans->id' AND category_id='1036' ");
+                                                $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_material WHERE trans_id ='$headerTrans->id' AND category_id='1036' and status = 1  ");
                                                 $count = 0;
                                                 if ($Data->num_rows() > 0) {
                                                     $d =   $Data->row();
@@ -229,7 +229,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="car" class="font-weight-normal">Car</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='6' AND type_id='1' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='6' AND type_id='1' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -245,7 +245,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="Motorcycle" class="font-weight-normal">Motorcycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='6' AND type_id='2' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='6' AND type_id='2' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -261,7 +261,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="bicycle" class="font-weight-normal">Bicycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='6' AND type_id='1037' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='6' AND type_id='1037' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -283,7 +283,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="car_visitor" class="font-weight-normal">Car</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='1' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='1' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -299,7 +299,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="Motorcycle_visitor" class="font-weight-normal">Motorcycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='2' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='2' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -315,7 +315,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="bicycle_visitor" class="font-weight-normal">Bicycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='1037' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='1037' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -331,7 +331,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="truck_visitor" class="font-weight-normal">Truck</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='3' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='7' AND type_id='3' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -352,7 +352,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="car_bp" class="font-weight-normal">Car</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='1' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='1' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -368,7 +368,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="Motorcycle_bp" class="font-weight-normal">Motorcycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='2' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='2' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -384,7 +384,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="bicycle_bp" class="font-weight-normal">Bicycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='1037' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='1037' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -400,7 +400,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="truck_bp" class="font-weight-normal">Truck</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='3' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='8' AND type_id='3' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -421,7 +421,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="car_contractor" class="font-weight-normal">Car</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='1' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='1' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -437,7 +437,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="Motorcycle_contractor" class="font-weight-normal">Motorcycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='2' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='2'  and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -453,7 +453,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="bicycle_contractor" class="font-weight-normal">Bicycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='1037' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='1037' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -469,7 +469,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="truck_contractor" class="font-weight-normal">Truck</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='3' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='9' AND type_id='3' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -490,7 +490,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="car_pool" class="font-weight-normal">Car</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='1' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='1' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -506,7 +506,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="Motorcycle_pool" class="font-weight-normal">Motorcycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='2' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='2' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -522,7 +522,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="bicycle_pool" class="font-weight-normal">Bicycle</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='1037' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='1037' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -538,7 +538,7 @@
                                                                 <div class="form-group col-3">
                                                                     <label for="truck_pool" class="font-weight-normal">Truck</label>
                                                                     <?php
-                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='3' ");
+                                                                    $Data = $this->soadb->query("SELECT * FROM admisecdrep_transaction_vehicle WHERE trans_id ='$headerTrans->id' AND people_id='32' AND type_id='3' and status = 1 ");
                                                                     $count = 0;
                                                                     if ($Data->num_rows() > 0) {
                                                                         $d =   $Data->row();
@@ -571,7 +571,7 @@
                                     </div>
                                 </fieldset>
                                 <div class="form-row mt-2 mb-4 justify-content-end">
-                                    <a href="<?= base_url("analitic/soa/daily_report") ?>" class="text-white btn btn-info px-4" type="submit">BACK</a>
+                                    <a href="<?= base_url("analitic/soa/daily_report") ?>" class="text-white btn btn-info px-4">BACK</a>
                                     <button class="btn btn-primary px-4" type="submit">SAVE</button>
                                 </div>
                             </div>

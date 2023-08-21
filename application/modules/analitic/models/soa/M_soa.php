@@ -62,7 +62,11 @@ class M_soa extends CI_Model
         $motorcycle_contractor = $this->input->post("motorcycle_contractor");
         $bicycle_contractor = $this->input->post("bicycle_contractor");
         $truck_contractor = $this->input->post("truck_contractor");
-
+        // vehicle pool
+        $car_pool = $this->input->post("car_pool");
+        $motorcycle_pool = $this->input->post("motorcycle_pool");
+        $bicycle_pool = $this->input->post("bicycle_pool");
+        $truck_pool = $this->input->post("truck_pool");
 
         $header_transaksi = array(
             'created_on' => date("Y-m-d H:i:s"),
@@ -189,6 +193,23 @@ class M_soa extends CI_Model
                         'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $this->session->userdata("npk")
                     ),
+                    // pool
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
+                    array(
+                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $this->session->userdata("npk")
+                    ),
                 );
 
                 $this->soadb->insert_batch("admisecdrep_transaction_people", $data_people);
@@ -215,6 +236,209 @@ class M_soa extends CI_Model
                 $this->soadb->trans_rollback();
                 return "00";
             }
+        }
+    }
+
+    public function update($table, $where, $data)
+    {
+        $this->soadb->where($where);
+        $this->soadb->update($table, $data);
+        return $this->soadb->affected_rows();
+    }
+
+    public function update2($last_id)
+    {
+
+
+        // people
+        $employee = $this->input->post("employee");
+        $contractor = $this->input->post("contractor");
+        $visitor = $this->input->post("visitor");
+        $business_partner = $this->input->post("business_partner");
+
+        // document
+        $pkb = $this->input->post("pkb");
+        $pko = $this->input->post("pko");
+        $surat_jalan = $this->input->post("surat_jalan");
+
+        // vehicle employee
+        $car_employee = $this->input->post("car_employee");
+        $motorcycle_employee = $this->input->post("motorcycle_employee");
+        $bicycle_employee = $this->input->post("bicycle_employee");
+        // vehicle visitor
+        $car_visitor = $this->input->post("car_visitor");
+        $motorcycle_visitor = $this->input->post("motorcycle_visitor");
+        $bicycle_visitor = $this->input->post("bicycle_visitor");
+        $truck_visitor = $this->input->post("truck_visitor");
+        // vehicle business partener
+        $car_bp = $this->input->post("car_bp");
+        $motorcycle_bp = $this->input->post("motorcycle_bp");
+        $bicycle_bp = $this->input->post("bicycle_bp");
+        $truck_bp = $this->input->post("truck_bp");
+        // vehicle contractor
+        $car_contractor = $this->input->post("car_contractor");
+        $motorcycle_contractor = $this->input->post("motorcycle_contractor");
+        $bicycle_contractor = $this->input->post("bicycle_contractor");
+        $truck_contractor = $this->input->post("truck_contractor");
+        // vehicle pool
+        $car_pool = $this->input->post("car_pool");
+        $motorcycle_pool = $this->input->post("motorcycle_pool");
+        $bicycle_pool = $this->input->post("bicycle_pool");
+        $truck_pool = $this->input->post("truck_pool");
+        // $last_id =  $this->input->post("id_trans");
+        $data_people = array(
+            array(
+                'people_id' => 6,
+                'attendance' => $employee,
+                'trans_id' => $last_id,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'people_id' => 7,
+                'attendance' => $visitor,
+                'trans_id' => $last_id,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'people_id' => 8,
+                'attendance' => $business_partner,
+                'trans_id' => $last_id,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'people_id' => 9,
+                'attendance' => $contractor,
+                'trans_id' => $last_id,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+        );
+
+        $data_document = array(
+            array(
+                'category_id' =>  12, 'document_in' => $pkb, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'category_id' =>  1035, 'document_in' => $pko, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'category_id' =>  1036, 'document_in' => $surat_jalan, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+        );
+
+        $data_vehicle  = array(
+            // employeee
+            array(
+                'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+
+            // visitor 
+            array(
+                'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+
+            // bp 
+            array(
+                'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+
+            // contractor
+            array(
+                'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+
+            // pool
+            array(
+                'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+            array(
+                'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->userdata("npk")
+            ),
+        );
+
+        $this->soadb->insert_batch("admisecdrep_transaction_people", $data_people);
+        if ($this->soadb->affected_rows() > 0) {
+            $this->soadb->insert_batch("admisecdrep_transaction_material", $data_document);
+            if ($this->soadb->affected_rows() > 0) {
+                $this->soadb->insert_batch("admisecdrep_transaction_vehicle", $data_vehicle);
+                if ($this->soadb->affected_rows() > 0) {
+                    $this->soadb->trans_commit();
+                    return "01";
+                } else {
+                    $this->soadb->trans_rollback();
+                    return "00";
+                }
+            } else {
+                $this->soadb->trans_rollback();
+                return "00";
+            }
+        } else {
+            $this->soadb->trans_rollback();
+            return "00";
         }
     }
 
@@ -263,17 +487,17 @@ class M_soa extends CI_Model
         inner join admisecdrep_sub as2 on as2.id  = at2.area_id 
         left outer JOIN (
             select sum(atp2.attendance)  as ttal , atp2.trans_id from admisecdrep_transaction_people atp2
-            where atp2.people_id in (7,8,9) 
+            where atp2.people_id in (7,8,9)  and atp2.status = 1 
             group by  atp2.trans_id
         ) X  on X.trans_id = at2.id  
         left outer join(
             select sum(atv.amount) as ttal , atv.trans_id from admisecdrep_transaction_vehicle atv
-            where atv.type_id in (1,2,3,1037) 
+            where atv.type_id in (1,2,3,1037)  and atv.status = 1 
             group by  atv.trans_id
         ) Y on Y.trans_id = at2.id 
         left outer join(
             select sum(atm.document_in)  as ttal , atm.trans_id from admisecdrep_transaction_material atm
-            where atm.category_id in (12,1036,1035)
+            where atm.category_id in (12,1036,1035) and atm.status = 1 
             group by  atm.trans_id
         ) Z on Z.trans_id = at2.id
         WHERE at2.status = 1 
@@ -296,17 +520,17 @@ class M_soa extends CI_Model
         inner join admisecdrep_sub as2 on as2.id  = at2.area_id 
         left outer JOIN (
             select sum(atp2.attendance)  as ttal , atp2.trans_id from admisecdrep_transaction_people atp2
-            where atp2.people_id in (7,8,9) 
+            where atp2.people_id in (7,8,9) and atp2.status = 1 
             group by  atp2.trans_id
         ) X  on X.trans_id = at2.id  
         left outer join(
             select sum(atv.amount) as ttal , atv.trans_id from admisecdrep_transaction_vehicle atv
-            where atv.type_id in (1,2,3,1037) 
+            where atv.type_id in (1,2,3,1037) and atv.status = 1
             group by  atv.trans_id
         ) Y on Y.trans_id = at2.id 
         left outer join(
             select sum(atm.document_in)  as ttal , atm.trans_id from admisecdrep_transaction_material atm
-            where atm.category_id in (12,1036,1035)
+            where atm.category_id in (12,1036,1035) and atm.status = 1 
             group by  atm.trans_id
         ) Z on Z.trans_id = at2.id 
         WHERE at2.area_id  = '$area' and  at2.report_date  = '$date'
@@ -321,7 +545,7 @@ class M_soa extends CI_Model
         LEFT OUTER JOIN (
             select sum(atv.attendance) as total , at2.id as tr_id , atv.people_id , at2.shift  from admisecdrep_transaction at2 
             inner join admisecdrep_transaction_people  atv on atv.trans_id  = at2.id
-            where at2.id  = '$id' and at2.status = 1 
+            where at2.id  = '$id' and at2.status = 1 and atv.status = 1 
             group by   at2.id  , atv.people_id  , at2.shift
         )X on as2.id  = X.people_id
         where as2.id in (7,8,9)   ");
@@ -334,7 +558,7 @@ class M_soa extends CI_Model
         LEFT OUTER JOIN (
             select sum(atv.amount) as total , at2.id as tr_id , atv.type_id , at2.shift  from admisecdrep_transaction at2 
             inner join admisecdrep_transaction_vehicle atv on atv.trans_id  = at2.id
-            where at2.id  = '$id' and at2.status = 1 
+            where at2.id  = '$id' and at2.status = 1 and atv.status = 1 
             group by   at2.id  , atv.type_id  , at2.shift
         )X on as2.id  = X.type_id
         where as2.id  in  (1,2,3,1037) ");
@@ -347,7 +571,7 @@ class M_soa extends CI_Model
         LEFT OUTER JOIN (
             select sum(atv.document_in) as total , at2.id as tr_id , atv.category_id   from admisecdrep_transaction at2 
             inner join admisecdrep_transaction_material  atv on atv.trans_id  = at2.id 
-            where at2.id  = '$id' and at2.status = 1 
+            where at2.id  = '$id' and at2.status = 1  and atv.status = 1
             group by   at2.id  , atv.category_id 
         )X on as2.id  = X.category_id 
         where as2.id  in  (12,1036,1035) ");
